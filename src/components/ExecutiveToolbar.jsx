@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useVehicle } from '../context/VehicleContext'
 import { useCart } from '../context/CartContext'
+import { useTheme } from '../context/ThemeContext'
 import { VinScannerModal } from './VinScannerModal'
 
 export function ExecutiveToolbar() {
@@ -9,6 +10,7 @@ export function ExecutiveToolbar() {
   const [vinModalOpen, setVinModalOpen] = useState(false)
   const { setVehicle, vehicle } = useVehicle()
   const { resetDefaultCart, itemCount } = useCart()
+  const { isDark, toggleTheme } = useTheme()
   const navigate = useNavigate()
 
   const setCorolla = () => {
@@ -118,6 +120,18 @@ export function ExecutiveToolbar() {
                 >
                   <span className="material-symbols-outlined text-[15px]">replay</span>
                   <span className="sm:hidden">Reset</span><span className="hidden sm:inline">Reset Cart ({itemCount})</span>
+                </button>
+
+                <button
+                  onClick={toggleTheme}
+                  title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                  className="px-2.5 py-1.5 rounded-xl bg-surface-container-high/20 hover:bg-surface-container-high/40 text-white font-label-sm text-label-sm flex items-center gap-1 whitespace-nowrap cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[15px]">
+                    {isDark ? 'light_mode' : 'dark_mode'}
+                  </span>
+                  <span className="sm:hidden">{isDark ? 'Light' : 'Dark'}</span>
+                  <span className="hidden sm:inline">{isDark ? 'Light Mode' : 'Dark Mode'}</span>
                 </button>
               </div>
 

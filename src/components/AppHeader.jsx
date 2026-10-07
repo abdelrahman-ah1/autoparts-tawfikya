@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useVehicle } from '../context/VehicleContext'
 import { useCart } from '../context/CartContext'
+import { useTheme } from '../context/ThemeContext'
 
 const NAV_LINKS = [
   { to: '/catalog', label: 'Catalog', icon: 'search' },
@@ -26,6 +27,7 @@ const mobileNavLinkClass = ({ isActive }) =>
 export function AppHeader() {
   const { vehicle, openVehicleModal } = useVehicle()
   const { itemCount, cartBounced } = useCart()
+  const { isDark, toggleTheme } = useTheme()
   const [menuOpen, setMenuOpen] = useState(false)
   const { pathname } = useLocation()
   const shortLabel = `${vehicle.year} ${vehicle.make} ${vehicle.model}`
@@ -116,6 +118,17 @@ export function AppHeader() {
               </span>
             )}
           </NavLink>
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            className="p-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface flex items-center justify-center transition-colors cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[20px]">
+              {isDark ? 'light_mode' : 'dark_mode'}
+            </span>
+          </button>
           <div className="hidden sm:flex w-8 h-8 rounded-full bg-primary items-center justify-center">
             <span className="material-symbols-outlined text-on-primary text-[18px]">person</span>
           </div>
@@ -159,6 +172,24 @@ export function AppHeader() {
               </div>
               <span className="font-label-md text-label-md text-primary shrink-0">Change</span>
             </button>
+            <div className="flex items-center justify-between p-3 rounded-xl bg-surface-container-low">
+              <div className="flex items-center gap-2.5">
+                <span className="material-symbols-outlined text-[20px] text-on-surface-variant">
+                  {isDark ? 'dark_mode' : 'light_mode'}
+                </span>
+                <span className="font-title-md text-title-md text-on-surface">Theme</span>
+              </div>
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="px-3 py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-[16px] text-primary">
+                  {isDark ? 'light_mode' : 'dark_mode'}
+                </span>
+                <span>{isDark ? 'Dark Mode' : 'Light Mode'}</span>
+              </button>
+            </div>
             <nav className="flex flex-col gap-1">
               {NAV_LINKS.map(({ to, label, icon, end }) => (
                 <NavLink key={to} to={to} end={end} className={mobileNavLinkClass}>
