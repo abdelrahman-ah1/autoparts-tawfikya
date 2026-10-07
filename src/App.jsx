@@ -14,7 +14,7 @@ import { VendorDashboardPage } from './pages/VendorDashboardPage'
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <ToastProvider>
         <VehicleProvider>
           <CartProvider>
