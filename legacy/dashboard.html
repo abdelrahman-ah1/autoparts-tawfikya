@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><title>AutoParts Console</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-primary-fixed-variant":"#003ea8","primary-fixed":"#dbe1ff","secondary":"#565e74","surface-container":"#e5eeff","inverse-primary":"#b4c5ff","surface-container-highest":"#d3e4fe","primary":"#004ac6","on-primary":"#ffffff","on-surface":"#0b1c30","surface-dim":"#cbdbf5","on-secondary-fixed-variant":"#3f465c","outline-variant":"#c3c6d7","inverse-surface":"#213145","surface-container-lowest":"#ffffff","on-error-container":"#93000a","background":"#f8f9ff","on-tertiary-fixed":"#002109","on-secondary-fixed":"#131b2e","secondary-fixed":"#dae2fd","error-container":"#ffdad6","tertiary":"#006329","tertiary-container":"#007f36","on-tertiary-fixed-variant":"#005320","on-tertiary-container":"#c7ffca","outline":"#737686","on-primary-container":"#eeefff","on-error":"#ffffff","primary-container":"#2563eb","secondary-fixed-dim":"#bec6e0","surface-variant":"#d3e4fe","on-secondary-container":"#5c647a","inverse-on-surface":"#eaf1ff","tertiary-fixed":"#7ffc97","tertiary-fixed-dim":"#62df7d","secondary-container":"#dae2fd","surface-container-low":"#eff4ff","surface-tint":"#0053db","on-primary-fixed":"#00174b","on-tertiary":"#ffffff","surface-container-high":"#dce9ff","surface-bright":"#f8f9ff","surface":"#f8f9ff","primary-fixed-dim":"#b4c5ff","error":"#ba1a1a","on-surface-variant":"#434655","on-secondary":"#ffffff","on-background":"#0b1c30"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter":"1.5rem","margin":"2rem","space-2xl":"3rem","space-md":"1rem","space-2xs":"0.25rem","margin-mobile":"1rem","space-xl":"2rem","space-sm":"0.75rem","gutter-mobile":"0.75rem","space-xs":"0.5rem","space-lg":"1.5rem"},fontFamily:{"data-mono-sm":["JetBrains Mono"],"data-mono-lg":["JetBrains Mono"],"body-lg":["Inter"],"title-md":["Inter"],"label-sm":["Inter"],"headline-lg":["Inter"],"headline-md":["Inter"],"display-lg":["Inter"],"label-md":["Inter"],"body-sm":["Inter"],"headline-xl":["Inter"],"display-lg-mobile":["Inter"],"title-lg":["Inter"],"data-mono-md":["JetBrains Mono"],"body-md":["Inter"]},fontSize:{"data-mono-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.02em","fontWeight":"500"}],"data-mono-lg":["16px",{"lineHeight":"22px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"title-md":["16px",{"lineHeight":"22px","fontWeight":"600"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.03em","fontWeight":"600"}],"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-md":["20px",{"lineHeight":"28px","letterSpacing":"-0.005em","fontWeight":"600"}],"display-lg":["40px",{"lineHeight":"48px","letterSpacing":"-0.02em","fontWeight":"700"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}],"body-sm":["13px",{"lineHeight":"18px","fontWeight":"400"}],"headline-xl":["30px",{"lineHeight":"38px","letterSpacing":"-0.015em","fontWeight":"600"}],"display-lg-mobile":["32px",{"lineHeight":"38px","letterSpacing":"-0.015em","fontWeight":"700"}],"title-lg":["18px",{"lineHeight":"24px","fontWeight":"600"}],"data-mono-md":["13px",{"lineHeight":"18px","fontWeight":"500"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-6 flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><a class="flex items-center gap-space-xs text-on-surface select-none group" data-path="vendor-dashboard" href="#"><div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shadow-[0_1px_3px_0_rgba(15,23,42,0.05)]"><span class="material-symbols-outlined text-[18px]">build_circle</span></div><div class="flex flex-col"><span class="font-title-md text-title-md tracking-tight text-on-surface">Auto<span class="text-primary-container">Console</span></span><span class="font-label-sm text-label-sm text-on-surface-variant -mt-1">OPS MANAGEMENT</span></div></a><div class="hidden sm:flex items-center gap-space-xs bg-surface-container-low px-space-sm py-1 rounded-lg"><span class="font-data-mono-sm text-data-mono-sm text-tertiary font-semibold">LIVE AP-API</span><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span><span class="font-label-sm text-label-sm text-on-surface-variant">v4.2 Connected</span></div></div><div class="flex items-center gap-space-md"><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="home" href="#">Back to Storefront</a><div class="hidden md:flex items-center gap-space-xs bg-surface-container-low px-space-sm py-1 rounded-lg"><div class="flex items-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed px-1.5 py-0.5 rounded font-label-sm text-label-sm"><span class="material-symbols-outlined text-[12px]">check_circle</span><span>BENCH VEHICLE</span></div><span class="font-data-mono-sm text-data-mono-sm text-on-surface">2018 Toyota Corolla 1.8L</span></div><a class="relative p-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface flex items-center justify-center transition-colors" data-path="checkout" href="#"><span class="material-symbols-outlined text-[18px]">shopping_bag</span><span class="absolute -top-1 -right-1 bg-primary-container text-on-primary font-data-mono-sm text-data-mono-sm rounded-full w-4 h-4 flex items-center justify-center text-[10px]">3</span></a><div class="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-on-primary text-[14px] font-semibold">OP</div></div></div></header><aside class="fixed top-16 left-0 bottom-0 w-64 bg-surface-container-low p-space-md flex flex-col justify-between z-40 shadow-[1px_0_4px_rgba(0,0,0,0.03)]"><div class="space-y-space-lg"><div class="space-y-1"><div class="px-space-sm py-1 font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase">Vendor Portal</div><nav class="space-y-1" data-active-classes="bg-surface-container-high text-on-surface font-semibold rounded-lg"><a class="block px-space-sm py-2 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface rounded-lg transition-colors" data-path="vendor-dashboard" href="#">Vendor Dashboard</a><a class="block px-space-sm py-2 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface rounded-lg transition-colors" data-path="vendor-inventory" href="#">Inventory Manager</a><a class="block px-space-sm py-2 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface rounded-lg transition-colors" data-path="vendor-orders" href="#">Fulfillment Orders</a></nav></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase">Super-Admin</div><nav class="space-y-1" data-active-classes="bg-surface-container-high text-on-surface font-semibold rounded-lg"><a aria-current="page" class="block px-space-sm py-2 transition-colors bg-surface-container-high text-on-surface font-semibold rounded-lg" data-path="admin-catalog" href="#">Catalog &amp; Fitment Master</a><a class="block px-space-sm py-2 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface rounded-lg transition-colors" data-path="admin-vendors" href="#">Vendor Directory</a><a class="block px-space-sm py-2 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface rounded-lg transition-colors" data-path="admin-finance" href="#">Finance &amp; Payouts</a></nav></div></div><div class="p-space-sm bg-surface-container rounded-lg space-y-1"><div class="font-label-sm text-label-sm text-on-surface">Environment: Production</div><div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">SKU Database: 1.48M active</div></div></aside><main class="w-full pl-64 pt-16 bg-surface"><div class="flex flex-col w-full">
+<div class="p-6 md:p-8 space-y-6 max-w-7xl">
+<!-- Top Administrative Stats & Console Title Deck -->
+<div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 bg-surface-container-lowest p-6 rounded-xl shadow-xs border border-outline-variant/30">
+<div class="space-y-1 min-w-0">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container text-primary font-data-mono-sm text-data-mono-sm uppercase tracking-wider font-semibold">ACES / PIES v4.2 Compliance</span>
+<span class="inline-flex items-center gap-1 text-tertiary font-label-sm text-label-sm bg-tertiary-fixed/30 px-2 py-0.5 rounded">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+Sync Active
+</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">Vehicle Fitment Matrix &amp; Catalog Engine</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Global automotive ontology ledger, cross-vendor interchange protocols, and OEM tolerance verification.</p>
+</div>
+<!-- Live Telemetry KPI Pills -->
+<div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+<div class="flex items-center gap-3 bg-surface-container-low px-4 py-2.5 rounded-xl border border-outline-variant/30">
+<div class="w-8 h-8 rounded-lg bg-surface-container-highest text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">hub</span>
+</div>
+<div>
+<div class="font-data-mono-md text-data-mono-md text-on-surface font-semibold">2,840,119</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">OEM Mappings</div>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-low px-4 py-2.5 rounded-xl border border-outline-variant/30">
+<div class="w-8 h-8 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+</div>
+<div>
+<div class="font-data-mono-md text-data-mono-md text-tertiary font-semibold">99.98%</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Fitment Precision</div>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-low px-4 py-2.5 rounded-xl border border-outline-variant/30">
+<div class="w-8 h-8 rounded-lg bg-secondary-container text-on-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">storefront</span>
+</div>
+<div>
+<div class="font-data-mono-md text-data-mono-md text-on-surface font-semibold">42</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Active Hubs</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Bar & Protocol Commands -->
+<div class="flex flex-wrap items-center justify-between gap-4 bg-surface-container-lowest p-5 rounded-xl shadow-xs border border-outline-variant/30">
+<div class="flex flex-wrap items-center gap-2.5">
+<button class="flex items-center gap-2 px-4 py-2 bg-primary-container text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[18px]">add_link</span>
+<span>Bind Master SKU to Vehicle</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-low text-on-surface rounded-lg font-label-md text-label-md hover:bg-surface-container transition-colors border border-outline-variant/30">
+<span class="material-symbols-outlined text-[18px]">directions_car</span>
+<span>Add YMM Specification</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-low text-on-surface rounded-lg font-label-md text-label-md hover:bg-surface-container transition-colors border border-outline-variant/30">
+<span class="material-symbols-outlined text-[18px]">file_upload</span>
+<span>Import ACES / PIES XML</span>
+</button>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-high text-primary rounded-lg font-label-md text-label-md hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">rule_folder</span>
+<span>Run Compatibility Audit</span>
+</button>
+<button class="p-2 bg-surface-container-low rounded-lg text-on-surface hover:bg-surface-container transition-colors border border-outline-variant/30" title="Export Fitment Master CSV">
+<span class="material-symbols-outlined text-[18px]">ios_share</span>
+</button>
+</div>
+</div>
+<!-- Fitment Tree Drilldown & Multi-Parameter Filter Matrix -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-xs border border-outline-variant/30 space-y-5">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">account_tree</span>
+<h2 class="font-title-lg text-title-lg text-on-surface font-semibold">Fitment Tree Parameter Drilldown</h2>
+</div>
+<div class="flex items-center gap-2 font-data-mono-sm text-data-mono-sm text-on-surface-variant">
+<span>ACTIVE VEHICLE:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-semibold">Corolla L4 1.8L (E210 Platform)</span>
+</div>
+</div>
+<!-- 4-Stage Parametric Filter Selectors -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">1. Model Year</label>
+<div class="relative">
+<select class="w-full h-11 pl-space-md pr-space-lg bg-surface-container-low rounded-lg text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer">
+<option selected="">2018</option>
+<option>2019</option>
+<option>2020</option>
+<option>2021</option>
+<option>2022</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-on-surface-variant pointer-events-none text-[18px]">expand_more</span>
+</div>
+</div>
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">2. Make</label>
+<div class="relative">
+<select class="w-full h-11 pl-space-md pr-space-lg bg-surface-container-low rounded-lg text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer">
+<option selected="">Toyota</option>
+<option>Ford</option>
+<option>Honda</option>
+<option>Chevrolet</option>
+<option>BMW Group</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-on-surface-variant pointer-events-none text-[18px]">expand_more</span>
+</div>
+</div>
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">3. Model Family</label>
+<div class="relative">
+<select class="w-full h-11 pl-space-md pr-space-lg bg-surface-container-low rounded-lg text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer">
+<option selected="">Corolla (Saloon / Touring)</option>
+<option>Camry</option>
+<option>RAV4</option>
+<option>Highlander</option>
+<option>Tacoma</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-on-surface-variant pointer-events-none text-[18px]">expand_more</span>
+</div>
+</div>
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">4. Engine Code &amp; Displacement</label>
+<div class="relative">
+<select class="w-full h-11 pl-space-md pr-space-lg bg-surface-container-low rounded-lg text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer">
+<option selected="">1.8L L4 Gas DOHC (2ZR-FE)</option>
+<option>2.0L L4 Dual VVT-i (M20A-FKS)</option>
+<option>1.8L Hybrid Atkinson (2ZR-FXE)</option>
+<option>All Engine Configurations</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-on-surface-variant pointer-events-none text-[18px]">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Quick Sub-Category Badges -->
+<div class="flex items-center gap-2 pt-3 overflow-x-auto text-nowrap">
+<button class="px-3 py-1 bg-primary-container text-on-primary rounded-full font-label-sm text-label-sm">All (4,120)</button>
+<button class="px-3 py-1 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-full font-label-sm text-label-sm transition-colors border border-outline-variant/30">Brake Systems (842)</button>
+<button class="px-3 py-1 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-full font-label-sm text-label-sm transition-colors border border-outline-variant/30">Engine &amp; Ignition (1,248)</button>
+<button class="px-3 py-1 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-full font-label-sm text-label-sm transition-colors border border-outline-variant/30">Suspension (914)</button>
+<button class="px-3 py-1 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-full font-label-sm text-label-sm transition-colors border border-outline-variant/30">Transmission (610)</button>
+<button class="px-3 py-1 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-full font-label-sm text-label-sm transition-colors border border-outline-variant/30">Electrical (506)</button>
+</div>
+</div>
+<!-- Master SKU Fitment Data Table Section -->
+<div class="bg-surface-container-lowest rounded-xl shadow-xs border border-outline-variant/30 overflow-hidden flex flex-col">
+<div class="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">table_chart</span>
+<span class="font-title-md text-title-md text-on-surface font-semibold">SKU Interchange &amp; Fitment Ledger</span>
+<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-data-mono-sm text-data-mono-sm font-semibold">4 Matched</span>
+</div>
+<div class="flex items-center gap-2 w-full sm:w-auto">
+<div class="relative flex-1 sm:w-56">
+<span class="material-symbols-outlined absolute left-2.5 top-2.5 text-on-surface-variant text-[15px]">search</span>
+<input class="w-full h-9 pl-8 pr-3 bg-surface-container-low border border-outline-variant/30 rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Filter SKU, OEM..." type="text"/>
+</div>
+<button class="p-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface border border-outline-variant/30" title="Column Visibility">
+<span class="material-symbols-outlined text-[18px]">view_column</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+<th class="px-4 py-3">Master SKU</th>
+<th class="px-4 py-3">OEM Interchange #</th>
+<th class="px-4 py-3">Sub-System</th>
+<th class="px-4 py-3">Vehicle Cohorts</th>
+<th class="px-4 py-3">Active Offers</th>
+<th class="px-4 py-3">Tolerance</th>
+<th class="px-4 py-3 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y-0 font-body-sm text-body-sm text-on-surface">
+<!-- Row 1: Brake Pads -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-space-md py-space-md align-top">
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[16px]">inventory_2</span>
+</div>
+<div>
+<div class="font-data-mono-md text-data-mono-md font-semibold text-primary">BC-QC-1210</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Ceramic Disc Pad Set</div>
+</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="space-y-1">
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface font-semibold bg-surface-container px-space-xs py-0.5 rounded inline-block">04465-02220</div>
+<div class="text-[11px] text-on-surface-variant">ALT: 04465-02390, 04465-12610</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<span class="inline-flex items-center gap-1 font-label-md text-label-md px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  Brake Systems
+                </span>
+</td>
+<td class="px-space-md py-space-md align-top max-w-xs">
+<div class="space-y-1">
+<div class="font-label-md text-label-md text-on-surface">2014-2019 Toyota Corolla</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">tune</span>
+                    1.8L L4 Gas DOHC (2ZR-FE)
+                  </div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Front Axle Pair • Caliper Spec Akebono</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="space-y-1">
+<div class="font-label-md text-label-md text-on-surface">3 Active Sellers</div>
+<div class="font-data-mono-sm text-data-mono-sm text-tertiary font-semibold">$45.50 — $52.00</div>
+<div class="text-[11px] text-on-surface-variant">Stock: 480 units @ Central</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="inline-flex items-center gap-1 px-space-xs py-1 rounded bg-tertiary-container/15 text-tertiary">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="font-label-sm text-label-sm">Passed ±0.05mm</span>
+</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-1">Caliper Pad Spec: 12.4mm</div>
+</td>
+<td class="px-space-md py-space-md align-top text-right space-x-1">
+<button class="px-space-xs py-1 rounded bg-surface-container text-on-surface hover:bg-primary hover:text-on-primary font-label-sm text-label-sm transition-colors">Edit Matrix</button>
+<button class="p-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Audit Log">
+<span class="material-symbols-outlined text-[16px]">history</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Spark Plugs (Multi-Vehicle Cross Fit) -->
+<tr class="bg-surface-container-lowest hover:bg-surface-container-low transition-colors group">
+<td class="px-space-md py-space-md align-top">
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[16px]">electric_bolt</span>
+</div>
+<div>
+<div class="font-data-mono-md text-data-mono-md font-semibold text-primary">DN-IR-5304</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Iridium Long-Life Plug</div>
+</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="space-y-1">
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface font-semibold bg-surface-container px-space-xs py-0.5 rounded inline-block">90919-01253</div>
+<div class="text-[11px] text-on-surface-variant">ALT: SC20HR11, IXEH20TT</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<span class="inline-flex items-center gap-1 font-label-md text-label-md px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  Engine &amp; Ignition
+                </span>
+</td>
+<td class="px-space-md py-space-md align-top max-w-xs">
+<div class="space-y-1">
+<div class="font-label-md text-label-md text-on-surface">2018-2022 Toyota Corolla</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">2ZR-FE / M20A-FKS</div>
+<div class="text-[11px] text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                    Also Verified: 2019 Ford F-150 3.3L
+                  </div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="space-y-1">
+<div class="font-label-md text-label-md text-on-surface">2 Active Sellers</div>
+<div class="font-data-mono-sm text-data-mono-sm text-tertiary font-semibold">$38.40 — $41.00</div>
+<div class="text-[11px] text-on-surface-variant">Pack of 4 • 1,220 sets in stock</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="inline-flex items-center gap-1 px-space-xs py-1 rounded bg-tertiary-container/15 text-tertiary">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="font-label-sm text-label-sm">Passed ±0.02mm</span>
+</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-1">Thread: M12 x 1.25, 26.5mm</div>
+</td>
+<td class="px-space-md py-space-md align-top text-right space-x-1">
+<button class="px-space-xs py-1 rounded bg-surface-container text-on-surface hover:bg-primary hover:text-on-primary font-label-sm text-label-sm transition-colors">Edit Matrix</button>
+<button class="p-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Audit Log">
+<span class="material-symbols-outlined text-[16px]">history</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Shock Absorber (Suspension) -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-space-md py-space-md align-top">
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[16px]">compress</span>
+</div>
+<div>
+<div class="font-data-mono-md text-data-mono-md font-semibold text-primary">BL-B6-4600</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Gas-Pressure Damper</div>
+</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="space-y-1">
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface font-semibold bg-surface-container px-space-xs py-0.5 rounded inline-block">24-186728</div>
+<div class="text-[11px] text-on-surface-variant">ALT: JL34-18080-D, ASH-24584</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<span class="inline-flex items-center gap-1 font-label-md text-label-md px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  Suspension &amp; Steering
+                </span>
+</td>
+<td class="px-space-md py-space-md align-top max-w-xs">
+<div class="space-y-1">
+<div class="font-label-md text-label-md text-on-surface">2015-2020 Ford F-150 4WD</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">3.5L EcoBoost / 5.0L V8</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Rear Monotube Heavy Duty</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="space-y-1">
+<div class="font-label-md text-label-md text-on-surface">1 Verified Seller</div>
+<div class="font-data-mono-sm text-data-mono-sm text-tertiary font-semibold">$114.00</div>
+<div class="text-[11px] text-on-surface-variant">Stock: 64 units @ Mid-Atlantic</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="inline-flex items-center gap-1 px-space-xs py-1 rounded bg-tertiary-container/15 text-tertiary">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="font-label-sm text-label-sm">Passed ±0.05mm</span>
+</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-1">Eye-Ring Bushing: 16.02mm</div>
+</td>
+<td class="px-space-md py-space-md align-top text-right space-x-1">
+<button class="px-space-xs py-1 rounded bg-surface-container text-on-surface hover:bg-primary hover:text-on-primary font-label-sm text-label-sm transition-colors">Edit Matrix</button>
+<button class="p-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Audit Log">
+<span class="material-symbols-outlined text-[16px]">history</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Rear Brake Shoes -->
+<tr class="bg-surface-container-lowest hover:bg-surface-container-low transition-colors group">
+<td class="px-space-md py-space-md align-top">
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[16px]">settings_backup_restore</span>
+</div>
+<div>
+<div class="font-data-mono-md text-data-mono-md font-semibold text-primary">BR-PM-5211</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Brake Shoe Set (Rear)</div>
+</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="space-y-1">
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface font-semibold bg-surface-container px-space-xs py-0.5 rounded inline-block">04495-52110</div>
+<div class="text-[11px] text-on-surface-variant">ALT: K2389, S5211</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<span class="inline-flex items-center gap-1 font-label-md text-label-md px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  Brake Systems
+                </span>
+</td>
+<td class="px-space-md py-space-md align-top max-w-xs">
+<div class="space-y-1">
+<div class="font-label-md text-label-md text-on-surface">2014-2019 Toyota Corolla</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">Rear Drum Sub-assembly (200mm)</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">LE / CE Trim Grade Options</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="space-y-1">
+<div class="font-label-md text-label-md text-on-surface">2 Active Sellers</div>
+<div class="font-data-mono-sm text-data-mono-sm text-tertiary font-semibold">$34.20 — $38.00</div>
+<div class="text-[11px] text-on-surface-variant">Stock: 215 sets @ North East</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="inline-flex items-center gap-1 px-space-xs py-1 rounded bg-tertiary-container/15 text-tertiary">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="font-label-sm text-label-sm">Passed ±0.05mm</span>
+</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-1">Drum Radius: 200.0mm ±0.04</div>
+</td>
+<td class="px-space-md py-space-md align-top text-right space-x-1">
+<button class="px-space-xs py-1 rounded bg-surface-container text-on-surface hover:bg-primary hover:text-on-primary font-label-sm text-label-sm transition-colors">Edit Matrix</button>
+<button class="p-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Audit Log">
+<span class="material-symbols-outlined text-[16px]">history</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination / Footer Bar -->
+<div class="p-space-md bg-surface-container-low flex flex-col sm:flex-row items-center justify-between gap-space-sm text-on-surface-variant font-label-sm text-label-sm">
+<div>Showing 1 to 4 of 2,840,119 verified catalog nodes</div>
+<div class="flex items-center gap-1">
+<button class="px-space-sm py-1 rounded bg-surface-container text-on-surface opacity-50 cursor-not-allowed">Previous</button>
+<button class="px-space-sm py-1 rounded bg-primary text-on-primary font-semibold">1</button>
+<button class="px-space-sm py-1 rounded bg-surface-container text-on-surface hover:bg-surface-container-high">2</button>
+<button class="px-space-sm py-1 rounded bg-surface-container text-on-surface hover:bg-surface-container-high">3</button>
+<span class="px-1">...</span>
+<button class="px-space-sm py-1 rounded bg-surface-container text-on-surface hover:bg-surface-container-high">71,003</button>
+<button class="px-space-sm py-1 rounded bg-surface-container text-on-surface hover:bg-surface-container-high">Next</button>
+</div>
+</div>
+</div>
+<!-- Asymmetric Dual Panel: Fitment Verification Audit Log & Structural Health Metrics -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-space-lg">
+<!-- Real-Time Fitment Audit & Verification Log Panel (Takes 2 Columns on xl) -->
+<div class="xl:col-span-2 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-8 h-8 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">security_update_good</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface">Fitment Verification Engine Audit Log</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Continuous automated cross-referencing against ACES/PIES distributor feeds</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1.5 px-space-xs py-1 rounded bg-tertiary-fixed/30 text-on-tertiary-fixed font-data-mono-sm text-data-mono-sm font-semibold">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+              ZERO MISMATCH STATUS
+            </span>
+</div>
+</div>
+<div class="space-y-space-xs">
+<!-- Audit item 1 -->
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-tertiary text-[20px] mt-0.5">verified_user</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface">OEM Interchange Ingestion - BorgWarner &amp; Denso</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">02:14:18 UTC</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">14,290 VIN patterns analyzed against CAD tolerance vector ±0.05mm. No structural discrepancies detected.</p>
+<div class="flex items-center gap-space-sm mt-1 font-data-mono-sm text-data-mono-sm text-primary">
+<span>BATCH: #AC-89021</span>
+<span>•</span>
+<span>STATUS: COMMITTED TO MAIN GRAPH</span>
+</div>
+</div>
+</div>
+<!-- Audit item 2 -->
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-tertiary text-[20px] mt-0.5">check_circle</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface">Sub-assembly Collision Check (E210 Platform vs Corolla Altis)</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">01:58:02 UTC</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Confirmed brake caliper mount bracket pitch: 138.5mm across all 2014-2019 VIN sequences.</p>
+<div class="flex items-center gap-space-sm mt-1 font-data-mono-sm text-data-mono-sm text-on-surface-variant">
+<span>SKU: BC-QC-1210</span>
+<span>•</span>
+<span class="text-tertiary">CONFIDENCE RATING: 100%</span>
+</div>
+</div>
+</div>
+<!-- Audit item 3 -->
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-primary text-[20px] mt-0.5">published_with_changes</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface">Auto-Resolved Multi-Vendor Pricing Deviation</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">Yesterday 23:41 UTC</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Vendor Hub 09 (North East) calibrated wholesale pricing band for BR-PM-5211 to maintain margin parity.</p>
+<div class="flex items-center gap-space-sm mt-1 font-data-mono-sm text-data-mono-sm text-on-surface-variant">
+<span>INTERCHANGE: 04495-52110</span>
+<span>•</span>
+<span>RULE ID: #AUTO-PRC-4</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Catalog Coverage & Quality Radar Card -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between space-y-space-md">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<h3 class="font-title-md text-title-md text-on-surface">Coverage Breakdown</h3>
+<span class="font-data-mono-sm text-data-mono-sm text-tertiary font-semibold">ALL TIERS GREEN</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Vehicle fleet mapping coverage by market sector.</p>
+<div class="space-y-space-md mt-space-md">
+<!-- Progress Item 1 -->
+<div class="space-y-1">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface">North American Light Duty (YMM 2005-2024)</span>
+<span class="font-data-mono-sm text-data-mono-sm text-primary font-semibold">99.9%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 99.9%;"></div>
+</div>
+</div>
+<!-- Progress Item 2 -->
+<div class="space-y-1">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface">Commercial Fleet &amp; Heavy Truck (Class 4-8)</span>
+<span class="font-data-mono-sm text-data-mono-sm text-tertiary font-semibold">97.4%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 97.4%;"></div>
+</div>
+</div>
+<!-- Progress Item 3 -->
+<div class="space-y-1">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface">European Import Diesel &amp; Turbocharged</span>
+<span class="font-data-mono-sm text-data-mono-sm text-primary font-semibold">98.1%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 98.1%;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-space-sm bg-surface-container-low rounded-lg space-y-2 mt-space-md">
+<div class="flex items-center gap-space-xs text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+<span class="font-label-md text-label-md">Direct ACES Validation Daemon</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">The catalog parser scans automotive supplier catalogs on a 15-minute loop. Zero active schema rejections.</p>
+<button class="w-full py-1.5 rounded bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-surface-container-high transition-colors">
+            Trigger Manual Resync (ACES XML)
+          </button>
+</div>
+</div>
+</div>
+</div>
+<script src="shared.js"></script>
+</div></main></body></html>

@@ -1,0 +1,20 @@
+/** Maps legacy data-path keys to React Router paths */
+export const PATH_ROUTES = {
+  home: '/',
+  catalog: '/catalog',
+  search: '/catalog',
+  'product-detail': '/product',
+  cart: '/checkout',
+  checkout: '/checkout',
+  'order-status': '/orders',
+  'order-tracker': '/orders',
+  'vendor-portal': '/vendor',
+  'vendor-dashboard': '/vendor',
+  'admin-catalog': '/admin',
+  garage: '/',
+  support: '/',
+  terms: '/',
+  privacy: '/',
+  compliance: '/',
+  'api-docs': '/',
+}

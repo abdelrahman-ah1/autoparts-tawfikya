@@ -1,0 +1,309 @@
+<div class="flex flex-col w-full">
+<!-- Interactive Checkout Container -->
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8">
+  <!-- Clean Stepper & Simplified Title Bar -->
+  <div class="space-y-4">
+    <nav aria-label="Progress" class="w-full">
+      <ol class="flex items-center gap-2 sm:gap-4 text-body-sm overflow-x-auto pb-1">
+        <li class="flex items-center gap-2 text-tertiary">
+          <span class="w-5 h-5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center font-data-mono-sm text-xs font-bold">✓</span>
+          <span class="font-label-md text-label-md font-medium text-on-surface">Review</span>
+          <span class="material-symbols-outlined text-outline text-[14px]">chevron_right</span>
+        </li>
+        <li class="flex items-center gap-2 text-primary">
+          <span class="w-5 h-5 rounded-full bg-primary text-on-primary flex items-center justify-center font-data-mono-sm text-xs font-bold">2</span>
+          <span class="font-label-md text-label-md font-semibold text-primary">Shipping</span>
+          <span class="material-symbols-outlined text-outline text-[14px]">chevron_right</span>
+        </li>
+        <li class="flex items-center gap-2 text-on-surface-variant">
+          <span class="w-5 h-5 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-data-mono-sm text-xs font-medium">3</span>
+          <span class="font-label-md text-label-md text-on-surface-variant">Payment</span>
+          <span class="material-symbols-outlined text-outline text-[14px]">chevron_right</span>
+        </li>
+        
+      </ol>
+    </nav>
+
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+      <div>
+        <h1 class="font-display-lg-mobile text-headline-xl text-on-surface tracking-tight font-bold">Checkout</h1>
+        <p class="font-body-sm text-body-sm text-on-surface-variant">Verified multi-supplier dispatch with guaranteed fitment.</p>
+      </div>
+      <div class="flex items-center gap-2 self-start sm:self-center">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm">
+          <span class="material-symbols-outlined text-tertiary text-[16px]">lock</span>
+          256-Bit SSL
+        </span>
+      </div>
+    </div>
+  </div>
+<!-- Main Split Layout (65% / 35%) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Left Column: Checkout Processing (65% -> 8 cols on 12-col grid) -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- 1. Sleek Fitment Verification Indicator -->
+<div class="flex items-center gap-2 p-3 rounded-lg bg-tertiary-fixed/20 border border-tertiary/20 text-body-sm"><span class="material-symbols-outlined text-tertiary text-[18px]">verified</span><span data-bind-vehicle-name>Vehicle</span></div>
+<!-- 2. Shipping Destination Address Section -->
+<div class="rounded-xl bg-surface-container-lowest p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[22px]">local_shipping</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold">1. Delivery Destination</h2>
+</div>
+<button class="font-label-md text-label-md text-primary hover:text-on-primary-fixed-variant font-semibold flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+<span>Change Address</span>
+</button>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div>
+<div class="flex items-center gap-2">
+<span class="font-title-md text-title-md font-bold text-on-surface">Alex Mercer</span>
+<span class="bg-primary text-on-primary font-label-sm text-label-sm px-2 py-0.5 rounded">Default</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mt-1">742 Evergreen Terrace, Springfield, OR 97477</div>
+</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">call</span> +1 (555) 019-2834
+</div>
+</div>
+<div class="mt-space-sm">
+<div class="flex items-center bg-surface-container-low rounded-lg px-space-sm py-2">
+<span class="material-symbols-outlined text-outline text-[18px] mr-2">description</span>
+<input class="w-full bg-transparent font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none" id="delivery-instructions" placeholder="Delivery notes or drop-off instructions (optional)..." type="text"/>
+</div>
+</div>
+</div>
+<!-- 3. Split Delivery & Multi-Vendor Packaging Review -->
+<div class="rounded-xl bg-surface-container-lowest p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">inventory_2</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold">2. Consignments</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+2 items from Apex Auto Supply.
+</p>
+</div>
+<span class="bg-surface-container-high text-on-surface font-data-mono-sm text-data-mono-sm px-2.5 py-1 rounded-full self-start sm:self-auto font-semibold">
+1 SHIPMENT
+</span>
+</div>
+<!-- Package 1 of 2: Apex Auto Supply -->
+<div class="rounded-xl bg-surface-container-low p-space-md shadow-sm">
+<div class="flex flex-wrap items-center justify-between gap-space-xs pb-space-sm border-b border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="font-title-md text-title-md font-bold text-on-surface">Apex Auto Supply</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">• Portland Hub</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mr-1">Est. Delivery:</span>
+<span class="font-title-md text-title-md font-bold text-tertiary" id="pkg1-eta">Thursday, Oct 24</span>
+</div>
+</div>
+<!-- Items in Package 1 -->
+<div class="flex flex-col gap-space-xs pt-space-sm">
+<!-- Item 1: Front Brake Pads -->
+<div class="flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-lowest">
+<img class="w-14 h-14 rounded-lg object-cover bg-surface-container shrink-0" data-alt="Bosch QuietCast Front Brake Pads" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeczb6uehRYQyeUst_dA2k0D7NG1Qv3BYoFucQ87o0pLhOcE1y-H8uEmsLnK_poUe0P9vUeSLpD-mkNisnWJPJhw2i_09taWz9I5DRtEc7MvNIN4KOHzJw3-rpv_XGrFTKbU_-CvGBfmk3AOtsP2ioC2Z6cbFXXvlLCGvhNAabatUDcCNGjnYQlmISfqRh_0FW4QxPy4uZoWuqjHvdPCXGWM0q0ts9f8Spz72_p8D2Dc5g0DnS6-_0Rw"/>
+<div class="flex-1 min-w-0">
+<div class="flex items-start justify-between gap-2">
+<div>
+<h3 class="font-title-md text-title-md font-semibold text-on-surface truncate">
+Bosch QuietCast Ceramic Front Brake Pads
+</h3>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">OEM #04465-02220</span>
+</div>
+<div class="text-right shrink-0">
+<div class="font-data-mono-lg text-data-mono-lg font-bold text-on-surface">$48.99</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Qty: 1</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 2: Brake Rotor Set -->
+<div class="flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-lowest">
+<img class="w-14 h-14 rounded-lg object-cover bg-surface-container shrink-0" data-alt="Bosch Premium Rotor Disc Assembly" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbXatxEYzpVNCPBYrOM57JpbGjwhPkWMD5dC8NHx8aT01Yu_CO0B92K0EPKHI_3_yopp7u3dS6zHMDX3hSF3kh5nS_3sOej9txjOZU1iZj6SkilsHReRcCJ-iDuf5LtlHxRc79FX-gu95-m4HjCHA1hlEFE5mA9hOBe8ksRor0IMOAQG_W5mhlwM82Fc8lPYdIFGfMF9yhkW3DGnj0bmFF6aIR0cpDfJPhyzeqXO4C18-v3nzunkr9Fg"/>
+<div class="flex-1 min-w-0">
+<div class="flex items-start justify-between gap-2">
+<div>
+<h3 class="font-title-md text-title-md font-semibold text-on-surface truncate">
+Bosch Premium Rotor Disc Assembly Set
+</h3>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">OEM #43512-12710</span>
+</div>
+<div class="text-right shrink-0">
+<div class="font-data-mono-lg text-data-mono-lg font-bold text-on-surface">$84.50</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Qty: 2 ($42.25 ea)</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Shipping Speed Selection for Package 1 -->
+<div class="mt-space-sm flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs bg-surface-container-lowest p-space-xs px-space-sm rounded-lg">
+<span class="font-label-md text-label-md font-medium text-on-surface">Dispatch Speed:</span>
+<div class="flex items-center gap-space-xs">
+<label class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low text-on-surface cursor-pointer text-label-md font-medium">
+<input checked="" class="w-3.5 h-3.5 text-primary accent-primary cursor-pointer" name="pkg1_speed" type="radio" value="6.99"/>
+<span>Standard (2-3 d): <strong class="font-data-mono-md">$6.99</strong></span>
+</label>
+<label class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant cursor-pointer text-label-md">
+<input class="w-3.5 h-3.5 text-primary accent-primary cursor-pointer" name="pkg1_speed" type="radio" value="14.50"/>
+<span>Priority (Next-Day): <strong class="font-data-mono-md">$14.50</strong></span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. Payment Gateway Selection -->
+<div class="rounded-xl bg-surface-container-lowest p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[22px]">credit_card</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold">3. Payment Instrument</h2>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded font-semibold">
+                PCI-DSS LEVEL 1 CERTIFIED
+              </span>
+</div>
+</div>
+<!-- Payment Tabs / Selector -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm mb-space-md">
+<label class="flex items-center gap-space-xs p-space-sm rounded-xl bg-surface-container-low cursor-pointer payment-tab-btn shadow-sm" onclick="selectPaymentTab('card', this)">
+<input checked="" class="w-4 h-4 text-primary accent-primary" name="payment_method" type="radio" value="card"/>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-title-md font-bold text-on-surface truncate">Credit / Debit</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Instant processing</span>
+</div>
+</label>
+<label class="flex items-center gap-space-xs p-space-sm rounded-xl bg-surface-container-lowest hover:bg-surface-container-low cursor-pointer payment-tab-btn shadow-sm transition-colors" onclick="selectPaymentTab('express', this)">
+<input class="w-4 h-4 text-primary accent-primary" name="payment_method" type="radio" value="express"/>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-title-md font-bold text-on-surface truncate">Digital Wallet</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Apple Pay • Google Pay</span>
+</div>
+</label>
+<label class="flex items-center gap-space-xs p-space-sm rounded-xl bg-surface-container-lowest hover:bg-surface-container-low cursor-pointer payment-tab-btn shadow-sm transition-colors" onclick="selectPaymentTab('terms', this)">
+<input class="w-4 h-4 text-primary accent-primary" name="payment_method" type="radio" value="terms"/>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-title-md font-bold text-on-surface truncate">Net 30 Terms</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Fleet &amp; Commercial</span>
+</div>
+</label>
+</div>
+<!-- Card Input Form Container -->
+<div class="space-y-space-sm bg-surface-container-low p-space-md rounded-xl" id="payment-card-panel">
+<div class="flex items-center justify-between pb-1">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Enter Card Details</span>
+<div class="flex items-center gap-1.5">
+<span class="font-data-mono-sm text-data-mono-sm bg-surface-container-lowest text-on-surface-variant px-1.5 py-0.5 rounded font-bold">VISA</span>
+<span class="font-data-mono-sm text-data-mono-sm bg-surface-container-lowest text-on-surface-variant px-1.5 py-0.5 rounded font-bold">MC</span>
+<span class="font-data-mono-sm text-data-mono-sm bg-surface-container-lowest text-on-surface-variant px-1.5 py-0.5 rounded font-bold">AMEX</span>
+<span class="font-data-mono-sm text-data-mono-sm bg-surface-container-lowest text-on-surface-variant px-1.5 py-0.5 rounded font-bold">DISC</span>
+</div>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface font-semibold mb-1" for="card-number">Cardholder Number</label>
+<div class="flex items-center bg-surface-container-lowest rounded-lg px-space-sm py-2.5 shadow-sm">
+<span class="material-symbols-outlined text-outline text-[20px] mr-2">credit_card</span>
+<input class="w-full bg-transparent font-data-mono-md text-data-mono-md text-on-surface focus:outline-none tracking-wider" id="card-number" type="text" value="4000 •••• •••• 1984"/>
+<span class="material-symbols-outlined text-tertiary text-[18px]">verified_user</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface font-semibold mb-1" for="card-expiry">Expiration</label>
+<input class="w-full bg-surface-container-lowest rounded-lg px-space-sm py-2.5 shadow-sm font-data-mono-md text-data-mono-md text-on-surface focus:outline-none" id="card-expiry" type="text" value="08 / 28"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface font-semibold mb-1" for="card-cvv">Security Code (CVV)</label>
+<div class="flex items-center bg-surface-container-lowest rounded-lg px-space-sm py-2.5 shadow-sm">
+<input class="w-full bg-transparent font-data-mono-md text-data-mono-md text-on-surface focus:outline-none" id="card-cvv" type="password" value="892"/>
+<span class="material-symbols-outlined text-outline text-[16px]">help</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Hidden Tab Content Fallbacks for demo interactivity -->
+<div class="hidden bg-surface-container-low p-space-md rounded-xl text-center" id="payment-express-panel">
+<span class="font-body-md text-body-md text-on-surface">Clicking Place Order will trigger biometric Apple Pay / Google Pay authentication sheet.</span>
+</div>
+<div class="hidden bg-surface-container-low p-space-md rounded-xl" id="payment-terms-panel">
+<span class="font-body-md text-body-md text-on-surface font-semibold">Commercial Account Billing (Net 30):</span>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-1">Enterprise Fleet ID: #FLT-PACIFIC-8041 • Credit Balance: $14,200 Available</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Sticky Summary Box (35% -> 4 cols on 12-col grid) -->
+<div class="lg:col-span-4 sticky top-24 flex flex-col gap-space-md">
+<div class="rounded-xl bg-surface-container-lowest p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-md">
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold">Order Summary</h2>
+<span class="bg-surface-container text-on-primary-fixed-variant font-label-sm text-label-sm px-2 py-0.5 rounded font-semibold">
+              DIRECT DISPATCH
+            </span>
+</div>
+<!-- Vendor Package Sub-Breakdown -->
+<div class="flex flex-col gap-2 pb-space-sm bg-surface-container-low p-space-sm rounded-lg mb-space-sm">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-on-surface font-semibold truncate pr-2">Apex Auto Supply (2 items)</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface font-medium" id="pkg1-summary-line">$133.49 + $6.99 shp</span>
+</div>
+</div>
+<!-- Numeric Cost Calculations -->
+<div class="flex flex-col gap-2 pt-1 font-body-md text-body-md">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span>Items Subtotal (2 items)</span>
+<span class="font-data-mono-md text-data-mono-md text-on-surface">$133.49</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="flex items-center gap-1">
+                Ground Shipping
+                <span class="material-symbols-outlined text-[14px] text-outline" title="Portland West DC Freight">info</span>
+</span>
+<span class="font-data-mono-md text-data-mono-md text-on-surface" id="summary-shipping">$6.99</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant">
+<span>Estimated Sales Tax</span>
+<span class="font-data-mono-md text-data-mono-md text-on-surface" id="summary-tax">$10.68</span>
+</div>
+<div class="flex items-center justify-between text-tertiary">
+<span class="flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[16px]">verified</span> Vehicle Fitment Protection
+              </span>
+<span class="font-label-sm text-label-sm bg-tertiary-fixed text-on-tertiary-fixed px-1.5 py-0.5 rounded font-bold">FREE ($0.00)</span>
+</div>
+</div>
+<!-- Total Calculation -->
+<div class="mt-space-md pt-space-md bg-surface-container-low -mx-space-lg px-space-lg py-space-sm rounded-lg flex items-baseline justify-between">
+<div>
+<span class="font-title-lg text-title-lg font-bold text-on-surface block">Total Due</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Includes all vendor dispatches</span>
+</div>
+<div class="text-right">
+<span class="font-display-lg text-display-lg font-bold text-primary tracking-tight" id="summary-total">$151.16</span>
+</div>
+</div>
+<!-- Primary CTA Button -->
+<div class="mt-space-md">
+<a href="/orders" data-path="orders" class="w-full min-h-[48px] rounded-lg bg-primary-container hover:bg-primary active:bg-on-primary-fixed-variant text-on-primary font-title-md text-title-md font-semibold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer" id="checkout-cta-btn">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+<span id="cta-label">Place Order ($151.16)</span>
+</a>
+</div>
+<!-- Compact Trust & Reassurance -->
+<div class="mt-space-md pt-space-xs border-t border-outline-variant/30 flex flex-wrap items-center justify-center gap-3 text-on-surface-variant font-label-sm text-label-sm text-center">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-tertiary text-[16px]">verified</span> 100% Fit Guarantee</span>
+<span>•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-primary text-[16px]">local_shipping</span> Live Tracking</span>
+<span>•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-secondary text-[16px]">security</span> Encrypted Checkout</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>

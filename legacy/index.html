@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>AutoParts Marketplace</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-primary-fixed-variant":"#003ea8","primary-fixed":"#dbe1ff","secondary":"#565e74","surface-container":"#e5eeff","inverse-primary":"#b4c5ff","surface-container-highest":"#d3e4fe","primary":"#004ac6","on-primary":"#ffffff","on-surface":"#0b1c30","surface-dim":"#cbdbf5","on-secondary-fixed-variant":"#3f465c","outline-variant":"#c3c6d7","inverse-surface":"#213145","surface-container-lowest":"#ffffff","on-error-container":"#93000a","background":"#f8f9ff","on-tertiary-fixed":"#002109","on-secondary-fixed":"#131b2e","secondary-fixed":"#dae2fd","error-container":"#ffdad6","tertiary":"#006329","tertiary-container":"#007f36","on-tertiary-fixed-variant":"#005320","on-tertiary-container":"#c7ffca","outline":"#737686","on-primary-container":"#eeefff","on-error":"#ffffff","primary-container":"#2563eb","secondary-fixed-dim":"#bec6e0","surface-variant":"#d3e4fe","on-secondary-container":"#5c647a","inverse-on-surface":"#eaf1ff","tertiary-fixed":"#7ffc97","tertiary-fixed-dim":"#62df7d","secondary-container":"#dae2fd","surface-container-low":"#eff4ff","surface-tint":"#0053db","on-primary-fixed":"#00174b","on-tertiary":"#ffffff","surface-container-high":"#dce9ff","surface-bright":"#f8f9ff","surface":"#f8f9ff","primary-fixed-dim":"#b4c5ff","error":"#ba1a1a","on-surface-variant":"#434655","on-secondary":"#ffffff","on-background":"#0b1c30"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter":"1.5rem","margin":"2rem","space-2xl":"3rem","space-md":"1rem","space-2xs":"0.25rem","margin-mobile":"1rem","space-xl":"2rem","space-sm":"0.75rem","gutter-mobile":"0.75rem","space-xs":"0.5rem","space-lg":"1.5rem"},fontFamily:{"data-mono-sm":["JetBrains Mono"],"data-mono-lg":["JetBrains Mono"],"body-lg":["Inter"],"title-md":["Inter"],"label-sm":["Inter"],"headline-lg":["Inter"],"headline-md":["Inter"],"display-lg":["Inter"],"label-md":["Inter"],"body-sm":["Inter"],"headline-xl":["Inter"],"display-lg-mobile":["Inter"],"title-lg":["Inter"],"data-mono-md":["JetBrains Mono"],"body-md":["Inter"]},fontSize:{"data-mono-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.02em","fontWeight":"500"}],"data-mono-lg":["16px",{"lineHeight":"22px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"title-md":["16px",{"lineHeight":"22px","fontWeight":"600"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.03em","fontWeight":"600"}],"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-md":["20px",{"lineHeight":"28px","letterSpacing":"-0.005em","fontWeight":"600"}],"display-lg":["40px",{"lineHeight":"48px","letterSpacing":"-0.02em","fontWeight":"700"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}],"body-sm":["13px",{"lineHeight":"18px","fontWeight":"400"}],"headline-xl":["30px",{"lineHeight":"38px","letterSpacing":"-0.015em","fontWeight":"600"}],"display-lg-mobile":["32px",{"lineHeight":"38px","letterSpacing":"-0.015em","fontWeight":"700"}],"title-lg":["18px",{"lineHeight":"24px","fontWeight":"600"}],"data-mono-md":["13px",{"lineHeight":"18px","fontWeight":"500"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><a class="flex items-center gap-space-xs text-on-surface select-none group" data-path="catalog" href="#"><div class="w-9 h-9 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shadow-[0_1px_3px_0_rgba(15,23,42,0.05)]"><span class="material-symbols-outlined text-[20px]">bolt</span></div><div class="flex flex-col"><span class="font-title-lg text-title-lg tracking-tight text-on-surface">Auto<span class="text-primary-container">Parts</span></span><span class="font-label-sm text-label-sm text-on-surface-variant -mt-1">OEM &amp; AFTERMARKET</span></div></a><nav class="hidden xl:flex items-center gap-space-xs p-1 bg-surface-container-low rounded-lg" data-active-classes="bg-surface-container-high text-on-surface font-semibold rounded-lg"><a class="px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="catalog" href="#">Catalog</a><a class="px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="garage" href="#">Garage</a><a class="px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="order-status" href="#">Order Status</a><a class="px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="vendor-portal" href="#">Vendor Portal</a><a class="px-space-sm py-1.5 font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="support" href="#">Support</a></nav></div><div class="flex-1 max-w-md hidden md:flex items-center"><div class="w-full flex items-center bg-surface-container-lowest rounded-lg shadow-[0_1px_3px_0_rgba(15,23,42,0.05)] px-space-sm py-1.5 gap-space-xs"><span class="material-symbols-outlined text-outline text-[18px]">search</span><input class="w-full bg-transparent font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none" placeholder="Search Part #, VIN, OEM or Keyword..." type="text"/><span class="font-data-mono-sm text-data-mono-sm bg-surface-container text-on-surface-variant px-1.5 py-0.5 rounded">SKU</span></div></div><div class="flex items-center gap-space-sm"><div class="hidden sm:flex items-center gap-space-xs bg-surface-container-low px-space-sm py-1.5 rounded-lg"><div class="flex items-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed px-1.5 py-0.5 rounded font-label-sm text-label-sm"><span class="material-symbols-outlined text-[13px]">check_circle</span><span>FIT GUARANTEED</span></div><div class="flex items-center gap-1.5 cursor-pointer"><span class="font-label-md text-label-md text-on-surface">2018 Toyota Corolla 1.8L L4 Gas</span><span class="material-symbols-outlined text-outline text-[16px]">expand_more</span></div></div><a class="relative p-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface flex items-center justify-center transition-colors" data-path="cart" href="#"><span class="material-symbols-outlined text-[20px]">shopping_bag</span><span class="absolute -top-1.5 -right-1.5 bg-primary-container text-on-primary font-data-mono-sm text-data-mono-sm rounded-full w-5 h-5 flex items-center justify-center shadow-sm">3</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-surface"><div class="flex flex-col w-full">
+<!-- Subtle Architectural Grid Background Decorator -->
+<div class="relative w-full overflow-hidden">
+<div class="absolute inset-0 pointer-events-none opacity-40 bg-[radial-gradient(#2563eb_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+<!-- Active Vehicle Notification Capsule -->
+<div class="max-w-7xl mx-auto px-6 lg:px-12 pt-6">
+<div class="bg-surface-container-lowest shadow-sm rounded-xl p-3 sm:px-5 flex flex-wrap items-center justify-between gap-3 transition-all duration-300 hover:shadow-md">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-tertiary/10 text-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">directions_car</span>
+</div>
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Active Vehicle:</span>
+<span class="font-title-md text-title-md text-on-surface" data-bind-vehicle-name>2018 Toyota Corolla 1.8L L4 Gas DOHC</span>
+</div>
+<div class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span>Fitment Active</span>
+</div>
+</div>
+<div class="flex items-center gap-3 ml-auto">
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant hidden md:inline" data-bind-vehicle-vin>VIN: JT2BURHE9JC******</span>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high font-label-md text-label-md text-on-surface transition-colors flex items-center gap-1" id="toggleSelectorModal">
+<span class="material-symbols-outlined text-[16px]">sync_alt</span>
+<span>Change Vehicle</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 pt-12 pb-16 text-center relative z-10">
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm uppercase tracking-wider mb-6">
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+<span>Precision Engineered Compatibility Engine v4.2</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface max-w-4xl mx-auto tracking-tight">
+        Genuine OEM &amp; Aftermarket Parts.
+      </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mt-4 mb-10">
+        Guaranteed vehicle compatibility. Transparent multi-vendor pricing. Direct fulfillment with zero-error validation.
+      </p>
+<!-- Selector Card Container -->
+<div class="max-w-3xl mx-auto bg-surface-container-lowest shadow-[0_4px_20px_rgba(0,0,0,0.03)] rounded-2xl p-6 sm:p-8 text-left border border-outline-variant/30">
+  <div class="flex items-center justify-between pb-4 mb-5 border-b border-surface-container">
+    <div class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-primary-container"></span>
+      <span class="font-title-md text-title-md text-on-surface font-semibold">Select Your Vehicle</span>
+    </div>
+    <span class="font-data-mono-sm text-data-mono-sm text-tertiary flex items-center gap-1 font-medium">
+      <span class="material-symbols-outlined text-[15px]">verified</span>
+      ISO-9001 Cross-Referenced
+    </span>
+  </div>
+
+  <!-- 4 Step Inline Dropdowns -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+    <!-- Year Selector -->
+    <div class="flex flex-col gap-1">
+      <label class="font-label-sm text-label-sm text-on-surface-variant font-medium" for="year-select">01. YEAR</label>
+      <div class="relative">
+        <select class="w-full h-11 bg-surface-container-low text-on-surface font-title-md text-title-md rounded-xl px-3.5 pr-8 appearance-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary-container outline-none transition-all cursor-pointer border border-transparent focus:border-primary-container" id="year-select">
+          <option value="2022">2022</option>
+          <option value="2021">2021</option>
+          <option value="2020">2020</option>
+          <option value="2019">2019</option>
+          <option selected="" value="2018">2018</option>
+          <option value="2017">2017</option>
+        </select>
+        <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">expand_more</span>
+      </div>
+    </div>
+    <!-- Make Selector -->
+    <div class="flex flex-col gap-1">
+      <label class="font-label-sm text-label-sm text-on-surface-variant font-medium" for="make-select">02. MAKE</label>
+      <div class="relative">
+        <select class="w-full h-11 bg-surface-container-low text-on-surface font-title-md text-title-md rounded-xl px-3.5 pr-8 appearance-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary-container outline-none transition-all cursor-pointer border border-transparent focus:border-primary-container" id="make-select">
+          <option selected="" value="Toyota">Toyota</option>
+          <option value="Honda">Honda</option>
+          <option value="Ford">Ford</option>
+          <option value="BMW">BMW</option>
+          <option value="Subaru">Subaru</option>
+        </select>
+        <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">expand_more</span>
+      </div>
+    </div>
+    <!-- Model Selector -->
+    <div class="flex flex-col gap-1">
+      <label class="font-label-sm text-label-sm text-on-surface-variant font-medium" for="model-select">03. MODEL</label>
+      <div class="relative">
+        <select class="w-full h-11 bg-surface-container-low text-on-surface font-title-md text-title-md rounded-xl px-3.5 pr-8 appearance-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary-container outline-none transition-all cursor-pointer border border-transparent focus:border-primary-container" id="model-select">
+          <option selected="" value="Corolla">Corolla</option>
+          <option value="Camry">Camry</option>
+          <option value="RAV4">RAV4</option>
+          <option value="Tacoma">Tacoma</option>
+        </select>
+        <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">expand_more</span>
+      </div>
+    </div>
+    <!-- Engine Selector -->
+    <div class="flex flex-col gap-1">
+      <label class="font-label-sm text-label-sm text-on-surface-variant font-medium" for="engine-select">04. ENGINE</label>
+      <div class="relative">
+        <select class="w-full h-11 bg-surface-container-low text-on-surface font-title-md text-title-md rounded-xl px-3.5 pr-8 appearance-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary-container outline-none transition-all cursor-pointer border border-transparent focus:border-primary-container truncate" id="engine-select">
+          <option selected="" value="1.8L-L4">1.8L L4 Gas</option>
+          <option value="2.0L-L4">2.0L L4 Dual VVT</option>
+          <option value="1.8L-Hybrid">1.8L Hybrid</option>
+        </select>
+        <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">expand_more</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Button -->
+  <div class="mt-5">
+    <a href="parts_search.html" class="w-full h-11 bg-primary hover:bg-primary-container text-on-primary rounded-xl font-title-md text-title-md flex items-center justify-center gap-2 shadow-sm transition-all duration-200">
+      <span class="material-symbols-outlined text-[18px]">search_check</span>
+      <span>Find Guaranteed Fitting Parts</span>
+      <span class="font-data-mono-sm text-data-mono-sm bg-on-primary/20 px-2 py-0.5 rounded text-on-primary font-normal">1,420 Available</span>
+    </a>
+  </div>
+</div>
+</section>
+</div>
+<!-- Real-time Diagnostic Telemetry Ribbon -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 w-full my-4">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-surface-container-lowest rounded-xl p-4 shadow-sm">
+<div class="flex items-center gap-3 p-2">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[22px]">database</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-data-mono-lg text-data-mono-lg text-on-surface">2,840,119</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">OEM cross-references mapped</span>
+</div>
+</div>
+<div class="flex items-center gap-3 p-2">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-tertiary shrink-0">
+<span class="material-symbols-outlined text-[22px]">verified_user</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-data-mono-lg text-data-mono-lg text-on-surface">99.98%</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">Fitment accuracy rate</span>
+</div>
+</div>
+<div class="flex items-center gap-3 p-2">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-[22px]">hub</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-data-mono-lg text-data-mono-lg text-on-surface">42 Hubs</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">Direct dispatch distribution</span>
+</div>
+</div>
+<div class="flex items-center gap-3 p-2">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-[22px]">bolt</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-data-mono-lg text-data-mono-lg text-on-surface">&lt; 1.4h</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">Order fulfillment cycle</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Shop by Category Section -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 py-12 w-full">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<div class="flex items-center gap-2 font-label-sm text-label-sm text-primary uppercase tracking-widest mb-1">
+<span class="material-symbols-outlined text-[16px]">category</span>
+<span>Catalog Taxonomy</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface">Shop By Category</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+          Precision-engineered components verified for fitment on 2018 Toyota Corolla
+        </p>
+</div>
+<a class="inline-flex items-center gap-1.5 font-title-md text-title-md text-primary-container hover:text-primary transition-colors" href="#">
+<span>View all 24 sub-systems</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+<!-- 6 Spacious Minimalist White Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1: Brakes -->
+<a class="group bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between" href="#">
+<div>
+<div class="flex items-start justify-between mb-6">
+<div class="w-12 h-12 rounded-lg bg-surface-container-low group-hover:bg-primary-fixed text-primary transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">disc_full</span>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm px-2.5 py-1 rounded bg-surface-container text-on-surface-variant">SYS-BRK-01</span>
+</div>
+<div class="w-full h-44 rounded-lg overflow-hidden mb-5 bg-surface-container-low relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="High precision automotive ventilated disc brake rotor and ceramic brake pad assembly photographed in crisp isolated studio lighting on a neutral slate light grey background showcasing metallic steel texture and engineering grooves" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcE1mu9OWsFetVwKlELE7k0GP59hw7mYy9Mp5p1Fzqx2R42nzU_etzJUOO0vhM07eTNun4tutgSaDKWRqpfR9UOwE2W7nkZfi_-ctz1eUZW_gfES6NizF26TYI1ApKIyMvmENbjrpDcTd5nEUz5ww6vf6WeQ5WACWBxPn7sHVdtFA-ErHNtzeG9IOYyXdAoaMRL7VPtJYvwL1iIIfkPZ-rYmGDIs3ylSCrbDubbYspxbLyq850_wUh7A"/>
+<div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">check</span>
+<span>184 Direct Matches</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary-container transition-colors">
+            Brake Systems
+          </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            Ceramic Pads, Slotted Rotors, Hydraulic Calipers &amp; Master Cylinders
+          </p>
+</div>
+<div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">1,420+ Verified Parts</span>
+<span class="font-label-md text-label-md text-primary-container flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+<span>Inspect</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</span>
+</div>
+</a>
+<!-- Card 2: Engine Components -->
+<a class="group bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between" href="#">
+<div>
+<div class="flex items-start justify-between mb-6">
+<div class="w-12 h-12 rounded-lg bg-surface-container-low group-hover:bg-primary-fixed text-primary transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">valve</span>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm px-2.5 py-1 rounded bg-surface-container text-on-surface-variant">SYS-ENG-02</span>
+</div>
+<div class="w-full h-44 rounded-lg overflow-hidden mb-5 bg-surface-container-low relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Automotive internal engine timing belt kit with water pump, tensioner pulleys, and spark plugs laid out systematically on pure light grey clean industrial background with subtle blue rim lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcH06LEyeF1km7viE2URCCqXiklULSR7qNmtTfs_bWQXIm2_itx6J3xvKxM4UpE0c1YKWoCO84JyCbv8bFXR0MeZJr-mxN9cI97Fem7LKhN6tzcZ6tmX1A6R2nFELih3LmJIxlNbI3AMX5YurpbWL8M8OjchBJ7eBImGqUOTr__xmVuo19d9jGFfLWrK3YtuRjKH4-dv57CQ6BWVBclTj7OUI2uSFjzyUOuuwALVyMYHRicgu1lGOfQQ"/>
+<div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">check</span>
+<span>312 Direct Matches</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary-container transition-colors">
+            Engine &amp; Performance
+          </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            Iridium Plugs, Timing Belts, Water Pumps, Gaskets &amp; Air Induction
+          </p>
+</div>
+<div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">3,890+ Verified Parts</span>
+<span class="font-label-md text-label-md text-primary-container flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+<span>Inspect</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</span>
+</div>
+</a>
+<!-- Card 3: Suspension & Steering -->
+<a class="group bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between" href="#">
+<div>
+<div class="flex items-start justify-between mb-6">
+<div class="w-12 h-12 rounded-lg bg-surface-container-low group-hover:bg-primary-fixed text-primary transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">minor_crash</span>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm px-2.5 py-1 rounded bg-surface-container text-on-surface-variant">SYS-SUS-03</span>
+</div>
+<div class="w-full h-44 rounded-lg overflow-hidden mb-5 bg-surface-container-low relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Heavy duty automotive coilover strut shock absorber assembly with blue damper spring and precision machined aluminum mounts photographed cleanly on seamless studio surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9xIWvGHv9iSEVcpthxO6_1nfGbDtlHPea0QqiRXPlB3mE1_SzDeskZEIJ7kFxSZC6Lu2bh2UgFU5qUVbrwuFdiiB-Qn_Npx18i_AAh3I4pEnR-DaMiKVljT3e85Ho3mp9TxAEPaUhRdf2rVDHtfQWpENB24DiT3Hf84XEecFkzVjxOE3CNdpjnqXB_2EuqFS8JPRE6l7X6kEzD9DLxDm-jikLR5YIj-m2mmCO8AeqUufzKqDUQBAf1A"/>
+<div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">check</span>
+<span>96 Direct Matches</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary-container transition-colors">
+            Suspension &amp; Steering
+          </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            Strut Assemblies, Control Arms, Tie Rods, Sway Bars &amp; Bushings
+          </p>
+</div>
+<div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">940+ Verified Parts</span>
+<span class="font-label-md text-label-md text-primary-container flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+<span>Inspect</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</span>
+</div>
+</a>
+<!-- Card 4: Electrical & Lighting -->
+<a class="group bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between" href="#">
+<div>
+<div class="flex items-start justify-between mb-6">
+<div class="w-12 h-12 rounded-lg bg-surface-container-low group-hover:bg-primary-fixed text-primary transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">electric_bolt</span>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm px-2.5 py-1 rounded bg-surface-container text-on-surface-variant">SYS-ELE-04</span>
+</div>
+<div class="w-full h-44 rounded-lg overflow-hidden mb-5 bg-surface-container-low relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="High output automotive alternator unit and starter motor alongside LED projector headlight housing isolated on pristine light studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAXUrQyW5TDFU3_8qobRg-6jzGocsQ6SyipKRGoWoiBCyDeTiLzB8y5pouJ9PKwIyBvlC4zre_k3dr1FaQTLeBRpoifJwRTil2eojj2r7OQ1ad_-zc2I869oMId_a8A1RA-0Nc1FOijqlZHvHAJjRAvWw-MYP2AO7qa1fdvw7vzg5fpTKa8NGL2RW04pP8UG4vF9Vdkd1kmbdkTPH87ilaOuxFoML3vmJSr59hIGFWadpVRaaeZTZnnA"/>
+<div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">check</span>
+<span>220 Direct Matches</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary-container transition-colors">
+            Electrical &amp; Lighting
+          </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            Alternators, Starters, Headlight Assemblies, Sensors &amp; Relays
+          </p>
+</div>
+<div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">2,110+ Verified Parts</span>
+<span class="font-label-md text-label-md text-primary-container flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+<span>Inspect</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</span>
+</div>
+</a>
+<!-- Card 5: Transmission & Drivetrain -->
+<a class="group bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between" href="#">
+<div>
+<div class="flex items-start justify-between mb-6">
+<div class="w-12 h-12 rounded-lg bg-surface-container-low group-hover:bg-primary-fixed text-primary transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">settings</span>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm px-2.5 py-1 rounded bg-surface-container text-on-surface-variant">SYS-TRN-05</span>
+</div>
+<div class="w-full h-44 rounded-lg overflow-hidden mb-5 bg-surface-container-low relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Automotive transmission clutch flywheel friction plate kit with throwout bearing and CV axle half-shaft cleanly arranged on smooth light grey studio floor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOX_rlbAWa-zd9em6rXh0og3-yYDUXVVkz-O_vZsCwGnS_hiA94ZP2SaP48Loh-uthmG4ZrVwJivdQayyC7961nwfZEAhbSNvZcP3Ov3kgRKOcmKn7LyVLIjmveqDj9O6N9yKm17WySnCE-V5wGx_jjYP0DHRQpxKPfMBeeaqkIAnz0SKjZzw2SI4Mj8IjNO-tH2OQPkACK1eizEBwtyDSd5JxdEwYUDhQoGdnkJTgpHqYV_k0IhHgVg"/>
+<div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">check</span>
+<span>74 Direct Matches</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary-container transition-colors">
+            Transmission &amp; Drivetrain
+          </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            CV Axles, Clutch Kits, Transmission Mounts, Transfer Cases &amp; Fluids
+          </p>
+</div>
+<div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">860+ Verified Parts</span>
+<span class="font-label-md text-label-md text-primary-container flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+<span>Inspect</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</span>
+</div>
+</a>
+<!-- Card 6: Body & Exterior -->
+<a class="group bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between" href="#">
+<div>
+<div class="flex items-start justify-between mb-6">
+<div class="w-12 h-12 rounded-lg bg-surface-container-low group-hover:bg-primary-fixed text-primary transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">unfold_more_double</span>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm px-2.5 py-1 rounded bg-surface-container text-on-surface-variant">SYS-BDY-06</span>
+</div>
+<div class="w-full h-44 rounded-lg overflow-hidden mb-5 bg-surface-container-low relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="OEM spec replacement front bumper cover grille assembly and side mirror housing with integrated indicator finished in primer coat in bright minimal showroom" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoTR5MbdwAB6lH6n-OMX_msS8UON4sTYvvXH8jH1ryQLgZnE9IEmKif4a83wUkpKWvWscRKTJUMHSr0ApEGvJVMzVCnyRVKyMI2GLQRn3Fa10ca_XWZ9-XmpZhE5ZZ-h73yh1VsR575kw5z2FlCmsDJl1JMtEXEEglPNJ7exFT1HZPMj1-OK3r2VvMuLvmh8Wl8Nav7r7R3qrYVc-o5oVeB6D6tOwDssk6Q2xDel12kiwK596dFTPBWw"/>
+<div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">check</span>
+<span>140 Direct Matches</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary-container transition-colors">
+            Body &amp; Exterior Trim
+          </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            Bumper Reinforcements, Mirrors, Hood Panels, Grilles &amp; Fender Liners
+          </p>
+</div>
+<div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">1,150+ Verified Parts</span>
+<span class="font-label-md text-label-md text-primary-container flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+<span>Inspect</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</span>
+</div>
+</a>
+</div>
+</section>
+<!-- Featured OEM & Tier-1 Brand Trust Bar -->
+<section class="w-full bg-surface-container-low py-12">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-surface-container">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Authorized Global Distributors</span>
+<h4 class="font-title-lg text-title-lg text-on-surface">Tier-1 OEM Manufacturer Network</h4>
+</div>
+<div class="flex items-center gap-2 mt-2 sm:mt-0 font-data-mono-sm text-data-mono-sm text-tertiary">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+          Direct API Inventory Sync Active
+        </div>
+</div>
+<!-- Monochrome / Subtle Brand Badges -->
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+<!-- Bosch -->
+<div class="bg-surface-container-lowest rounded-xl p-5 flex flex-col items-center justify-center text-center group hover:bg-surface transition-all duration-200 shadow-sm">
+<span class="font-display-lg text-headline-md tracking-tighter text-on-surface font-bold group-hover:text-primary transition-colors">BOSCH</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1">OEM German Spec</span>
+<span class="font-data-mono-sm text-data-mono-sm text-primary mt-2 bg-primary-fixed/50 px-2 py-0.5 rounded">9,410 SKU</span>
+</div>
+<!-- Denso -->
+<div class="bg-surface-container-lowest rounded-xl p-5 flex flex-col items-center justify-center text-center group hover:bg-surface transition-all duration-200 shadow-sm">
+<span class="font-display-lg text-headline-md tracking-wider text-on-surface font-black group-hover:text-primary transition-colors">DENSO</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1">Factory Toyota Supplier</span>
+<span class="font-data-mono-sm text-data-mono-sm text-primary mt-2 bg-primary-fixed/50 px-2 py-0.5 rounded">6,840 SKU</span>
+</div>
+<!-- Bilstein -->
+<div class="bg-surface-container-lowest rounded-xl p-5 flex flex-col items-center justify-center text-center group hover:bg-surface transition-all duration-200 shadow-sm">
+<span class="font-display-lg text-headline-md tracking-tight text-on-surface font-extrabold italic group-hover:text-primary transition-colors">BILSTEIN</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1">Damping Tech</span>
+<span class="font-data-mono-sm text-data-mono-sm text-primary mt-2 bg-primary-fixed/50 px-2 py-0.5 rounded">1,290 SKU</span>
+</div>
+<!-- Brembo -->
+<div class="bg-surface-container-lowest rounded-xl p-5 flex flex-col items-center justify-center text-center group hover:bg-surface transition-all duration-200 shadow-sm">
+<span class="font-display-lg text-headline-md tracking-wide text-on-surface font-semibold group-hover:text-primary transition-colors">brembo</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1">Braking Performance</span>
+<span class="font-data-mono-sm text-data-mono-sm text-primary mt-2 bg-primary-fixed/50 px-2 py-0.5 rounded">3,110 SKU</span>
+</div>
+<!-- NGK -->
+<div class="bg-surface-container-lowest rounded-xl p-5 flex flex-col items-center justify-center text-center group hover:bg-surface transition-all duration-200 shadow-sm">
+<span class="font-display-lg text-headline-md tracking-widest text-on-surface font-black group-hover:text-primary transition-colors">NGK</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1">Ignition Systems</span>
+<span class="font-data-mono-sm text-data-mono-sm text-primary mt-2 bg-primary-fixed/50 px-2 py-0.5 rounded">4,520 SKU</span>
+</div>
+<!-- Continental -->
+<div class="bg-surface-container-lowest rounded-xl p-5 flex flex-col items-center justify-center text-center group hover:bg-surface transition-all duration-200 shadow-sm">
+<span class="font-display-lg text-headline-md tracking-tight text-on-surface font-bold group-hover:text-primary transition-colors">Continental</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1">Belts &amp; Dynamics</span>
+<span class="font-data-mono-sm text-data-mono-sm text-primary mt-2 bg-primary-fixed/50 px-2 py-0.5 rounded">2,780 SKU</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Technical Precision Verification Diagnostic Split Section -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 py-16 w-full">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-0">
+<!-- Visual Spec Diagram / Graphic side -->
+<div class="lg:col-span-5 bg-surface-container-high p-8 flex flex-col justify-between relative overflow-hidden">
+<div class="absolute -right-16 -top-16 w-64 h-64 bg-primary-container/10 rounded-full blur-2xl pointer-events-none"></div>
+<div>
+<span class="font-data-mono-sm text-data-mono-sm text-primary-container uppercase tracking-wider font-semibold">Verification Pipeline</span>
+<h3 class="font-headline-lg text-headline-lg text-on-surface mt-2">Zero-Tolerance Tolerance Index</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+            Every listed catalog item is algorithmically matched against official factory assembly schematics and physical dimensional tolerances.
+          </p>
+</div>
+<!-- Inline Metric Vector Graph -->
+<div class="my-8 bg-surface-container-lowest/80 backdrop-blur rounded-lg p-4 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Cross-Vendor Clearance Check</span>
+<span class="font-data-mono-sm text-data-mono-sm text-tertiary">Δ = 0.002mm</span>
+</div>
+<svg class="w-full h-16 text-primary-container" fill="none" preserveaspectratio="none" viewbox="0 0 300 60">
+<path d="M0 45 Q 30 20, 60 35 T 120 15 T 180 30 T 240 10 T 300 25" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.5"></path>
+<path d="M0 45 Q 30 20, 60 35 T 120 15 T 180 30 T 240 10 T 300 25 L 300 60 L 0 60 Z" fill="currentColor" fill-opacity="0.08"></path>
+<circle cx="120" cy="15" fill="currentColor" r="4"></circle>
+<circle cx="240" cy="10" fill="currentColor" r="4"></circle>
+</svg>
+<div class="flex items-center justify-between pt-2 border-t border-surface-container text-on-surface-variant font-data-mono-sm text-data-mono-sm">
+<span>Pass Tolerance: ±0.05mm</span>
+<span class="text-tertiary font-semibold">100% Validated</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface">
+            Backed by the <strong>$10,000 Precision Guarantee</strong> against assembly misfits.
+          </div>
+</div>
+</div>
+<!-- Mechanics Feature Matrix side -->
+<div class="lg:col-span-7 p-8 lg:p-12 flex flex-col justify-center">
+<div class="space-y-8">
+<!-- Pillar 1 -->
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-tertiary/10 text-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">verified</span>
+</div>
+<div>
+<h4 class="font-title-lg text-title-lg text-on-surface">Zero-Error Fitment Guarantee</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1.5 leading-relaxed">
+                If our catalog certifies a component for your specified VIN or Year/Make/Model and it fails to bolt in seamlessly, return shipping and instant 100% refund are covered with no restocking fees.
+              </p>
+<div class="mt-2 flex items-center gap-3 font-label-sm text-label-sm text-tertiary">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">check_circle</span> Pre-paid Return Waybill Included</span>
+<span>•</span>
+<span>No Restock Penalty</span>
+</div>
+</div>
+</div>
+<!-- Pillar 2 -->
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-primary-container/10 text-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">conveyor_belt</span>
+</div>
+<div>
+<h4 class="font-title-lg text-title-lg text-on-surface">Multi-Vendor Wholesale Dispatch</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1.5 leading-relaxed">
+                We aggregate verified inventory from 42 certified regional distributors and OEM manufacturers. Transparent split-shipment pricing lets you balance courier speed against bulk fulfillment savings.
+              </p>
+<div class="mt-2 flex items-center gap-3 font-label-sm text-label-sm text-primary">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">local_shipping</span> Real-time Warehouse Inventory</span>
+<span>•</span>
+<span>Priority Logistics Routes</span>
+</div>
+</div>
+</div>
+<!-- Pillar 3 -->
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-secondary-container/50 text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">support_agent</span>
+</div>
+<div>
+<h4 class="font-title-lg text-title-lg text-on-surface">Certified Master Mechanic Support</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1.5 leading-relaxed">
+                Connect directly with ASE-certified automotive technicians. Need to confirm a bolt torque specification, pinout diagram, or superseded part revision? Our staff assists live 24/7.
+              </p>
+<div class="mt-2 flex items-center gap-3 font-label-sm text-label-sm text-secondary">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">build</span> ASE Master Technicians</span>
+<span>•</span>
+<span>Live Fitment Hotline</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Fast VIN Decoder Ribbon -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 pb-16 w-full">
+<div class="bg-surface-container-low rounded-xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-lowest text-primary flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[28px]">qr_code_scanner</span>
+</div>
+<div>
+<div class="font-title-lg text-title-lg text-on-surface">Have a chassis VIN number ready?</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+            Instant build-sheet decoding across 114 vehicle manufacturers to zero-in on correct brake caliper sizes and trim variants.
+          </div>
+</div>
+</div>
+<div class="w-full md:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+<div class="relative w-full sm:w-72">
+<input class="w-full h-11 bg-surface-container-lowest text-on-surface font-data-mono-md text-data-mono-md uppercase rounded-lg pl-3.5 pr-8 outline-none focus:ring-2 focus:ring-primary-container shadow-sm transition-all placeholder:text-outline" maxlength="17" placeholder="Enter 17-digit VIN..." type="text"/>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-[18px]">pin</span>
+</div>
+<button class="h-11 px-5 rounded-lg bg-surface-container-high hover:bg-surface-variant font-title-md text-title-md text-on-surface transition-colors flex items-center justify-center gap-1.5 shrink-0">
+<span>Decode</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Simple client micro-interaction script for vehicle dropdown switching -->
+<script>
+    (function() {
+      const yearSelect = document.getElementById('year-select');
+      const makeSelect = document.getElementById('make-select');
+      const modelSelect = document.getElementById('model-select');
+      const engineSelect = document.getElementById('engine-select');
+
+      function logSelection() {
+        if(yearSelect && makeSelect && modelSelect && engineSelect) {
+          const configString = `${yearSelect.value} ${makeSelect.value} ${modelSelect.value} ${engineSelect.options[engineSelect.selectedIndex].text}`;
+          // Smooth non-blocking UI telemetry confirmation
+          console.info('[Vehicle Selection Context Changed]:', configString);
+        }
+      }
+
+      [yearSelect, makeSelect, modelSelect, engineSelect].forEach(select => {
+        if(select) {
+          select.addEventListener('change', logSelection);
+        }
+      });
+    })();
+  </script>
+  <script src="shared.js"></script>
+</div></main><footer class="w-full bg-surface-container-low mt-space-2xl"><div class="max-w-7xl mx-auto px-6 lg:px-12 py-space-xl"><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-lg pb-space-xl"><div class="flex items-start gap-space-sm"><div class="w-10 h-10 rounded-lg bg-surface-container-highest text-tertiary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-[22px]">verified</span></div><div><div class="font-title-md text-title-md text-on-surface">Guaranteed Fitment</div><div class="font-body-sm text-body-sm text-on-surface-variant mt-1">Precision compatibility verification engine backs every verified order.</div></div></div><div class="flex items-start gap-space-sm"><div class="w-10 h-10 rounded-lg bg-surface-container-highest text-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-[22px]">support_agent</span></div><div><div class="font-title-md text-title-md text-on-surface">24/7 Technical Support</div><div class="font-body-sm text-body-sm text-on-surface-variant mt-1">Certified automotive mechanics and parts specialists on standby.</div></div></div><div class="flex items-start gap-space-sm"><div class="w-10 h-10 rounded-lg bg-surface-container-highest text-secondary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-[22px]">hub</span></div><div><div class="font-title-md text-title-md text-on-surface">Verified Vendor Network</div><div class="font-body-sm text-body-sm text-on-surface-variant mt-1">Authorized Tier-1 distributors and direct OEM manufacturers globally.</div></div></div><div class="flex items-start gap-space-sm"><div class="w-10 h-10 rounded-lg bg-surface-container-highest text-tertiary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-[22px]">workspace_premium</span></div><div><div class="font-title-md text-title-md text-on-surface">100% Satisfaction</div><div class="font-body-sm text-body-sm text-on-surface-variant mt-1">30-day hassle-free return logistics and defect replacement guarantee.</div></div></div></div><div class="pt-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md font-body-sm text-body-sm text-on-surface-variant"><div class="flex items-center gap-space-xs"><span class="font-title-md text-title-md text-on-surface">Auto<span class="text-primary-container">Parts</span></span><span>© 2024 AutoParts Marketplace Inc. Professional Tier Fulfillment.</span></div><div class="flex items-center gap-space-lg"><a class="hover:text-on-surface transition-colors" data-path="terms" href="#">Fitment Policy</a><a class="hover:text-on-surface transition-colors" data-path="privacy" href="#">Privacy &amp; Security</a><a class="hover:text-on-surface transition-colors" data-path="compliance" href="#">OEM Compliance</a><a class="hover:text-on-surface transition-colors" data-path="api-docs" href="#">Fleet API</a></div></div></div></footer></body></html>

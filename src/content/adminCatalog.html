@@ -1,0 +1,267 @@
+<div class="flex flex-col w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pb-8 gap-6">
+<div class="pt-6 md:pt-8 space-y-6">
+<!-- Top Administrative Stats & Console Title Deck -->
+<div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 bg-surface-container-lowest p-4 sm:p-6 rounded-xl shadow-xs border border-outline-variant/30">
+<div class="space-y-1 min-w-0">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container text-primary font-data-mono-sm text-data-mono-sm uppercase tracking-wider font-semibold">ACES / PIES v4.2 Compliance</span>
+<span class="inline-flex items-center gap-1 text-tertiary font-label-sm text-label-sm bg-tertiary-fixed/30 px-2 py-0.5 rounded">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+Sync Active
+</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">Vehicle Fitment Matrix &amp; Catalog Engine</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Manage SKU fitment and catalog bindings.</p>
+</div>
+<!-- Live Telemetry KPI Pills -->
+<div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+<div class="flex items-center gap-3 bg-surface-container-low px-4 py-2.5 rounded-xl border border-outline-variant/30">
+<div class="w-8 h-8 rounded-lg bg-surface-container-highest text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">hub</span>
+</div>
+<div>
+<div class="font-data-mono-md text-data-mono-md text-on-surface font-semibold">2,840,119</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">OEM Mappings</div>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-low px-4 py-2.5 rounded-xl border border-outline-variant/30">
+<div class="w-8 h-8 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+</div>
+<div>
+<div class="font-data-mono-md text-data-mono-md text-tertiary font-semibold">99.98%</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Fitment Precision</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Fitment Tree Drilldown & Multi-Parameter Filter Matrix -->
+<div class="bg-surface-container-lowest p-4 sm:p-6 rounded-xl shadow-xs border border-outline-variant/30 space-y-5">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">account_tree</span>
+<h2 class="font-title-lg text-title-lg text-on-surface font-semibold">Fitment Tree Parameter Drilldown</h2>
+</div>
+<div class="flex items-center gap-2 font-data-mono-sm text-data-mono-sm text-on-surface-variant">
+<span>ACTIVE VEHICLE:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-semibold">Corolla L4 1.8L (E210 Platform)</span>
+</div>
+</div>
+<!-- 4-Stage Parametric Filter Selectors -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">1. Model Year</label>
+<div class="relative">
+<select class="w-full h-11 pl-space-md pr-space-lg bg-surface-container-low rounded-lg text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer">
+<option selected="">2018</option>
+<option>2019</option>
+<option>2020</option>
+<option>2021</option>
+<option>2022</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-on-surface-variant pointer-events-none text-[18px]">expand_more</span>
+</div>
+</div>
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">2. Make</label>
+<div class="relative">
+<select class="w-full h-11 pl-space-md pr-space-lg bg-surface-container-low rounded-lg text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer">
+<option selected="">Toyota</option>
+<option>Ford</option>
+<option>Honda</option>
+<option>Chevrolet</option>
+<option>BMW Group</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-on-surface-variant pointer-events-none text-[18px]">expand_more</span>
+</div>
+</div>
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">3. Model Family</label>
+<div class="relative">
+<select class="w-full h-11 pl-space-md pr-space-lg bg-surface-container-low rounded-lg text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer">
+<option selected="">Corolla (Saloon / Touring)</option>
+<option>Camry</option>
+<option>RAV4</option>
+<option>Highlander</option>
+<option>Tacoma</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-on-surface-variant pointer-events-none text-[18px]">expand_more</span>
+</div>
+</div>
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">4. Engine Code &amp; Displacement</label>
+<div class="relative">
+<select class="w-full h-11 pl-space-md pr-space-lg bg-surface-container-low rounded-lg text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer">
+<option selected="">1.8L L4 Gas DOHC (2ZR-FE)</option>
+<option>2.0L L4 Dual VVT-i (M20A-FKS)</option>
+<option>1.8L Hybrid Atkinson (2ZR-FXE)</option>
+<option>All Engine Configurations</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-on-surface-variant pointer-events-none text-[18px]">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Master SKU Fitment Data Table Section -->
+<div class="bg-surface-container-lowest rounded-xl shadow-xs border border-outline-variant/30 overflow-hidden flex flex-col">
+<div class="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">table_chart</span>
+<span class="font-title-md text-title-md text-on-surface font-semibold">SKU Interchange &amp; Fitment Ledger</span>
+<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-data-mono-sm text-data-mono-sm font-semibold">4 Matched</span>
+</div>
+<div class="flex items-center gap-2 w-full sm:w-auto">
+<div class="relative flex-1 sm:w-56">
+<span class="material-symbols-outlined absolute left-2.5 top-2.5 text-on-surface-variant text-[15px]">search</span>
+<input class="w-full h-9 pl-8 pr-3 bg-surface-container-low border border-outline-variant/30 rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Filter SKU, OEM..." type="text"/>
+</div>
+<button class="p-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface border border-outline-variant/30" title="Column Visibility">
+<span class="material-symbols-outlined text-[18px]">view_column</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full min-w-[760px] text-left">
+<thead>
+<tr class="bg-surface-container-low font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+<th class="px-4 py-3">Master SKU</th>
+<th class="px-4 py-3">OEM Interchange #</th>
+<th class="px-4 py-3">Sub-System</th>
+<th class="px-4 py-3">Vehicle Cohorts</th>
+<th class="px-4 py-3">Active Offers</th>
+<th class="px-4 py-3">Tolerance</th>
+<th class="px-4 py-3 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y-0 font-body-sm text-body-sm text-on-surface">
+<!-- Row 1: Brake Pads -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-space-md py-space-md align-top">
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[16px]">inventory_2</span>
+</div>
+<div>
+<div class="font-data-mono-md text-data-mono-md font-semibold text-primary">BC-QC-1210</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Ceramic Disc Pad Set</div>
+</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="space-y-1">
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface font-semibold bg-surface-container px-space-xs py-0.5 rounded inline-block">04465-02220</div>
+<div class="text-[11px] text-on-surface-variant">ALT: 04465-02390, 04465-12610</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<span class="inline-flex items-center gap-1 font-label-md text-label-md px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  Brake Systems
+                </span>
+</td>
+<td class="px-space-md py-space-md align-top max-w-xs">
+<div class="space-y-1">
+<div class="font-label-md text-label-md text-on-surface">2014-2019 Toyota Corolla</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">tune</span>
+                    1.8L L4 Gas DOHC (2ZR-FE)
+                  </div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Front Axle Pair • Caliper Spec Akebono</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="space-y-1">
+<div class="font-label-md text-label-md text-on-surface">3 Active Sellers</div>
+<div class="font-data-mono-sm text-data-mono-sm text-tertiary font-semibold">$45.50 — $52.00</div>
+<div class="text-[11px] text-on-surface-variant">Stock: 480 units @ Central</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="inline-flex items-center gap-1 px-space-xs py-1 rounded bg-tertiary-container/15 text-tertiary">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="font-label-sm text-label-sm">Passed ±0.05mm</span>
+</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-1">Caliper Pad Spec: 12.4mm</div>
+</td>
+<td class="px-space-md py-space-md align-top text-right space-x-1">
+<button class="px-space-xs py-1 rounded bg-surface-container text-on-surface hover:bg-primary hover:text-on-primary font-label-sm text-label-sm transition-colors">Edit Matrix</button>
+<button class="p-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Audit Log">
+<span class="material-symbols-outlined text-[16px]">history</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Spark Plugs (Multi-Vehicle Cross Fit) -->
+<tr class="bg-surface-container-lowest hover:bg-surface-container-low transition-colors group">
+<td class="px-space-md py-space-md align-top">
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[16px]">electric_bolt</span>
+</div>
+<div>
+<div class="font-data-mono-md text-data-mono-md font-semibold text-primary">DN-IR-5304</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Iridium Long-Life Plug</div>
+</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="space-y-1">
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface font-semibold bg-surface-container px-space-xs py-0.5 rounded inline-block">90919-01253</div>
+<div class="text-[11px] text-on-surface-variant">ALT: SC20HR11, IXEH20TT</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<span class="inline-flex items-center gap-1 font-label-md text-label-md px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  Engine &amp; Ignition
+                </span>
+</td>
+<td class="px-space-md py-space-md align-top max-w-xs">
+<div class="space-y-1">
+<div class="font-label-md text-label-md text-on-surface">2018-2022 Toyota Corolla</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">2ZR-FE / M20A-FKS</div>
+<div class="text-[11px] text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                    Also Verified: 2019 Ford F-150 3.3L
+                  </div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="space-y-1">
+<div class="font-label-md text-label-md text-on-surface">2 Active Sellers</div>
+<div class="font-data-mono-sm text-data-mono-sm text-tertiary font-semibold">$38.40 — $41.00</div>
+<div class="text-[11px] text-on-surface-variant">Pack of 4 • 1,220 sets in stock</div>
+</div>
+</td>
+<td class="px-space-md py-space-md align-top">
+<div class="inline-flex items-center gap-1 px-space-xs py-1 rounded bg-tertiary-container/15 text-tertiary">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="font-label-sm text-label-sm">Passed ±0.02mm</span>
+</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-1">Thread: M12 x 1.25, 26.5mm</div>
+</td>
+<td class="px-space-md py-space-md align-top text-right space-x-1">
+<button class="px-space-xs py-1 rounded bg-surface-container text-on-surface hover:bg-primary hover:text-on-primary font-label-sm text-label-sm transition-colors">Edit Matrix</button>
+<button class="p-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Audit Log">
+<span class="material-symbols-outlined text-[16px]">history</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination / Footer Bar -->
+<div class="p-space-md bg-surface-container-low flex flex-col sm:flex-row items-center justify-between gap-space-sm text-on-surface-variant font-label-sm text-label-sm">
+<div>Showing 1 to 4 of 2,840,119 verified catalog nodes</div>
+<div class="flex items-center gap-1">
+<button class="px-space-sm py-1 rounded bg-surface-container text-on-surface opacity-50 cursor-not-allowed">Previous</button>
+<button class="px-space-sm py-1 rounded bg-primary text-on-primary font-semibold">1</button>
+<button class="px-space-sm py-1 rounded bg-surface-container text-on-surface hover:bg-surface-container-high">2</button>
+<button class="px-space-sm py-1 rounded bg-surface-container text-on-surface hover:bg-surface-container-high">3</button>
+<span class="px-1">...</span>
+<button class="px-space-sm py-1 rounded bg-surface-container text-on-surface hover:bg-surface-container-high">71,003</button>
+<button class="px-space-sm py-1 rounded bg-surface-container text-on-surface hover:bg-surface-container-high">Next</button>
+</div>
+</div>
+</div>
+</div>
+</div>
