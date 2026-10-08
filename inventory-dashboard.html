@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SparesOps — Inventory Command Center</title>
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<script>
+  (function(){
+    var t = localStorage.getItem('autoparts_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    if(t === 'light') document.documentElement.classList.add('light');
+    var l = localStorage.getItem('autoparts_lang') || 'ar';
+    document.documentElement.lang = l;
+    document.documentElement.dir = (l === 'ar') ? 'rtl' : 'ltr';
+  })();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0d1117;--panel:#151b23;--panel2:#1b232d;--line:#283241;--text:#e6edf3;--muted:#8b98a9;
+  --accent:#3b82f6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;--cyan:#22d3ee;
+  --radius:10px;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --tbl-hover:rgba(255,255,255,.025);--dialog-backdrop:rgba(3,6,10,.7);--chart-grid:#1f2733;
+}
+html.light{
+  --bg:#f8fafc;--panel:#ffffff;--panel2:#f1f5f9;--line:#e2e8f0;--text:#0f172a;--muted:#64748b;
+  --accent:#2563eb;--green:#16a34a;--amber:#d97706;--red:#dc2626;--purple:#7c3aed;--cyan:#0891b2;
+  --tbl-hover:rgba(15,23,42,.035);--dialog-backdrop:rgba(15,23,42,.45);--chart-grid:#e2e8f0;
+}
+html.light .btn{color:#0f172a}
+html.light .btn.primary{color:#ffffff}
+html.light .btn:hover{background:#e2e8f0;border-color:#cbd5e1}
+html.light .btn.primary:hover{background:#1d4ed8;border-color:#1d4ed8}
+html.light .mchip{background:#f1f5f9;border-color:#cbd5e1;color:#475569}
+html.light .xr-card{background:#f8fafc}
+html.light .mini{background:#f8fafc}
+html.light .bar{background:#e2e8f0}
+html.light .xr-chip{background:rgba(124,58,237,.1);color:#7c3aed;border-color:rgba(124,58,237,.25)}
+html.light .xr-chip.m{background:rgba(8,145,178,.1);color:#0891b2;border-color:rgba(8,145,178,.25)}
+html.light .tag.in{color:#15803d;background:rgba(22,163,74,.14)}
+html.light .tag.low{color:#b45309;background:rgba(217,119,6,.14)}
+html.light .tag.out{color:#b91c1c;background:rgba(220,38,38,.14)}
+html.light .tag.res{color:#6d28d9;background:rgba(124,58,237,.14)}
+html.light .chip.good{color:#15803d;background:rgba(22,163,74,.12);border-color:rgba(22,163,74,.3)}
+html.light .chip.warn{color:#b45309;background:rgba(217,119,6,.12);border-color:rgba(217,119,6,.3)}
+html.light .chip.bad{color:#b91c1c;background:rgba(220,38,38,.12);border-color:rgba(220,38,38,.3)}
+html.light .chip.info{color:#0369a1;background:rgba(8,145,178,.12);border-color:rgba(8,145,178,.3)}
+html.light .card{box-shadow:0 1px 3px rgba(15,23,42,.06)}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font:13px/1.45 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+html[dir="rtl"], html[dir="rtl"] body{font-family:'Cairo',Inter,system-ui,-apple-system,sans-serif}
+html[dir="rtl"] th, html[dir="rtl"] td{text-align:right}
+html[dir="rtl"] td.num, html[dir="rtl"] th.num{text-align:left}
+html[dir="rtl"] .kpi::before{inset:0 0 0 auto}
+button,input,select{font:inherit;color:inherit}
+.app{max-width:1680px;margin:0 auto;padding:14px 18px 40px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--purple));display:grid;place-items:center;font-weight:800}
+h1{font-size:17px;margin:0;letter-spacing:.2px}
+.sub{color:var(--muted);font-size:12px}
+.live{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:12px}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(34,197,94,.6);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+.theme-toggle-btn{
+  width:36px;
+  height:36px;
+  border-radius:8px;
+  border:1px solid var(--line);
+  background:var(--panel2);
+  color:var(--text);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:all .15s ease;
+  padding:0;
+}
+.theme-toggle-btn:hover{
+  background:#222c38;
+  border-color:#3a4658;
+}
+html.light .theme-toggle-btn{
+  background:#eff4ff;
+  border-color:#e2e8f0;
+  color:#0b1c30;
+}
+html.light .theme-toggle-btn:hover{
+  background:#e5eeff;
+}
+.btn{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;transition:.15s}
+.btn:hover{border-color:#3a4658;background:#222c38}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.btn.primary:hover{filter:brightness(1.1)}
+.btn.sm{padding:2px 8px;font-size:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--line)}
+.card-h h2{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:600}
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:12px}
+.kpi{padding:12px 14px;position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--c,var(--accent))}
+.kpi .lbl{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+.kpi .val{font-size:26px;font-weight:700;margin:4px 0 2px;font-variant-numeric:tabular-nums}
+.kpi .val small{font-size:13px;color:var(--muted);font-weight:500;margin-left:3px}
+.kpi .meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11.5px;gap:6px}
+.kpi .formula{font-family:var(--mono);font-size:10.5px;opacity:.8}
+.chip{display:inline-block;padding:1px 8px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid transparent}
+.chip.good{color:var(--green);background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.3)}
+.chip.warn{color:var(--amber);background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.3)}
+.chip.bad{color:var(--red);background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.3)}
+.chip.info{color:var(--cyan);background:rgba(34,211,238,.1);border-color:rgba(34,211,238,.3)}
+.flash{animation:flash .7s}
+@keyframes flash{0%{background:rgba(59,130,246,.35)}100%{background:transparent}}
+/* main grid */
+.main{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(320px,1fr);gap:12px;margin-bottom:12px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--line);align-items:center}
+.toolbar input,.toolbar select,.field input,.field select{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px;outline:none}
+.toolbar input:focus,.toolbar select:focus,.field input:focus,.field select:focus{border-color:var(--accent)}
+.toolbar input[type=search]{flex:1;min-width:180px}
+.toolbar .spacer{flex:1}
+.toggle{display:inline-flex;gap:6px;align-items:center;color:var(--muted);font-size:12px;cursor:pointer;user-select:none}
+.tbl-wrap{overflow:auto;max-height:560px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--line)}
+th{position:sticky;top:0;background:var(--panel2);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;z-index:1;cursor:pointer}
+th.nosort{cursor:default}
+th .arr{opacity:.7;margin-left:3px}
+tbody tr:hover{background:var(--tbl-hover)}
+td.num,th.num{text-align:right}
+.mono{font-family:var(--mono);font-size:12px}
+.muted{color:var(--muted)}
+.tag{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:600}
+.tag::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.tag.in{color:var(--green);background:rgba(34,197,94,.12)}
+.tag.low{color:var(--amber);background:rgba(245,158,11,.12)}
+.tag.out{color:var(--red);background:rgba(239,68,68,.12)}
+.tag.res{color:var(--purple);background:rgba(167,139,250,.14)}
+.models{display:flex;gap:4px;flex-wrap:wrap;max-width:200px;white-space:normal}
+.mchip{font-family:var(--mono);font-size:10.5px;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:0 5px;color:var(--muted)}
+.stock-cell{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.bar{width:44px;height:5px;border-radius:3px;background:var(--bg);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--c,var(--green))}
+.act{display:flex;gap:4px}
+.ib{width:24px;height:24px;border-radius:6px;border:1px solid var(--line);background:var(--panel2);cursor:pointer;display:grid;place-items:center;padding:0;font-weight:700;line-height:1}
+.ib:hover{border-color:var(--accent);color:var(--accent)}
+.ib.on{border-color:var(--purple);color:var(--purple)}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+.foot{padding:8px 14px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+/* charts */
+.side{display:flex;flex-direction:column;gap:12px}
+.chart-box{padding:12px 14px;position:relative;height:250px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.seg button{background:transparent;border:0;padding:3px 10px;cursor:pointer;color:var(--muted);font-size:12px}
+.seg button.on{background:var(--accent);color:#fff}
+.legend-note{padding:0 14px 12px;color:var(--muted);font-size:12px}
+/* tabs */
+.tabs{display:flex;gap:2px;padding:0 10px;border-bottom:1px solid var(--line)}
+.tab{background:none;border:0;padding:11px 14px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;font-weight:600}
+.tab.on{color:var(--text);border-color:var(--accent)}
+.pane{display:none;padding:14px}
+.pane.on{display:block}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.sect h3{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.sect .tbl-wrap{max-height:300px;border:1px solid var(--line);border-radius:8px}
+.mini-stats{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.mini{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 12px}
+.mini b{display:block;font-size:17px}
+.xr-search{display:flex;gap:8px;margin-bottom:12px}
+.xr-search input{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 12px;outline:none;font-size:14px}
+.xr-search input:focus{border-color:var(--accent)}
+.xr-res{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:10px}
+.xr-card{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:11px 13px}
+.xr-card h4{margin:0 0 2px;font-size:13.5px}
+.xr-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:7px}
+.xr-row>span:first-child{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;min-width:74px}
+.xr-chip{font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:5px;background:rgba(167,139,250,.12);color:var(--purple);border:1px solid rgba(167,139,250,.3)}
+.xr-chip.m{background:rgba(34,211,238,.08);color:var(--cyan);border-color:rgba(34,211,238,.3);cursor:pointer}
+.xr-chip.m:hover{background:rgba(34,211,238,.2)}
+mark{background:rgba(245,158,11,.3);color:inherit;border-radius:2px}
+/* modal */
+dialog{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:0;width:min(560px,94vw);box-shadow:0 30px 80px rgba(0,0,0,.6)}
+dialog::backdrop{background:var(--dialog-backdrop);backdrop-filter:blur(3px)}
+.m-h{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}
+.m-h h3{margin:0;font-size:15px}
+.m-b{padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field.full{grid-column:1/-1}
+.field label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.field .err{color:var(--red);font-size:11px;min-height:0}
+.m-f{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;border-top:1px solid var(--line)}
+/* toast */
+#toasts{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;z-index:99}
+.toast{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--accent);padding:9px 14px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.45);animation:in .25s;max-width:340px}
+.toast.warn{border-left-color:var(--amber)}.toast.bad{border-left-color:var(--red)}.toast.good{border-left-color:var(--green)}
+@keyframes in{from{transform:translateY(10px);opacity:0}}
+.nav{display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid var(--line);overflow-x:auto}
+.nt{background:none;border:0;border-bottom:2px solid transparent;padding:10px 18px;cursor:pointer;color:var(--muted);font-weight:600;font-size:13.5px;white-space:nowrap;margin-bottom:-1px}
+.nt:hover{color:var(--text)}
+.nt.on{color:var(--text);border-color:var(--accent)}
+.view{display:none}.view.on{display:block}
+.ov-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.ov-grid.two{grid-template-columns:1fr 1fr}
+.ov-grid .chart-box{height:260px}
+.avatar{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:11px;margin-right:8px;vertical-align:middle}
+.sel{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:2px 6px}
+@media(max-width:1250px){.ov-grid,.ov-grid.two{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(3,1fr)}.main{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}}
+@media(max-width:700px){.kpis{grid-template-columns:1fr 1fr}.app{padding:10px}.m-b{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="logo">S</div>
+      <div><h1>SparesOps · Inventory Command Center</h1><div class="sub">Plant 02 — Maintenance Spare Parts · Weighted Average Cost valuation</div></div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <a href="index.html" class="btn" id="btnBackStore" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px">← Back to Store</a>
+      <span class="live"><i></i> <span id="lblLive">Live state</span> · <span id="clock"></span></span>
+      <button
+        type="button"
+        id="btnLang"
+        class="btn"
+        style="padding:6px 10px;font-weight:600;display:inline-flex;align-items:center;gap:4px"
+        title="تبديل اللغة / Switch Language"
+      >
+        <span class="material-symbols-outlined" style="font-size:18px">translate</span>
+        <span id="langLabel">English</span>
+      </button>
+      <button
+        type="button"
+        id="btnTheme"
+        class="theme-toggle-btn"
+        aria-label="Switch to light mode"
+        title="Switch to light mode"
+      >
+        <span class="material-symbols-outlined" id="themeIcon" style="font-size:20px">light_mode</span>
+      </button>
+      <button class="btn" id="btnReset">Reset demo data</button>
+      <button class="btn primary" id="btnAdd">+ Add New Spare Part</button>
+    </div>
+  </header>
+
+  <nav class="nav" id="mainTabs">
+    <button class="nt on" data-view="overview" id="tab-overview">Overview</button>
+    <button class="nt" data-view="orders" id="tab-orders">Orders</button>
+    <button class="nt" data-view="inventory" id="tab-inventory">Inventory</button>
+    <button class="nt" data-view="invoices" id="tab-invoices">Invoices</button>
+    <button class="nt" data-view="users" id="tab-users">Users</button>
+  </nav>
+
+  <div class="view on" id="view-overview">
+    <section class="kpis" id="kpis"></section>
+    <section class="ov-grid">
+      <div class="card">
+        <div class="card-h"><h2>Usage Rate by Machine Line</h2>
+          <div class="seg" id="usageMode"><button class="on" data-m="rate">Monthly</button><button data-m="cum">Cumulative</button></div></div>
+        <div class="chart-box"><canvas id="cUsage"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h2>Asset Aging · Slow-moving stock</h2><span class="muted" id="agingTotal"></span></div>
+        <div class="chart-box"><canvas id="cAging"></canvas></div>
+        <div class="legend-note" id="agingNote"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h2>Needs Attention</h2><button class="btn sm" data-goto="inventory">Open inventory</button></div>
+        <div class="tbl-wrap" style="max-height:290px"><table><thead><tr><th class="nosort">Part</th><th class="num nosort">Stock</th><th class="nosort">Status</th></tr></thead><tbody id="attnBody"></tbody></table></div>
+      </div>
+    </section>
+    <section class="ov-grid two">
+      <div class="card">
+        <div class="card-h"><h2>Recent Orders</h2><button class="btn sm" data-goto="orders">All orders</button></div>
+        <div class="tbl-wrap" style="max-height:240px"><table><thead><tr><th class="nosort">Order</th><th class="nosort">Part</th><th class="num nosort">Qty</th><th class="nosort">Status</th></tr></thead><tbody id="ovOrders"></tbody></table></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h2>Finance Snapshot</h2><button class="btn sm" data-goto="invoices">All invoices</button></div>
+        <div class="mini-stats" id="ovFin" style="padding:14px 14px 4px"></div>
+        <div class="legend-note" id="ovFinNote"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="view" id="view-inventory">
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-h"><h2>Spare Parts Inventory</h2>
+        <label class="toggle" title="The next stock decrement will be recorded as an incorrect pick"><input type="checkbox" id="flagMis"> Flag next pick as error</label>
+      </div>
+      <div class="toolbar">
+        <input type="search" id="fQ" placeholder="Search Part ID, OEM number or name…">
+        <select id="fCat"><option value="">All categories</option></select>
+        <select id="fStatus">
+          <option value="">All statuses</option><option>In Stock</option><option>Low Stock</option><option>Out of Stock</option><option>Reserved</option>
+        </select>
+        <button class="btn sm" id="fClear">Clear</button>
+      </div>
+      <div class="tbl-wrap"><table id="tbl">
+        <thead><tr>
+          <th data-k="id">Part ID<span class="arr"></span></th><th data-k="oem">OEM No.<span class="arr"></span></th><th data-k="name">Name<span class="arr"></span></th>
+          <th data-k="cat">Category<span class="arr"></span></th><th class="nosort">Compatible Models</th>
+          <th class="num" data-k="wac">Unit Cost<span class="arr"></span></th><th class="num" data-k="stock">Stock<span class="arr"></span></th>
+          <th class="num" data-k="reorder">Safety Lvl<span class="arr"></span></th><th data-k="status">Status<span class="arr"></span></th><th class="nosort">Actions</th>
+        </tr></thead><tbody id="tbody"></tbody></table></div>
+      <div class="foot"><span id="rowCount"></span><span>Click ± to adjust by 1 · Shift+click for 10 · ⇣ receive stock at cost · ⚑ reserve/release</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><h2>Cross-Reference Engine</h2><span class="muted">OEM · legacy equivalents · machine compatibility</span></div>
+      <div class="pane on" style="padding:14px">
+        <div class="xr-search"><input id="xrQ" type="search" placeholder="Look up OEM number, legacy / superseded number, part name or machine model (e.g. SKF-6205, HX-400)…"><button class="btn" id="xrClear">Clear</button></div>
+        <div class="xr-res" id="xrRes"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view" id="view-orders">
+    <div class="card">
+      <div class="card-h"><h2>Orders &amp; Procurement</h2></div>
+      <div class="pane on" style="padding:14px">
+        <div class="mini-stats" id="procStats"></div>
+        <div class="grid3">
+          <div class="sect"><h3>Inbound Purchase Orders <button class="btn sm" id="btnAutoPO">Auto-PO low stock</button></h3>
+            <div class="tbl-wrap"><table><thead><tr><th>PO</th><th>Part</th><th class="num">Qty</th><th>ETA</th><th>Status</th><th></th></tr></thead><tbody id="poBody"></tbody></table></div></div>
+          <div class="sect"><h3>Outbound Fulfillments <span class="muted" style="text-transform:none">auto-logged on stock issue</span></h3>
+            <div class="tbl-wrap"><table><thead><tr><th>Order</th><th>Part</th><th class="num">Qty</th><th>Dest. line</th><th>Status</th></tr></thead><tbody id="ofBody"></tbody></table></div></div>
+          <div class="sect"><h3>Supplier RMA / Defect Rates</h3>
+            <div class="tbl-wrap"><table><thead><tr><th>Supplier</th><th class="num">Recv'd</th><th class="num">Defects</th><th class="num">Rate</th><th class="num">Open RMA</th><th></th></tr></thead><tbody id="supBody"></tbody></table></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view" id="view-invoices">
+    <div class="card">
+      <div class="card-h"><h2>Invoices</h2><span class="muted">Supplier bills are raised automatically when a PO is received</span></div>
+      <div class="mini-stats" id="invStats" style="padding:14px 14px 0"></div>
+      <div class="toolbar">
+        <input type="search" id="iQ" placeholder="Search invoice, supplier or PO…">
+        <select id="iStatus"><option value="">All statuses</option><option>Unpaid</option><option>Overdue</option><option>Paid</option></select>
+      </div>
+      <div class="tbl-wrap"><table><thead><tr><th class="nosort">Invoice</th><th class="nosort">Supplier</th><th class="nosort">PO</th><th class="nosort">Issued</th><th class="nosort">Due</th><th class="num nosort">Amount</th><th class="nosort">Status</th><th class="nosort"></th></tr></thead><tbody id="invBody"></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="view" id="view-users">
+    <div class="card">
+      <div class="card-h"><h2>Users &amp; Access</h2><button class="btn primary sm" id="btnUser">+ Invite User</button></div>
+      <div class="mini-stats" id="userStats" style="padding:14px 14px 0"></div>
+      <div class="tbl-wrap"><table><thead><tr><th class="nosort">Name</th><th class="nosort">Email</th><th class="nosort">Role</th><th class="nosort">Last active</th><th class="nosort">Status</th><th class="nosort"></th></tr></thead><tbody id="userBody"></tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<dialog id="dlgUser">
+  <form method="dialog" id="formUser" novalidate>
+    <div class="m-h"><h3>Invite User</h3><button type="button" class="ib" data-close>✕</button></div>
+    <div class="m-b">
+      <div class="field"><label>Full name *</label><input id="uName"></div>
+      <div class="field"><label>Role</label><select id="uRole"></select></div>
+      <div class="field full"><label>Email *</label><input id="uEmail" type="email"><span class="err" id="eUser"></span></div>
+    </div>
+    <div class="m-f"><button type="button" class="btn" data-close>Cancel</button><button type="submit" class="btn primary">Send Invite</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlgAdd">
+  <form method="dialog" id="formAdd" novalidate>
+    <div class="m-h"><h3>Add New Spare Part</h3><button type="button" class="ib" data-close>✕</button></div>
+    <div class="m-b">
+      <div class="field"><label>Part ID</label><input id="aId" readonly></div>
+      <div class="field"><label>OEM Number *</label><input id="aOem" placeholder="e.g. 6208-2RS"><span class="err" id="eOem"></span></div>
+      <div class="field full"><label>Name *</label><input id="aName" placeholder="Part description"><span class="err" id="eName"></span></div>
+      <div class="field"><label>Category</label><select id="aCat"></select></div>
+      <div class="field"><label>Machine line</label><select id="aLine"></select></div>
+      <div class="field full"><label>Compatible machine models (comma separated)</label><input id="aModels" placeholder="HX-400, PR-2200"></div>
+      <div class="field"><label>Unit cost ($) *</label><input id="aCost" type="number" step="0.01" min="0"><span class="err" id="eCost"></span></div>
+      <div class="field"><label>Opening stock</label><input id="aStock" type="number" min="0" value="0"></div>
+      <div class="field"><label>Safety reorder level</label><input id="aReorder" type="number" min="0" value="10"></div>
+      <div class="field"><label>Supplier</label><select id="aSup"></select></div>
+    </div>
+    <div class="m-f"><button type="button" class="btn" data-close>Cancel</button><button type="submit" class="btn primary">Add Part</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlgRecv">
+  <form method="dialog" id="formRecv" novalidate>
+    <div class="m-h"><h3>Receive Stock</h3><button type="button" class="ib" data-close>✕</button></div>
+    <div class="m-b">
+      <div class="field full"><label>Part</label><input id="rPart" readonly></div>
+      <div class="field"><label>Quantity received</label><input id="rQty" type="number" min="1" value="10"></div>
+      <div class="field"><label>Unit cost ($)</label><input id="rCost" type="number" step="0.01" min="0"></div>
+      <div class="field full muted" id="rPreview"></div>
+    </div>
+    <div class="m-f"><button type="button" class="btn" data-close>Cancel</button><button type="submit" class="btn primary">Post Receipt</button></div>
+  </form>
+</dialog>
+<div id="toasts"></div>
+
+<script>
+"use strict";
+/* ============================== DATA ============================== */
+const LINES = ['CNC Line','Press Line','Conveyor Line','Packaging Line'];
+const LINE_COLOR = {'CNC Line':'#3b82f6','Press Line':'#f59e0b','Conveyor Line':'#22c55e','Packaging Line':'#a78bfa'};
+const CATS = ['Bearings','Hydraulics','Electrical','Fasteners','Filtration','Drives & Belts','Sensors'];
+const SUPPLIERS0 = [
+  {name:'Nordic Bearing Co',received:3200,defects:22,rma:2},
+  {name:'HydroTek',received:1450,defects:31,rma:4},
+  {name:'VoltEdge',received:2100,defects:12,rma:1},
+  {name:'FastenPro',received:9800,defects:40,rma:3},
+  {name:'CleanFlow',received:1800,defects:9,rma:0},
+  {name:'DriveWorks',received:1250,defects:27,rma:3}
+];
+// id, oem, name, cat, models, cost, stock, reorder, reserved, line, ageDays, legacy, demand90, unfulfilled90, supplier
+const RAW = [
+ ['SP-1001','6205-2RS','Deep Groove Ball Bearing 6205','Bearings',['HX-400','HX-500','CV-90'],8.4,240,80,0,0,12,['SKF-6205','FAG-6205-2RSR'],420,6,0],
+ ['SP-1002','22210-E1','Spherical Roller Bearing 22210','Bearings',['PR-2200','PR-3000'],64.9,14,12,0,1,38,['SKF-22210E','NSK-22210'],58,4,0],
+ ['SP-1003','HP-CYL-80','Hydraulic Cylinder Seal Kit 80mm','Hydraulics',['PR-2200','PR-3000'],42.5,6,10,0,1,121,['PK-8800','HT-S80-OLD'],74,11,1],
+ ['SP-1004','HV-D03-24','Directional Valve D03 24VDC','Hydraulics',['PR-3000','HX-500'],186,9,5,4,1,66,['YUKEN-DSG-03','HV-D03-12'],41,2,1],
+ ['SP-1005','HPU-PMP-25','Vane Pump 25cc/rev','Hydraulics',['PR-2200'],612,2,2,0,1,214,['VP-25-LEG'],9,1,1],
+ ['SP-1006','CT-24-10A','Contactor 24VDC 10A','Electrical',['HX-400','HX-500','CV-120','PK-7'],19.8,58,30,0,0,24,['SIE-3RT-10','CT-24-8A'],310,5,2],
+ ['SP-1007','VFD-2K2','Variable Frequency Drive 2.2kW','Electrical',['CV-90','CV-120'],428,0,3,0,2,150,['VFD-2K0-OLD','ABB-ACS55'],18,7,2],
+ ['SP-1008','PSU-24-10','DIN Power Supply 24V 10A','Electrical',['HX-400','PK-7','PK-9'],54.3,17,8,0,3,47,['PSU-24-8A'],62,0,2],
+ ['SP-1009','M8-A2-40','Hex Bolt M8x40 A2 (box/100)','Fasteners',['HX-400','HX-500','PR-2200','CV-90','PK-7'],11.2,420,150,0,0,9,['DIN933-M8x40'],980,3,3],
+ ['SP-1010','M12-HT-70','High-Tensile Bolt M12x70 (box/50)','Fasteners',['PR-2200','PR-3000'],29.6,64,40,0,1,33,['DIN931-M12x70'],160,1,3],
+ ['SP-1011','LOC-NUT-M20','Lock Nut M20 Nylon (box/25)','Fasteners',['PR-3000','CV-120'],14.1,38,25,0,2,260,['DIN985-M20'],35,0,3],
+ ['SP-1012','HF-10-25','Hydraulic Return Filter 10µm','Filtration',['PR-2200','PR-3000'],37.2,22,12,0,1,52,['HF-10-OLD','PALL-HC9020'],96,3,4],
+ ['SP-1013','AF-CNC-180','Coolant Mist Filter Element','Filtration',['HX-400','HX-500'],71.0,5,8,0,0,19,['AF-CNC-150'],88,9,4],
+ ['SP-1014','OF-SPN-02','Spindle Oil Filter','Filtration',['HX-400'],24.9,31,10,0,0,177,['OF-SPN-01'],21,0,4],
+ ['SP-1015','TB-HTD-960','Timing Belt HTD 960-8M-30','Drives & Belts',['CV-90','CV-120','PK-9'],46.7,19,10,6,3,71,['GATES-960-8MGT'],54,2,5],
+ ['SP-1016','VB-SPB-2240','V-Belt SPB 2240 (matched pair)','Drives & Belts',['CV-120','PR-2200'],33.4,0,6,0,2,198,['SPB-2240-LEG','OPT-2240'],27,5,5],
+ ['SP-1017','CPL-JAW-28','Jaw Coupling Insert 28mm','Drives & Belts',['HX-400','CV-90'],9.9,86,40,0,2,41,['LOVEJOY-L100'],144,0,5],
+ ['SP-1018','PRX-M18-NO','Inductive Proximity Sensor M18','Sensors',['CV-90','CV-120','PK-7','PK-9'],27.5,44,25,0,2,28,['IFM-IG5591','PRX-M18-PNP'],205,2,2],
+ ['SP-1019','ENC-1024','Incremental Encoder 1024 PPR','Sensors',['HX-400','HX-500'],139,7,4,0,0,95,['ENC-1000-OLD'],33,3,2],
+ ['SP-1020','LS-SAFE-02','Safety Light Curtain Receiver','Sensors',['PR-2200','PR-3000','PK-9'],355,3,3,3,1,160,['LC-SAFE-01'],12,1,2],
+ ['SP-1021','PNEU-FRL-14','Pneumatic FRL Unit 1/4"','Hydraulics',['PK-7','PK-9'],52.8,26,12,0,3,102,['FRL-14-LEG'],47,0,1],
+ ['SP-1022','SRV-400W','AC Servo Motor 400W','Electrical',['PK-9','HX-500'],498,4,3,0,3,305,['SRV-400-OLD'],8,0,2]
+];
+const MODELS = ['HX-400','HX-500','PR-2200','PR-3000','CV-90','CV-120','PK-7','PK-9'];
+const MONTHS = (()=>{const o=[],d=new Date();for(let i=11;i>=0;i--){const x=new Date(d.getFullYear(),d.getMonth()-i,1);o.push(x.toLocaleString('en',{month:'short'}));}return o;})();
+
+let S; // global mutable state
+const DAY = 864e5;
+const daysFrom = n => new Date(Date.now()+n*DAY);
+const LOC = () => (typeof curLang!=='undefined' && curLang==='ar') ? 'ar-EG-u-nu-latn' : 'en';
+const fmtD = d => d.toLocaleDateString(LOC(),{month:'short',day:'numeric'});
+const monthsL = () => {const o=[],d=new Date();for(let i=11;i>=0;i--){const x=new Date(d.getFullYear(),d.getMonth()-i,1);o.push(x.toLocaleString(LOC(),{month:'short'}));}return o;};
+const money = v => '$'+v.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});
+const money0 = v => '$'+Math.round(v).toLocaleString('en');
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function seed(){
+  const parts = RAW.map(r=>({id:r[0],oem:r[1],name:r[2],cat:r[3],models:r[4],wac:r[5],stock:r[6],reorder:r[7],reserved:r[8],
+    line:LINES[r[9]],age:r[10],legacy:r[11],demand:r[12],unful:r[13],supplier:SUPPLIERS0[r[14]].name}));
+  const val = parts.reduce((a,p)=>a+p.stock*p.wac,0);
+  const usage = {}; LINES.forEach((l,i)=>{ usage[l]=MONTHS.map((_,m)=>Math.round((90+i*35)*(0.8+0.25*Math.sin(m/2+i)+m*0.012)+ (m*7%11))); });
+  const mult=[.93,.95,.97,.96,.99,1.02,1.04,1.01,.98,1.0,1.03];
+  S = {
+    parts, usage,
+    suppliers: SUPPLIERS0.map(s=>({...s})),
+    snapshots: mult.map(m=>val*m),
+    cogs: val*6.1,
+    picks:{correct:4712,total:4801},
+    pos:[
+      {id:'PO-5011',part:'SP-1007',qty:4,cost:421,supplier:'VoltEdge',ordered:daysFrom(-9),eta:daysFrom(3),received:null},
+      {id:'PO-5012',part:'SP-1016',qty:12,cost:32.6,supplier:'DriveWorks',ordered:daysFrom(-5),eta:daysFrom(6),received:null},
+      {id:'PO-5013',part:'SP-1013',qty:20,cost:69.5,supplier:'CleanFlow',ordered:daysFrom(-3),eta:daysFrom(-1),received:null},
+      {id:'PO-5014',part:'SP-1003',qty:15,cost:41.9,supplier:'HydroTek',ordered:daysFrom(-2),eta:daysFrom(9),received:null},
+      {id:'PO-5001',part:'SP-1001',qty:200,cost:8.2,supplier:'Nordic Bearing Co',ordered:daysFrom(-40),eta:daysFrom(-30),received:daysFrom(-29)},
+      {id:'PO-5002',part:'SP-1009',qty:300,cost:10.9,supplier:'FastenPro',ordered:daysFrom(-33),eta:daysFrom(-26),received:daysFrom(-25)},
+      {id:'PO-5003',part:'SP-1006',qty:60,cost:19.2,supplier:'VoltEdge',ordered:daysFrom(-28),eta:daysFrom(-18),received:daysFrom(-19)},
+      {id:'PO-5004',part:'SP-1012',qty:30,cost:36.1,supplier:'CleanFlow',ordered:daysFrom(-21),eta:daysFrom(-10),received:daysFrom(-8)},
+      {id:'PO-5005',part:'SP-1018',qty:50,cost:26.9,supplier:'VoltEdge',ordered:daysFrom(-17),eta:daysFrom(-8),received:daysFrom(-9)},
+    ],
+    poSeq:5015,
+    fulfil:[
+      {id:'SO-9034',part:'SP-1006',qty:4,line:'CNC Line',status:'Shipped'},
+      {id:'SO-9035',part:'SP-1018',qty:6,line:'Conveyor Line',status:'Shipped'},
+      {id:'SO-9036',part:'SP-1004',qty:1,line:'Press Line',status:'Packed'},
+      {id:'SO-9037',part:'SP-1007',qty:1,line:'Conveyor Line',status:'Backorder'},
+    ],
+    soSeq:9038,
+    invoices:[
+      {id:'INV-8801',supplier:'HydroTek',po:'PO-4998',issued:daysFrom(-50),due:daysFrom(-20),amount:1840,paid:false},
+      {id:'INV-8802',supplier:'Nordic Bearing Co',po:'PO-5001',issued:daysFrom(-29),due:daysFrom(1),amount:1640,paid:true},
+      {id:'INV-8803',supplier:'FastenPro',po:'PO-5002',issued:daysFrom(-25),due:daysFrom(5),amount:3270,paid:true},
+      {id:'INV-8804',supplier:'VoltEdge',po:'PO-5003',issued:daysFrom(-19),due:daysFrom(11),amount:1152,paid:false},
+      {id:'INV-8805',supplier:'CleanFlow',po:'PO-5004',issued:daysFrom(-8),due:daysFrom(22),amount:1083,paid:false},
+      {id:'INV-8806',supplier:'VoltEdge',po:'PO-5005',issued:daysFrom(-9),due:daysFrom(21),amount:1345,paid:false}
+    ],
+    invSeqN:8807,
+    users:[
+      {id:1,name:'Abdelrahman Ahmed',email:'a.ahmed@sparesops.io',role:'Admin',active:true,last:daysFrom(0)},
+      {id:2,name:'Layla Hassan',email:'l.hassan@sparesops.io',role:'Inventory Manager',active:true,last:new Date(Date.now()-36e5)},
+      {id:3,name:'Omar Khalil',email:'o.khalil@sparesops.io',role:'Procurement',active:true,last:new Date(Date.now()-5*36e5)},
+      {id:4,name:'Sara Nabil',email:'s.nabil@sparesops.io',role:'Finance',active:true,last:daysFrom(-1)},
+      {id:5,name:'Youssef Adel',email:'y.adel@sparesops.io',role:'Warehouse Operator',active:true,last:daysFrom(-2)},
+      {id:6,name:'Mona Tarek',email:'m.tarek@sparesops.io',role:'Warehouse Operator',active:false,last:daysFrom(-31)}
+    ],
+    userSeq:7, invF:{q:'',status:''},
+    filters:{q:'',cat:'',status:''}, sort:{k:'id',dir:1}, usageMode:'rate', idSeq:1023
+  };
+}
+
+/* ============================== LOGIC ============================== */
+const get = id => S.parts.find(p=>p.id===id);
+function statusOf(p){
+  if(p.stock<=0) return 'Out of Stock';
+  if(p.reserved>0 && p.reserved>=p.stock) return 'Reserved';
+  if(p.stock<=p.reorder) return 'Low Stock';
+  return 'In Stock';
+}
+const STATUS_CLS = {'In Stock':'in','Low Stock':'low','Out of Stock':'out','Reserved':'res'};
+const valuation = () => S.parts.reduce((a,p)=>a+p.stock*p.wac,0);
+
+function kpis(){
+  const val=valuation();
+  const snaps=[...S.snapshots,val];
+  const avgInv=snaps.reduce((a,b)=>a+b,0)/snaps.length;
+  const turnover=S.cogs/avgInv;
+  const dem=S.parts.reduce((a,p)=>a+p.demand,0), unf=S.parts.reduce((a,p)=>a+p.unful,0);
+  const stockout=dem?unf/dem*100:0;
+  const pick=S.picks.total?S.picks.correct/S.picks.total*100:100;
+  const rec=S.pos.filter(p=>p.received);
+  const lead=rec.length?rec.reduce((a,p)=>a+(p.received-p.ordered)/DAY,0)/rec.length:0;
+  return {val,avgInv,turnover,stockout,pick,lead,dem,unf};
+}
+function issue(id,qty){
+  const p=get(id); if(!p) return;
+  const fill=Math.min(p.stock,qty), short=qty-fill, mis=document.getElementById('flagMis').checked;
+  p.demand+=qty; p.unful+=short;
+  let status='Shipped';
+  if(fill>0){
+    p.stock-=fill; S.cogs+=fill*p.wac; p.age=0; S.usage[p.line][11]+=fill;
+    if(p.reserved>p.stock) p.reserved=p.stock;
+    S.picks.total++; if(!mis) S.picks.correct++;
+    if(mis){ toast(`Mis-pick recorded for ${p.id} — pick accuracy impacted`,'warn'); document.getElementById('flagMis').checked=false; }
+  }
+  if(short>0){ status='Backorder'; toast(`Stock-out: ${short} × ${p.name} unfulfilled`,'bad'); }
+  else if(p.stock<=p.reorder && p.stock>0) toast(`${p.id} at/below safety level (${p.stock}/${p.reorder})`,'warn');
+  S.fulfil.unshift({id:'SO-'+(S.soSeq++),part:p.id,qty,line:p.line,status}); S.fulfil.length=Math.min(S.fulfil.length,12);
+  renderAll(p.id);
+}
+function receive(id,qty,cost){
+  const p=get(id);
+  const total=p.stock+qty;
+  p.wac=total?((p.stock*p.wac)+(qty*cost))/total:cost; // Weighted Average Cost
+  p.stock=total; p.age=0;
+  const sup=S.suppliers.find(s=>s.name===p.supplier); if(sup) sup.received+=qty;
+  renderAll(id);
+}
+function receivePO(poId){
+  const po=S.pos.find(x=>x.id===poId); if(!po||po.received) return;
+  po.received=new Date();
+  S.invoices.unshift({id:'INV-'+(S.invSeqN++),supplier:po.supplier,po:po.id,issued:new Date(),due:daysFrom(30),amount:po.qty*po.cost,paid:false});
+  receive(po.part,po.qty,po.cost);
+  toast(`${po.id} received · +${po.qty} × ${get(po.part).id} · WAC → ${money(get(po.part).wac)}`,'good');
+}
+function autoPO(){
+  let n=0;
+  S.parts.forEach(p=>{
+    const open=S.pos.some(o=>o.part===p.id&&!o.received);
+    if(p.stock<=p.reorder && !open){
+      const qty=Math.max(p.reorder*2-p.stock,1);
+      S.pos.unshift({id:'PO-'+(S.poSeq++),part:p.id,qty,cost:p.wac,supplier:p.supplier,ordered:new Date(),eta:daysFrom(8),received:null}); n++;
+    }
+  });
+  toast(n?`${n} purchase order(s) raised for low-stock parts`:'No low-stock parts without an open PO',n?'good':'info');
+  renderAll();
+}
+
+/* ============================== RENDER ============================== */
+let lastKpi={};
+function renderKPIs(){
+  const k=kpis();
+  const defs=[
+    {key:'turn',lbl:'Inventory Turnover',val:k.turnover.toFixed(2),unit:'×',f:'COGS / Avg Inventory',c:'var(--accent)',
+      chip:k.turnover>=6?['good','On target ≥6']:k.turnover>=4?['warn','Below 6']:['bad','Low']},
+    {key:'so',lbl:'Stockout Rate',val:k.stockout.toFixed(2),unit:'%',f:`${k.unf} unfulfilled / ${k.dem.toLocaleString()} demands`,c:'var(--red)',
+      chip:k.stockout<=2?['good','≤2%']:k.stockout<=4?['warn','Watch']:['bad','High']},
+    {key:'pick',lbl:'Pick Accuracy',val:k.pick.toFixed(2),unit:'%',f:`${S.picks.correct.toLocaleString()} correct / ${S.picks.total.toLocaleString()} orders`,c:'var(--green)',
+      chip:k.pick>=99?['good','≥99%']:k.pick>=98?['warn','Below 99']:['bad','Poor']},
+    {key:'lead',lbl:'Order Lead Time',val:k.lead.toFixed(1),unit:'days',f:`avg PO → receiving · ${S.pos.filter(p=>p.received).length} POs`,c:'var(--amber)',
+      chip:k.lead<=10?['good','≤10d']:k.lead<=14?['warn','Slow']:['bad','Late']},
+    {key:'val',lbl:'Inventory Valuation',val:money0(k.val),unit:'',f:'Σ stock × weighted avg cost',c:'var(--purple)',
+      chip:['info',`Avg ${money0(k.avgInv)}`]}
+  ];
+  document.getElementById('kpis').innerHTML=defs.map(d=>`
+    <div class="card kpi" style="--c:${d.c}" data-k="${d.key}">
+      <div class="lbl">${d.lbl}</div>
+      <div class="val ${lastKpi[d.key]!==undefined&&lastKpi[d.key]!==d.val?'flash':''}">${d.val}<small>${d.unit}</small></div>
+      <div class="meta"><span class="formula">${d.f}</span><span class="chip ${d.chip[0]}">${d.chip[1]}</span></div>
+    </div>`).join('');
+  defs.forEach(d=>lastKpi[d.key]=d.val);
+}
+
+function filtered(){
+  const {q,cat,status}=S.filters, qq=q.trim().toLowerCase();
+  let rows=S.parts.filter(p=>
+    (!qq||p.id.toLowerCase().includes(qq)||p.oem.toLowerCase().includes(qq)||p.name.toLowerCase().includes(qq)) &&
+    (!cat||p.cat===cat) && (!status||statusOf(p)===status));
+  const {k,dir}=S.sort;
+  rows.sort((a,b)=>{
+    const va=k==='status'?statusOf(a):a[k], vb=k==='status'?statusOf(b):b[k];
+    return (typeof va==='number'?va-vb:String(va).localeCompare(String(vb)))*dir;
+  });
+  return rows;
+}
+function hl(text,q){
+  const t=esc(text); if(!q) return t;
+  const i=text.toLowerCase().indexOf(q.toLowerCase()); if(i<0) return t;
+  return esc(text.slice(0,i))+'<mark>'+esc(text.slice(i,i+q.length))+'</mark>'+esc(text.slice(i+q.length));
+}
+function renderTable(flashId){
+  const rows=filtered(), q=S.filters.q.trim();
+  document.getElementById('tbody').innerHTML = rows.length? rows.map(p=>{
+    const st=statusOf(p), pct=Math.min(100,p.stock/Math.max(p.reorder*3,1)*100);
+    const col=st==='Out of Stock'?'var(--red)':st==='Low Stock'?'var(--amber)':st==='Reserved'?'var(--purple)':'var(--green)';
+    return `<tr data-id="${p.id}" class="${flashId===p.id?'flash':''}">
+      <td class="mono">${hl(p.id,q)}</td><td class="mono">${hl(p.oem,q)}</td><td>${hl(p.name,q)}</td><td class="muted">${esc(p.cat)}</td>
+      <td><div class="models">${p.models.map(m=>`<span class="mchip">${esc(m)}</span>`).join('')}</div></td>
+      <td class="num">${money(p.wac)}</td>
+      <td class="num"><div class="stock-cell"><b>${p.stock}</b>${p.reserved?`<span class="muted" title="Reserved">(${p.reserved} res)</span>`:''}<div class="bar"><i style="width:${pct}%;--c:${col}"></i></div></div></td>
+      <td class="num muted">${p.reorder}</td>
+      <td><span class="tag ${STATUS_CLS[st]}">${st}</span></td>
+      <td><div class="act">
+        <button class="ib" data-act="dec" title="Issue stock (−1, Shift −10)">−</button>
+        <button class="ib" data-act="inc" title="Add stock at current cost (+1, Shift +10)">+</button>
+        <button class="ib" data-act="recv" title="Receive at cost">⇣</button>
+        <button class="ib ${p.reserved?'on':''}" data-act="res" title="Reserve / release all stock">⚑</button>
+      </div></td></tr>`;
+  }).join('') : `<tr><td colspan="10" class="empty">No parts match the current filters.</td></tr>`;
+  document.querySelectorAll('#tbl th[data-k]').forEach(th=>{
+    th.querySelector('.arr').textContent = th.dataset.k===S.sort.k ? (S.sort.dir>0?'▲':'▼') : '';
+  });
+  document.getElementById('rowCount').textContent=`Showing ${rows.length} of ${S.parts.length} parts · ${S.parts.filter(p=>statusOf(p)==='Low Stock'||statusOf(p)==='Out of Stock').length} need attention`;
+}
+
+function agingData(){
+  const b={active:0,slow:0,dead:0};
+  S.parts.forEach(p=>{const v=p.stock*p.wac; if(p.age<=90) b.active+=v; else if(p.age<=180) b.slow+=v; else b.dead+=v;});
+  return b;
+}
+let chUsage,chAging;
+function initCharts(){
+  applyChartTheme();
+  chUsage=new Chart(document.getElementById('cUsage'),{type:'line',
+    data:{labels:MONTHS,datasets:LINES.map(l=>({label:l,data:[],borderColor:LINE_COLOR[l],backgroundColor:LINE_COLOR[l]+'22',tension:.35,borderWidth:2,pointRadius:2,fill:false}))},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{position:'bottom',labels:{boxWidth:10,usePointStyle:true,generateLabels:ch=>Chart.defaults.plugins.legend.labels.generateLabels(ch).map(l=>({...l,text:T(l.text)}))}},tooltip:{callbacks:{label:c=>`${T(c.dataset.label)}: ${c.parsed.y.toLocaleString()} ${T('units')}`}}},
+      scales:{y:{beginAtZero:true,title:{display:true,text:'Units consumed'},grid:{color:getComputedStyle(document.documentElement).getPropertyValue('--chart-grid').trim()||'#1f2733'}},x:{grid:{display:false}}}}});
+  chAging=new Chart(document.getElementById('cAging'),{type:'doughnut',
+    data:{labels:['Active (≤90d)','Slow (91–180d idle)','Dead (>180d idle)'],datasets:[{data:[0,0,0],backgroundColor:['#22c55e','#f59e0b','#ef4444'],borderColor:getComputedStyle(document.documentElement).getPropertyValue('--panel').trim()||'#151b23',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'66%',plugins:{legend:{position:'right',labels:{boxWidth:10,usePointStyle:true}},
+      tooltip:{callbacks:{label:c=>`${c.label}: ${money0(c.parsed)} (${(c.parsed/c.dataset.data.reduce((a,b)=>a+b,0)*100).toFixed(1)}%)`}}}}});
+}
+function applyChartTheme(){
+  const isLight = document.documentElement.classList.contains('light');
+  const textColor = isLight ? '#64748b' : '#8b98a9';
+  const gridColor = isLight ? '#e2e8f0' : '#1f2733';
+  const panelColor = isLight ? '#ffffff' : '#151b23';
+  Chart.defaults.color = textColor;
+  Chart.defaults.borderColor = isLight ? '#e2e8f0' : '#283241';
+  Chart.defaults.font.family = (typeof curLang!=='undefined' && curLang==='ar') ? 'Cairo,Inter,system-ui,sans-serif' : 'Inter,system-ui,sans-serif';
+  if(chUsage){
+    chUsage.options.scales.y.grid.color = gridColor;
+    chUsage.update('none');
+  }
+  if(chAging){
+    chAging.data.datasets[0].borderColor = panelColor;
+    chAging.update('none');
+  }
+}
+function renderCharts(){
+  chUsage.data.datasets.forEach(ds=>{
+    const raw=S.usage[ds.label];
+    ds.data = S.usageMode==='cum' ? raw.reduce((a,v,i)=>(a.push((a[i-1]||0)+v),a),[]) : raw.slice();
+  });
+  chUsage.options.scales.y.title.text = T(S.usageMode==='cum'?'Cumulative units':'Units consumed');
+  chUsage.data.labels = monthsL();
+  chUsage.update('none');
+  const a=agingData(), tot=a.active+a.slow+a.dead;
+  chAging.data.labels=[T('Active (≤90d)'),T('Slow (91–180d idle)'),T('Dead (>180d idle)')];
+  chAging.data.datasets[0].data=[a.active,a.slow,a.dead]; chAging.update('none');
+  document.getElementById('agingTotal').textContent=money0(tot)+' on hand';
+  document.getElementById('agingNote').innerHTML=`<span class="chip warn">Slow ${money0(a.slow)}</span> <span class="chip bad">Dead ${money0(a.dead)}</span> — capital tied up in idle stock: <b>${(tot?(a.slow+a.dead)/tot*100:0).toFixed(1)}%</b>`;
+}
+
+function renderProc(){
+  const open=S.pos.filter(p=>!p.received), now=Date.now();
+  const late=open.filter(p=>p.eta<now).length;
+  const totDef=S.suppliers.reduce((a,s)=>a+s.defects,0), totRec=S.suppliers.reduce((a,s)=>a+s.received,0);
+  document.getElementById('procStats').innerHTML=[
+    ['Open POs',open.length],['Late POs',late],['Open PO value',money0(open.reduce((a,p)=>a+p.qty*p.cost,0))],
+    ['Backorders',S.fulfil.filter(f=>f.status==='Backorder').length],['Overall defect rate',(totRec?totDef/totRec*100:0).toFixed(2)+'%'],['Open RMAs',S.suppliers.reduce((a,s)=>a+s.rma,0)]
+  ].map(([l,v])=>`<div class="mini"><span class="muted">${l}</span><b>${v}</b></div>`).join('');
+  document.getElementById('poBody').innerHTML=S.pos.slice().sort((a,b)=>(a.received?1:0)-(b.received?1:0)||a.eta-b.eta).map(o=>{
+    const isLate=!o.received&&o.eta<now;
+    return `<tr><td class="mono">${o.id}</td><td title="${esc(get(o.part)?.name||'')}">${o.part}</td><td class="num">${o.qty}</td><td>${fmtD(o.eta)}</td>
+    <td>${o.received?`<span class="chip good">Received</span>`:isLate?`<span class="chip bad">Late</span>`:`<span class="chip info">In transit</span>`}</td>
+    <td>${o.received?'':`<button class="btn sm" data-po="${o.id}">Receive</button>`}</td></tr>`;}).join('');
+  document.getElementById('ofBody').innerHTML=S.fulfil.map(f=>`<tr><td class="mono">${f.id}</td><td title="${esc(get(f.part)?.name||'')}">${f.part}</td><td class="num">${f.qty}</td><td class="muted">${esc(f.line)}</td>
+    <td><span class="chip ${f.status==='Shipped'?'good':f.status==='Backorder'?'bad':'warn'}">${f.status}</span></td></tr>`).join('');
+  document.getElementById('supBody').innerHTML=S.suppliers.map(s=>{
+    const r=s.received?s.defects/s.received*100:0;
+    return `<tr><td>${esc(s.name)}</td><td class="num">${s.received.toLocaleString()}</td><td class="num">${s.defects}</td>
+    <td class="num"><span class="chip ${r<=0.5?'good':r<=1.5?'warn':'bad'}">${r.toFixed(2)}%</span></td><td class="num">${s.rma}</td>
+    <td><button class="btn sm" data-def="${esc(s.name)}" title="Log a defective unit & open RMA">+ Defect</button></td></tr>`;}).join('');
+}
+
+function renderXref(){
+  const q=document.getElementById('xrQ').value.trim(), ql=q.toLowerCase(), box=document.getElementById('xrRes');
+  if(!q){ box.innerHTML=`<div class="empty" style="grid-column:1/-1">Enter an OEM number, legacy equivalent, part name or machine model.<br>Try: <a href="#" data-xr="SKF-6205">SKF-6205</a> · <a href="#" data-xr="HX-400">HX-400</a> · <a href="#" data-xr="VFD">VFD</a></div>`; return; }
+  const res=S.parts.filter(p=>[p.id,p.oem,p.name,p.cat,...p.legacy,...p.models].some(x=>x.toLowerCase().includes(ql)));
+  box.innerHTML=res.length?res.map(p=>{
+    const st=statusOf(p);
+    return `<div class="xr-card"><div style="display:flex;justify-content:space-between;gap:8px"><h4>${hl(p.name,q)}</h4><span class="tag ${STATUS_CLS[st]}">${st}</span></div>
+    <div class="muted mono">${p.id} · OEM ${hl(p.oem,q)} · ${p.stock} on hand · ${money(p.wac)}</div>
+    <div class="xr-row"><span>Legacy / equiv.</span>${p.legacy.map(l=>`<span class="xr-chip">${hl(l,q)}</span>`).join('')}</div>
+    <div class="xr-row"><span>Fits models</span>${p.models.map(m=>`<span class="xr-chip m" data-xr="${esc(m)}">${hl(m,q)}</span>`).join('')}</div>
+    <div class="xr-row"><span>Supplier</span><span>${esc(p.supplier)}</span></div></div>`;}).join('')
+    : `<div class="empty" style="grid-column:1/-1">No matches for “${esc(q)}”.</div>`;
+}
+
+const ROLES=['Admin','Inventory Manager','Procurement','Finance','Warehouse Operator','Viewer'];
+const invStatus=i=>i.paid?'Paid':(i.due<Date.now()?'Overdue':'Unpaid');
+const invCls={Paid:'good',Unpaid:'info',Overdue:'bad'};
+const statBox=a=>a.map(([l,v])=>`<div class="mini"><span class="muted">${l}</span><b>${v}</b></div>`).join('');
+function ago(d){const m=Math.round((Date.now()-d)/6e4); if(m<2) return 'just now'; if(m<60) return m+' min ago'; if(m<1440) return Math.round(m/60)+' h ago'; return Math.round(m/1440)+' d ago';}
+function renderOverview(){
+  const att=S.parts.filter(p=>['Low Stock','Out of Stock'].includes(statusOf(p))).sort((a,b)=>a.stock/Math.max(a.reorder,1)-b.stock/Math.max(b.reorder,1));
+  document.getElementById('attnBody').innerHTML=att.length?att.map(p=>{const st=statusOf(p);return `<tr><td>${esc(p.name)}<div class="muted mono">${p.id}</div></td><td class="num">${p.stock}<span class="muted">/${p.reorder}</span></td><td><span class="tag ${STATUS_CLS[st]}">${st}</span></td></tr>`}).join(''):`<tr><td colspan="3" class="empty">All parts above safety level.</td></tr>`;
+  document.getElementById('ovOrders').innerHTML=S.fulfil.slice(0,6).map(f=>`<tr><td class="mono">${f.id}</td><td>${f.part}</td><td class="num">${f.qty}</td><td><span class="chip ${f.status==='Shipped'?'good':f.status==='Backorder'?'bad':'warn'}">${f.status}</span></td></tr>`).join('');
+  const out=S.invoices.filter(i=>!i.paid), od=out.filter(i=>invStatus(i)==='Overdue');
+  document.getElementById('ovFin').innerHTML=statBox([['Outstanding',money0(out.reduce((a,i)=>a+i.amount,0))],['Overdue',money0(od.reduce((a,i)=>a+i.amount,0))],['Open POs',S.pos.filter(p=>!p.received).length],['Active users',S.users.filter(u=>u.active).length]]);
+  document.getElementById('ovFinNote').innerHTML=od.length?`<span class="chip bad">${od.length} overdue invoice(s)</span> require payment.`:`<span class="chip good">No overdue invoices</span>`;
+}
+function renderInvoices(){
+  const {q,status}=S.invF, ql=q.trim().toLowerCase();
+  const rows=S.invoices.filter(i=>(!ql||[i.id,i.supplier,i.po].some(x=>x.toLowerCase().includes(ql)))&&(!status||invStatus(i)===status));
+  const sum=f=>S.invoices.filter(f).reduce((a,i)=>a+i.amount,0);
+  document.getElementById('invStats').innerHTML=statBox([['Total billed',money0(sum(()=>true))],['Outstanding',money0(sum(i=>!i.paid))],['Overdue',money0(sum(i=>invStatus(i)==='Overdue'))],['Paid',money0(sum(i=>i.paid))]]);
+  document.getElementById('invBody').innerHTML=rows.length?rows.map(i=>{const s=invStatus(i);const btn=i.paid?'':`<button class="btn sm" data-pay="${i.id}">Mark paid</button>`;return `<tr><td class="mono">${i.id}</td><td>${esc(i.supplier)}</td><td class="mono">${i.po}</td><td>${fmtD(i.issued)}</td><td>${fmtD(i.due)}</td><td class="num">${money(i.amount)}</td><td><span class="chip ${invCls[s]}">${s}</span></td><td>${btn}</td></tr>`}).join(''):`<tr><td colspan="8" class="empty">No invoices found.</td></tr>`;
+}
+function renderUsers(){
+  document.getElementById('userStats').innerHTML=statBox([['Total users',S.users.length],['Active',S.users.filter(u=>u.active).length],['Admins',S.users.filter(u=>u.role==='Admin').length],['Suspended',S.users.filter(u=>!u.active).length]]);
+  document.getElementById('userBody').innerHTML=S.users.map(u=>{
+    const opts=ROLES.map(r=>`<option${r===u.role?' selected':''}>${r}</option>`).join('');
+    return `<tr><td><span class="avatar">${esc(u.name.split(' ').map(w=>w[0]).slice(0,2).join(''))}</span>${esc(u.name)}</td><td class="muted">${esc(u.email)}</td>
+    <td><select class="sel" data-role="${u.id}">${opts}</select></td>
+    <td class="muted">${ago(u.last)}</td><td><span class="chip ${u.active?'good':'warn'}">${u.active?'Active':'Suspended'}</span></td>
+    <td><button class="btn sm" data-utoggle="${u.id}">${u.active?'Suspend':'Reactivate'}</button> <button class="btn sm" data-udel="${u.id}">Remove</button></td></tr>`;}).join('');
+}
+function renderAll(flashId){ renderKPIs(); renderTable(flashId); renderCharts(); renderProc(); renderXref(); renderOverview(); renderInvoices(); renderUsers(); }
+
+/* ============================== UI ============================== */
+function toast(msg,type='info'){
+  const t=document.createElement('div'); t.className='toast '+type; t.textContent=msg;
+  document.getElementById('toasts').appendChild(t); setTimeout(()=>{t.style.opacity=0;t.style.transition='.3s';setTimeout(()=>t.remove(),300)},3600);
+}
+function fillSelect(el,items,withAll){ el.innerHTML=(withAll?`<option value="">${withAll}</option>`:'')+items.map(i=>`<option>${esc(i)}</option>`).join(''); }
+
+const dlgAdd=document.getElementById('dlgAdd'), dlgRecv=document.getElementById('dlgRecv');
+let recvId=null;
+function openAdd(){
+  document.getElementById('formAdd').reset();
+  document.getElementById('aId').value='SP-'+S.idSeq;
+  ['eOem','eName','eCost'].forEach(i=>document.getElementById(i).textContent='');
+  dlgAdd.showModal(); document.getElementById('aOem').focus();
+}
+function openRecv(id){
+  const p=get(id); recvId=id;
+  document.getElementById('rPart').value=`${p.id} · ${p.name}`;
+  document.getElementById('rQty').value=10; document.getElementById('rCost').value=p.wac.toFixed(2);
+  updateRecvPreview(); dlgRecv.showModal(); document.getElementById('rQty').select();
+}
+function updateRecvPreview(){
+  const p=get(recvId); if(!p) return;
+  const q=+document.getElementById('rQty').value||0, c=+document.getElementById('rCost').value||0;
+  const nw=(p.stock+q)?((p.stock*p.wac)+(q*c))/(p.stock+q):0;
+  document.getElementById('rPreview').innerHTML=`New stock <b>${p.stock+q}</b> · WAC <b>${money(p.wac)}</b> → <b>${money(nw)}</b> · Valuation Δ <b>${money0(q*c)}</b>`;
+}
+
+document.addEventListener('click',e=>{
+  const t=e.target;
+  const act=t.closest('[data-act]');
+  if(act){
+    const id=act.closest('tr').dataset.id, n=e.shiftKey?10:1, a=act.dataset.act, p=get(id);
+    if(a==='dec') issue(id,n);
+    else if(a==='inc'){ receive(id,n,p.wac); }
+    else if(a==='recv') openRecv(id);
+    else if(a==='res'){ p.reserved=p.reserved?0:p.stock; toast(p.reserved?`${p.stock} units of ${p.id} reserved`:`${p.id} reservation released`); renderAll(id); }
+    return;
+  }
+  const th=t.closest('#tbl th[data-k]');
+  if(th){ const k=th.dataset.k; S.sort=S.sort.k===k?{k,dir:-S.sort.dir}:{k,dir:1}; renderTable(); return; }
+  if(t.closest('[data-close]')){ t.closest('dialog').close(); return; }
+  if(t.matches('dialog')) { t.close(); return; }
+  const po=t.closest('[data-po]'); if(po){ receivePO(po.dataset.po); return; }
+  const df=t.closest('[data-def]');
+  if(df){ const s=S.suppliers.find(x=>x.name===df.dataset.def); s.defects++; s.rma++; toast(`Defect logged · RMA opened with ${s.name}`,'warn'); renderProc(); return; }
+  const nt=t.closest('.nt,[data-goto]');
+  if(nt){ showView(nt.dataset.view||nt.dataset.goto); return; }
+  const pay=t.closest('[data-pay]'); if(pay){ S.invoices.find(i=>i.id===pay.dataset.pay).paid=true; toast(pay.dataset.pay+' marked paid','good'); renderAll(); return; }
+  const ut=t.closest('[data-utoggle]'); if(ut){ const u=S.users.find(x=>x.id==ut.dataset.utoggle); u.active=!u.active; toast(`${u.name} ${u.active?'reactivated':'suspended'}`,u.active?'good':'warn'); renderAll(); return; }
+  const ud=t.closest('[data-udel]'); if(ud){ const u=S.users.find(x=>x.id==ud.dataset.udel); if(u.role==='Admin'&&S.users.filter(x=>x.role==='Admin').length<2){toast('Cannot remove the last admin','bad');return;} S.users=S.users.filter(x=>x!==u); toast(u.name+' removed','warn'); renderAll(); return; }
+  const xr=t.closest('[data-xr]');
+  if(xr){ e.preventDefault(); document.getElementById('xrQ').value=xr.dataset.xr; renderXref(); return; }
+  const um=t.closest('#usageMode button');
+  if(um){ S.usageMode=um.dataset.m; document.querySelectorAll('#usageMode button').forEach(b=>b.classList.toggle('on',b===um)); renderCharts(); }
+});
+
+function showView(v){
+  document.querySelectorAll('.nt').forEach(b=>b.classList.toggle('on',b.dataset.view===v));
+  document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='view-'+v));
+  history.replaceState(null,'','#'+v); window.dispatchEvent(new Event('resize'));
+}
+document.addEventListener('change',e=>{
+  const r=e.target.closest('[data-role]');
+  if(r){ const u=S.users.find(x=>x.id==r.dataset.role); if(u.role==='Admin'&&r.value!=='Admin'&&S.users.filter(x=>x.role==='Admin').length<2){toast('Cannot demote the last admin','bad');renderUsers();return;} u.role=r.value; toast(`${u.name} → ${u.role}`); renderOverview(); renderUsers(); }
+});
+document.getElementById('iQ').addEventListener('input',e=>{S.invF.q=e.target.value;renderInvoices();});
+document.getElementById('iStatus').addEventListener('change',e=>{S.invF.status=e.target.value;renderInvoices();});
+const dlgUser=document.getElementById('dlgUser');
+document.getElementById('btnUser').onclick=()=>{document.getElementById('formUser').reset();document.getElementById('eUser').textContent='';dlgUser.showModal();document.getElementById('uName').focus();};
+document.getElementById('formUser').addEventListener('submit',e=>{
+  e.preventDefault();
+  const name=uName.value.trim(), email=uEmail.value.trim(), err=document.getElementById('eUser');
+  if(!name||!/^\S+@\S+\.\S+$/.test(email)){err.textContent='Enter a name and a valid email';return;}
+  if(S.users.some(u=>u.email.toLowerCase()===email.toLowerCase())){err.textContent='Email already invited';return;}
+  S.users.push({id:S.userSeq++,name,email,role:uRole.value,active:true,last:new Date()}); dlgUser.close(); renderAll(); toast(`Invite sent to ${email}`,'good');
+});
+document.getElementById('btnAdd').onclick=openAdd;
+document.getElementById('btnAutoPO').onclick=autoPO;
+document.getElementById('btnReset').onclick=()=>{ seed(); resetFilters(); renderAll(); toast('Demo data restored'); };
+document.getElementById('xrQ').addEventListener('input',renderXref);
+document.getElementById('xrClear').onclick=()=>{document.getElementById('xrQ').value='';renderXref();};
+['rQty','rCost'].forEach(i=>document.getElementById(i).addEventListener('input',updateRecvPreview));
+
+function resetFilters(){ S.filters={q:'',cat:'',status:''}; fQ.value='';fCat.value='';fStatus.value=''; }
+const fQ=document.getElementById('fQ'),fCat=document.getElementById('fCat'),fStatus=document.getElementById('fStatus');
+fQ.addEventListener('input',()=>{S.filters.q=fQ.value;renderTable();});
+fCat.addEventListener('change',()=>{S.filters.cat=fCat.value;renderTable();});
+fStatus.addEventListener('change',()=>{S.filters.status=fStatus.value;renderTable();});
+document.getElementById('fClear').onclick=()=>{resetFilters();renderTable();};
+
+document.getElementById('formAdd').addEventListener('submit',e=>{
+  e.preventDefault();
+  const oem=aOem.value.trim(), name=aName.value.trim(), cost=parseFloat(aCost.value);
+  eOem.textContent=eName.textContent=eCost.textContent='';
+  let ok=true;
+  if(!oem){eOem.textContent='Required';ok=false;} else if(S.parts.some(p=>p.oem.toLowerCase()===oem.toLowerCase())){eOem.textContent='OEM number already exists';ok=false;}
+  if(!name){eName.textContent='Required';ok=false;}
+  if(!(cost>=0)||isNaN(cost)){eCost.textContent='Enter a valid cost';ok=false;}
+  if(!ok) return;
+  const p={id:aId.value,oem,name,cat:aCat.value,models:aModels.value.split(',').map(s=>s.trim().toUpperCase()).filter(Boolean),wac:cost,
+    stock:Math.max(0,parseInt(aStock.value)||0),reorder:Math.max(0,parseInt(aReorder.value)||0),reserved:0,line:aLine.value,age:0,legacy:[],demand:0,unful:0,supplier:aSup.value};
+  S.parts.unshift(p); S.idSeq++; dlgAdd.close();
+  S.sort={k:'id',dir:1}; resetFilters(); renderAll(p.id); toast(`${p.id} added to inventory`,'good');
+});
+document.getElementById('formRecv').addEventListener('submit',e=>{
+  e.preventDefault();
+  const q=parseInt(rQty.value), c=parseFloat(rCost.value);
+  if(!(q>0)||!(c>=0)||isNaN(c)){ toast('Enter a valid quantity and cost','bad'); return; }
+  receive(recvId,q,c); dlgRecv.close(); toast(`Received ${q} × ${get(recvId).id} · WAC ${money(get(recvId).wac)}`,'good');
+});
+
+/* theme toggle */
+function syncThemeUI(){
+  const isLight = document.documentElement.classList.contains('light');
+  const icon = document.getElementById('themeIcon');
+  const btn = document.getElementById('btnTheme');
+  const label = isLight ? 'Switch to dark mode' : 'Switch to light mode';
+  if(icon) icon.textContent = isLight ? 'dark_mode' : 'light_mode';
+  if(btn){
+    btn.setAttribute('aria-label', label);
+    btn.setAttribute('title', label);
+  }
+  applyChartTheme();
+}
+function setTheme(mode){
+  if(mode==='light'){
+    document.documentElement.classList.add('light');
+    localStorage.setItem('autoparts_theme','light');
+  } else {
+    document.documentElement.classList.remove('light');
+    localStorage.setItem('autoparts_theme','dark');
+  }
+  syncThemeUI();
+}
+function toggleTheme(){
+  const isLight = document.documentElement.classList.contains('light');
+  setTheme(isLight ? 'dark' : 'light');
+  applyI18n();
+}
+document.getElementById('btnTheme').onclick = toggleTheme;
+const savedTheme = localStorage.getItem('autoparts_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+if(savedTheme==='light') document.documentElement.classList.add('light');
+syncThemeUI();
+
+/* ============ i18n DOM translator (Arabic) ============ */
+const AR_EXACT = new Map(Object.entries({
+  'Part':'القطعة','Stock':'المخزون','Status':'الحالة','Order':'الطلب','Qty':'الكمية',
+  'Recent Orders':'أحدث الطلبات','All orders':'كل الطلبات','Finance Snapshot':'ملخص مالي','All invoices':'كل الفواتير',
+  'Usage Rate by Machine Line':'معدل الاستهلاك حسب خط الإنتاج','Monthly':'شهري','Cumulative':'تراكمي',
+  'Needs Attention':'يحتاج انتباه','Open inventory':'فتح المخزون','Spare Parts Inventory':'مخزون قطع الغيار',
+  'Flag next pick as error':'تحديد السحب التالي كخطأ','All categories':'كل الفئات','All statuses':'كل الحالات',
+  'In Stock':'متوفر','Low Stock':'مخزون منخفض','Out of Stock':'نفد المخزون','Reserved':'محجوز','Clear':'مسح',
+  'Part ID':'رقم القطعة','OEM No.':'رقم OEM','Name':'الاسم','Category':'الفئة','Compatible Models':'الموديلات المتوافقة',
+  'Unit Cost':'تكلفة الوحدة','Safety Lvl':'حد الأمان','Actions':'الإجراءات','Cross-Reference Engine':'محرك المراجع المتقاطعة',
+  'OEM · legacy equivalents · machine compatibility':'OEM · المكافئات القديمة · توافق الماكينات',
+  'Orders & Procurement':'الطلبات والمشتريات','Inbound Purchase Orders':'أوامر الشراء الواردة','Auto-PO low stock':'أمر شراء تلقائي للمنخفض',
+  'PO':'أمر شراء','ETA':'الوصول المتوقع','Outbound Fulfillments':'عمليات الصرف الصادرة',
+  'auto-logged on stock issue':'تُسجَّل تلقائياً عند صرف المخزون','Dest. line':'خط الوجهة',
+  'Supplier RMA / Defect Rates':'مرتجعات الموردين / معدلات العيوب','Supplier':'المورد',"Recv'd":'المستلم','Defects':'العيوب',
+  'Rate':'النسبة','Open RMA':'مرتجعات مفتوحة',
+  'Invoices':'الفواتير','Supplier bills are raised automatically when a PO is received':'تُنشأ فواتير الموردين تلقائياً عند استلام أمر الشراء',
+  'Unpaid':'غير مدفوعة','Overdue':'متأخرة','Paid':'مدفوعة','Invoice':'الفاتورة','Issued':'تاريخ الإصدار','Due':'الاستحقاق','Amount':'المبلغ',
+  'Total billed':'إجمالي الفواتير','Outstanding':'المستحق','Mark paid':'تحديد كمدفوعة',
+  'Users & Access':'المستخدمون والصلاحيات','+ Invite User':'+ دعوة مستخدم','Total users':'إجمالي المستخدمين','Active':'نشط','Admins':'المديرون',
+  'Suspended':'موقوف','Email':'البريد الإلكتروني','Role':'الدور','Last active':'آخر نشاط','Suspend':'إيقاف','Reactivate':'إعادة تفعيل','Remove':'حذف',
+  'Active users':'المستخدمون النشطون',
+  'Admin':'مدير النظام','Inventory Manager':'مدير المخزون','Procurement':'المشتريات','Finance':'المالية','Warehouse Operator':'مشغل مستودع','Viewer':'مشاهد',
+  'Invite User':'دعوة مستخدم','Full name *':'الاسم الكامل *','Email *':'البريد الإلكتروني *','Cancel':'إلغاء','Send Invite':'إرسال الدعوة',
+  'Add New Spare Part':'إضافة قطعة غيار جديدة','OEM Number *':'رقم OEM *','Name *':'الاسم *','Machine line':'خط الماكينة',
+  'Compatible machine models (comma separated)':'موديلات الماكينات المتوافقة (مفصولة بفاصلة)','Unit cost ($) *':'تكلفة الوحدة ($) *',
+  'Opening stock':'المخزون الافتتاحي','Safety reorder level':'حد إعادة الطلب الآمن','Add Part':'إضافة القطعة',
+  'Receive Stock':'استلام مخزون','Quantity received':'الكمية المستلمة','Unit cost ($)':'تكلفة الوحدة ($)','Post Receipt':'تسجيل الاستلام',
+  'New stock':'المخزون الجديد','· WAC':'· المتوسط المرجح','· Valuation Δ':'· فرق التقييم','Receive':'استلام','Received':'مستلم','Late':'متأخر','In transit':'في الطريق',
+  'Shipped':'تم الشحن','Packed':'تم التجهيز','Backorder':'طلب مؤجل','+ Defect':'+ عيب',
+  'Open POs':'أوامر شراء مفتوحة','Late POs':'أوامر شراء متأخرة','Open PO value':'قيمة أوامر الشراء المفتوحة','Backorders':'طلبات مؤجلة',
+  'Overall defect rate':'معدل العيوب الكلي','Open RMAs':'مرتجعات مفتوحة',
+  'Legacy / equiv.':'قديم / مكافئ','Fits models':'يناسب الموديلات','Outstanding ':'المستحق',
+  'Enter an OEM number, legacy equivalent, part name or machine model.':'أدخل رقم OEM أو مكافئاً قديماً أو اسم القطعة أو موديل الماكينة.','Try:':'جرّب:',
+  'No parts match the current filters.':'لا توجد قطع تطابق عوامل التصفية الحالية.','All parts above safety level.':'جميع القطع فوق حد الأمان.',
+  'No invoices found.':'لا توجد فواتير.','require payment.':'تتطلب السداد.','No overdue invoices':'لا توجد فواتير متأخرة','just now':'الآن',
+  'Inventory Turnover':'دوران المخزون','Stockout Rate':'معدل نفاد المخزون','Pick Accuracy':'دقة الالتقاط','Order Lead Time':'مدة تنفيذ الطلب',
+  'Inventory Valuation':'تقييم المخزون','days':'يوم','COGS / Avg Inventory':'تكلفة المبيعات / متوسط المخزون','Σ stock × weighted avg cost':'Σ المخزون × متوسط التكلفة المرجح',
+  'On target ≥6':'ضمن الهدف ≥6','Below 6':'أقل من 6','Low':'منخفض','Watch':'مراقبة','High':'مرتفع','Below 99':'أقل من 99','Poor':'ضعيف','Slow':'بطيء',
+  'Active (≤90d)':'نشط (≤90 يوم)','Slow (91–180d idle)':'بطيء (خامل 91–180 يوم)','Dead (>180d idle)':'راكد (خامل >180 يوم)',
+  'Units consumed':'الوحدات المستهلكة','Cumulative units':'الوحدات التراكمية','units':'وحدة',
+  'Required':'مطلوب','OEM number already exists':'رقم OEM موجود مسبقاً','Enter a valid cost':'أدخل تكلفة صحيحة',
+  'Enter a name and a valid email':'أدخل الاسم وبريداً إلكترونياً صحيحاً','Email already invited':'تمت دعوة هذا البريد مسبقاً',
+  'Enter a valid quantity and cost':'أدخل كمية وتكلفة صحيحتين','Demo data restored':'تمت استعادة البيانات التجريبية',
+  'Cannot remove the last admin':'لا يمكن حذف المدير الأخير','Cannot demote the last admin':'لا يمكن تخفيض صلاحية المدير الأخير',
+  'No low-stock parts without an open PO':'لا توجد قطع منخفضة بدون أمر شراء مفتوح',
+  'Switch to light mode':'التبديل إلى الوضع النهاري','Switch to dark mode':'التبديل إلى الوضع الليلي',
+  'The next stock decrement will be recorded as an incorrect pick':'سيتم تسجيل الخصم التالي من المخزون كسحب خاطئ',
+  'Reserved ':'محجوز','Log a defective unit & open RMA':'تسجيل وحدة معيبة وفتح مرتجع','Receive at cost':'استلام بالتكلفة',
+  'Reserve / release all stock':'حجز / إلغاء حجز كل المخزون',
+  'Search Part ID, OEM number or name…':'ابحث برقم القطعة أو OEM أو الاسم…',
+  'Look up OEM number, legacy / superseded number, part name or machine model (e.g. SKF-6205, HX-400)…':'ابحث برقم OEM أو الرقم القديم أو اسم القطعة أو موديل الماكينة (مثال: SKF-6205, HX-400)…',
+  'Search invoice, supplier or PO…':'ابحث بالفاتورة أو المورد أو أمر الشراء…','e.g. 6208-2RS':'مثال: 6208-2RS','Part description':'وصف القطعة',
+  'CNC Line':'خط CNC','Press Line':'خط الكبس','Conveyor Line':'خط السيور الناقلة','Packaging Line':'خط التعبئة',
+  'Bearings':'رولمان بلي','Hydraulics':'هيدروليك','Electrical':'كهرباء','Fasteners':'مثبتات','Filtration':'فلترة','Drives & Belts':'محركات وسيور','Sensors':'حساسات',
+  'Deep Groove Ball Bearing 6205':'رولمان كروي بمجرى عميق 6205','Spherical Roller Bearing 22210':'رولمان أسطواني كروي 22210',
+  'Hydraulic Cylinder Seal Kit 80mm':'طقم جلب سلندر هيدروليك 80 مم','Directional Valve D03 24VDC':'صمام توجيه D03 24 فولت DC',
+  'Vane Pump 25cc/rev':'مضخة ريشية 25 سم³/دورة','Contactor 24VDC 10A':'كونتاكتور 24 فولت DC 10 أمبير',
+  'Variable Frequency Drive 2.2kW':'محول تردد متغير 2.2 كيلوواط','DIN Power Supply 24V 10A':'مزود طاقة DIN 24 فولت 10 أمبير',
+  'Hex Bolt M8x40 A2 (box/100)':'مسمار سداسي M8x40 A2 (علبة/100)','High-Tensile Bolt M12x70 (box/50)':'مسمار عالي الشد M12x70 (علبة/50)',
+  'Lock Nut M20 Nylon (box/25)':'صامولة قفل M20 نايلون (علبة/25)','Hydraulic Return Filter 10µm':'فلتر راجع هيدروليك 10 ميكرون',
+  'Coolant Mist Filter Element':'عنصر فلتر رذاذ التبريد','Spindle Oil Filter':'فلتر زيت المغزل','Timing Belt HTD 960-8M-30':'سير توقيت HTD 960-8M-30',
+  'V-Belt SPB 2240 (matched pair)':'سير V SPB 2240 (زوج متطابق)','Jaw Coupling Insert 28mm':'إدراج وصلة فكية 28 مم',
+  'Inductive Proximity Sensor M18':'حساس قرب حثي M18','Incremental Encoder 1024 PPR':'مشفّر تزايدي 1024 PPR',
+  'Safety Light Curtain Receiver':'مستقبل ستارة ضوئية للأمان','Pneumatic FRL Unit 1/4"':'وحدة FRL هوائية 1/4"','AC Servo Motor 400W':'محرك سيرفو AC 400 واط'
+}));
+const tn = s => AR_EXACT.get(s) || s;
+const AR_RE = [
+  [/^Asset Aging/, ()=>'تقادم الأصول · المخزون بطيء الحركة'],
+  [/^Click .*reserve\/release$/, ()=>'انقر ± للتعديل بمقدار 1 · Shift+نقر لـ 10 · ⇣ استلام المخزون بالتكلفة · ⚑ حجز/إلغاء الحجز'],
+  [/^Issue stock/, ()=>'صرف مخزون (−1، Shift −10)'],
+  [/^Add stock at current cost/, ()=>'إضافة مخزون بالتكلفة الحالية (+1، Shift +10)'],
+  [/^Showing (\d+) of (\d+) parts · (\d+) need attention$/, m=>`عرض ${m[1]} من ${m[2]} قطعة · ${m[3]} تحتاج انتباه`],
+  [/^(\d+) unfulfilled \/ ([\d,]+) demands$/, m=>`${m[1]} غير ملباة / ${m[2]} طلب`],
+  [/^([\d,]+) correct \/ ([\d,]+) orders$/, m=>`${m[1]} صحيح / ${m[2]} طلب`],
+  [/^avg PO → receiving · (\d+) POs$/, m=>`متوسط أمر الشراء → الاستلام · ${m[1]} أمر`],
+  [/^≤10d$/, ()=>'≤10 أيام'],
+  [/^Avg (.+)$/, m=>`المتوسط ${m[1]}`],
+  [/^Slow (\$.+)$/, m=>`بطيء ${m[1]}`],
+  [/^Dead (\$.+)$/, m=>`راكد ${m[1]}`],
+  [/^— capital tied up in idle stock:$/, ()=>'— رأس مال مجمّد في مخزون خامل:'],
+  [/^(.+) on hand$/, m=>`${m[1]} في المخزون`],
+  [/^\((\d+) res\)$/, m=>`(${m[1]} محجوز)`],
+  [/^(\S+) · OEM (.+) · (\d+) on hand · (.+)$/, m=>`${m[1]} · OEM ${m[2]} · ${m[3]} في المخزون · ${m[4]}`],
+  [/^No matches for “(.+)”\.$/, m=>`لا نتائج لـ «${m[1]}».`],
+  [/^(\d+) overdue invoice\(s\)$/, m=>`${m[1]} فاتورة متأخرة`],
+  [/^(\d+) min ago$/, m=>`منذ ${m[1]} دقيقة`],
+  [/^(\d+) h ago$/, m=>`منذ ${m[1]} ساعة`],
+  [/^(\d+) d ago$/, m=>`منذ ${m[1]} يوم`],
+  [/^Mis-pick recorded for (\S+) — pick accuracy impacted$/, m=>`تم تسجيل سحب خاطئ للقطعة ${m[1]} — تأثرت دقة الالتقاط`],
+  [/^Stock-out: (\d+) × (.+) unfulfilled$/, m=>`نفاد المخزون: ${m[1]} × ${tn(m[2])} غير ملباة`],
+  [/^(\S+) at\/below safety level \((\d+)\/(\d+)\)$/, m=>`${m[1]} عند/دون حد الأمان (${m[2]}/${m[3]})`],
+  [/^(\d+) units of (\S+) reserved$/, m=>`تم حجز ${m[1]} وحدة من ${m[2]}`],
+  [/^(\S+) reservation released$/, m=>`تم إلغاء حجز ${m[1]}`],
+  [/^(PO-\d+) received · \+(\d+) × (\S+) · WAC → (.+)$/, m=>`تم استلام ${m[1]} · +${m[2]} × ${m[3]} · المتوسط المرجح → ${m[4]}`],
+  [/^Received (\d+) × (\S+) · WAC (.+)$/, m=>`تم استلام ${m[1]} × ${m[2]} · المتوسط المرجح ${m[3]}`],
+  [/^(\d+) purchase order\(s\) raised for low-stock parts$/, m=>`تم إنشاء ${m[1]} أمر شراء للقطع منخفضة المخزون`],
+  [/^Defect logged · RMA opened with (.+)$/, m=>`تم تسجيل عيب · فتح مرتجع مع ${m[1]}`],
+  [/^(INV-\d+) marked paid$/, m=>`تم تحديد ${m[1]} كمدفوعة`],
+  [/^(.+) (reactivated|suspended)$/, m=>`${m[1]} ${m[2]==='reactivated'?'أُعيد تفعيله':'تم إيقافه'}`],
+  [/^(.+) removed$/, m=>`تم حذف ${m[1]}`],
+  [/^(.+) → (Admin|Inventory Manager|Procurement|Finance|Warehouse Operator|Viewer)$/, m=>`${m[1]} → ${tn(m[2])}`],
+  [/^Invite sent to (.+)$/, m=>`تم إرسال الدعوة إلى ${m[1]}`],
+  [/^(\S+) added to inventory$/, m=>`تمت إضافة ${m[1]} إلى المخزون`]
+];
+function trStr(s){
+  const t=s.trim(); if(!t) return s;
+  let r=AR_EXACT.get(t);
+  if(r===undefined){ for(const [re,fn] of AR_RE){ const m=t.match(re); if(m){ r=fn(m); break; } } }
+  if(r===undefined) return s;
+  return s.replace(t,()=>r);
+}
+const T = s => (typeof curLang!=='undefined' && curLang==='ar') ? trStr(s) : s;
+const i18nRec=new WeakMap(), attrRec=new WeakMap();
+function processText(node){
+  const v=node.nodeValue, rec=i18nRec.get(node);
+  if(rec && v===rec.tr){
+    if(curLang==='ar') return;
+    node.nodeValue=rec.orig; i18nRec.delete(node); return;
+  }
+  if(rec) i18nRec.delete(node);
+  if(curLang!=='ar') return;
+  const tr=trStr(v);
+  if(tr===v) return;
+  const p=node.parentNode;
+  if(p && p.nodeName==='OPTION' && !p.hasAttribute('value')) p.setAttribute('value',v.trim());
+  i18nRec.set(node,{orig:v,tr}); node.nodeValue=tr;
+}
+function processAttrs(el){
+  for(const a of ['placeholder','title','aria-label']){
+    if(!el.hasAttribute(a)) continue;
+    const v=el.getAttribute(a), rec=attrRec.get(el)||{}, r=rec[a];
+    if(r && v===r.tr){
+      if(curLang==='ar') continue;
+      el.setAttribute(a,r.orig); delete rec[a]; continue;
+    }
+    if(r) delete rec[a];
+    if(curLang!=='ar') continue;
+    const tr=trStr(v);
+    if(tr!==v){ rec[a]={orig:v,tr}; attrRec.set(el,rec); el.setAttribute(a,tr); }
+  }
+}
+function i18nWalk(root){
+  if(root.nodeType===3){ processText(root); return; }
+  if(root.nodeType!==1 || ['SCRIPT','STYLE','CANVAS'].includes(root.nodeName)) return;
+  processAttrs(root);
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_TEXT);
+  let n; while((n=w.nextNode())){
+    if(n.nodeType===3){ if(n.parentNode && ['SCRIPT','STYLE'].includes(n.parentNode.nodeName)) continue; processText(n); }
+    else processAttrs(n);
+  }
+}
+const i18nObs=new MutationObserver(recs=>{
+  for(const r of recs){
+    if(r.type==='characterData') processText(r.target);
+    else r.addedNodes.forEach(i18nWalk);
+  }
+});
+i18nObs.observe(document.body,{childList:true,subtree:true,characterData:true});
+function applyI18n(){ i18nWalk(document.body); document.title = curLang==='ar' ? 'SparesOps — مركز التحكم في المخزون' : 'SparesOps — Inventory Command Center'; }
+
+/* language toggle */
+let curLang = localStorage.getItem('autoparts_lang') || 'ar';
+function setDashboardLang(l){
+  curLang = l;
+  localStorage.setItem('autoparts_lang', l);
+  document.documentElement.lang = l;
+  document.documentElement.dir = (l === 'ar') ? 'rtl' : 'ltr';
+  const isAr = (l === 'ar');
+  const langLabel = document.getElementById('langLabel');
+  if(langLabel) langLabel.textContent = isAr ? 'English' : 'العربية';
+  
+  const backBtn = document.getElementById('btnBackStore');
+  if(backBtn) backBtn.innerHTML = isAr ? 'العودة للمتجر ⭠' : '⭠ Back to Store';
+  
+  const resetBtn = document.getElementById('btnReset');
+  if(resetBtn) resetBtn.textContent = isAr ? 'إعادة تعيين البيانات' : 'Reset demo data';
+  
+  const addBtn = document.getElementById('btnAdd');
+  if(addBtn) addBtn.textContent = isAr ? '+ إضافة قطعة غيار جديدة' : '+ Add New Spare Part';
+  
+  const liveLbl = document.getElementById('lblLive');
+  if(liveLbl) liveLbl.textContent = isAr ? 'بيانات حية' : 'Live state';
+
+  const tOverview = document.getElementById('tab-overview');
+  if(tOverview) tOverview.textContent = isAr ? 'نظرة عامة' : 'Overview';
+  const tOrders = document.getElementById('tab-orders');
+  if(tOrders) tOrders.textContent = isAr ? 'الطلبات' : 'Orders';
+  const tInventory = document.getElementById('tab-inventory');
+  if(tInventory) tInventory.textContent = isAr ? 'المخزون' : 'Inventory';
+  const tInvoices = document.getElementById('tab-invoices');
+  if(tInvoices) tInvoices.textContent = isAr ? 'الفواتير' : 'Invoices';
+  const tUsers = document.getElementById('tab-users');
+  if(tUsers) tUsers.textContent = isAr ? 'المستخدمين' : 'Users';
+
+  const titleEl = document.querySelector('header h1');
+  if(titleEl) titleEl.textContent = isAr ? 'SparesOps · مركز التحكم في المخزون' : 'SparesOps · Inventory Command Center';
+  const subEl = document.querySelector('header .sub');
+  if(subEl) subEl.textContent = isAr ? 'المصنع 02 — قطع غيار الصيانة · تقييم المخزون وفق المتوسط المرجح' : 'Plant 02 — Maintenance Spare Parts · Weighted Average Cost valuation';
+
+  syncThemeUI();
+  renderAll();
+  applyI18n();
+}
+document.getElementById('btnLang').onclick = () => {
+  setDashboardLang(curLang === 'ar' ? 'en' : 'ar');
+};
+
+/* init */
+const aOem=document.getElementById('aOem'),aName=document.getElementById('aName'),aCost=document.getElementById('aCost'),aId=document.getElementById('aId'),
+  aModels=document.getElementById('aModels'),aStock=document.getElementById('aStock'),aReorder=document.getElementById('aReorder'),aCat=document.getElementById('aCat'),
+  aLine=document.getElementById('aLine'),aSup=document.getElementById('aSup'),eOem=document.getElementById('eOem'),eName=document.getElementById('eName'),eCost=document.getElementById('eCost'),
+  rQty=document.getElementById('rQty'),rCost=document.getElementById('rCost');
+const uName=document.getElementById('uName'),uEmail=document.getElementById('uEmail'),uRole=document.getElementById('uRole');
+seed();
+fillSelect(uRole,ROLES); fillSelect(fCat,CATS,'All categories'); fillSelect(aCat,CATS); fillSelect(aLine,LINES); fillSelect(aSup,SUPPLIERS0.map(s=>s.name));
+initCharts();
+setDashboardLang(curLang);
+if(['overview','orders','inventory','invoices','users'].includes(location.hash.slice(1))) showView(location.hash.slice(1));
+const tickClock=()=>{document.getElementById('clock').textContent=new Date().toLocaleTimeString(LOC(),{hour12:false});};
+setInterval(tickClock,1000); tickClock();
+</script>
+</body>
+</html>

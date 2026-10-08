@@ -7,10 +7,12 @@ import {
 } from '../lib/vehicleCatalog'
 import { useToast } from '../context/ToastContext'
 import { useVehicle } from '../context/VehicleContext'
+import { useLanguage } from '../context/LanguageContext'
 
 export function VehicleModal() {
   const { vehicle, setVehicle, modalOpen, closeVehicleModal } = useVehicle()
   const { showToast } = useToast()
+  const { t } = useLanguage()
   const [draft, setDraft] = useState(vehicle)
   const [visible, setVisible] = useState(false)
 
@@ -86,10 +88,10 @@ export function VehicleModal() {
             </div>
             <div>
               <h3 id="ap-vehicle-modal-title" className="font-title-lg text-title-lg text-on-surface">
-                Select Active Vehicle
+                {t('selectVehicleModalTitle')}
               </h3>
               <p className="font-body-sm text-body-sm text-on-surface-variant">
-                Calibrate fitment filters for your chassis
+                {t('selectVehicleModalSubtitle')}
               </p>
             </div>
           </div>
@@ -103,12 +105,12 @@ export function VehicleModal() {
         </div>
         <div className="p-6 space-y-4">
           <div className="space-y-1.5">
-            <label className="font-label-sm text-label-sm text-on-surface-variant">FAST VIN DECODE</label>
+            <label className="font-label-sm text-label-sm text-on-surface-variant">{t('fastVinDecode')}</label>
             <div className="flex gap-2">
               <input
                 type="text"
                 maxLength={17}
-                placeholder="Enter 17-digit VIN..."
+                placeholder={t('enterVinPlaceholder')}
                 value={draft.vin}
                 onChange={(e) => setDraft((d) => ({ ...d, vin: e.target.value.toUpperCase() }))}
                 className="flex-1 h-10 px-3 rounded-lg bg-surface-container-low border border-outline-variant text-on-surface font-data-mono-sm text-data-mono-sm uppercase outline-none focus:ring-2 focus:ring-primary-container"
@@ -118,18 +120,18 @@ export function VehicleModal() {
                 onClick={decodeVin}
                 className="px-4 h-10 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary transition-colors"
               >
-                Decode
+                {t('decodeVinBtn')}
               </button>
             </div>
           </div>
           <div className="flex items-center gap-2 my-2">
             <div className="h-px bg-outline-variant/40 flex-1" />
-            <span className="font-label-sm text-label-sm text-outline uppercase">Or Choose Year / Make / Model</span>
+            <span className="font-label-sm text-label-sm text-outline uppercase">{t('orChooseVehicle')}</span>
             <div className="h-px bg-outline-variant/40 flex-1" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="font-label-sm text-label-sm text-on-surface-variant">Year</label>
+              <label className="font-label-sm text-label-sm text-on-surface-variant">{t('year')}</label>
               <select
                 value={draft.year}
                 onChange={(e) => setDraft((d) => ({ ...d, year: e.target.value }))}
@@ -143,7 +145,7 @@ export function VehicleModal() {
               </select>
             </div>
             <div className="space-y-1">
-              <label className="font-label-sm text-label-sm text-on-surface-variant">Make</label>
+              <label className="font-label-sm text-label-sm text-on-surface-variant">{t('make')}</label>
               <select
                 value={draft.make}
                 onChange={(e) => updateMake(e.target.value)}
@@ -157,7 +159,7 @@ export function VehicleModal() {
               </select>
             </div>
             <div className="space-y-1">
-              <label className="font-label-sm text-label-sm text-on-surface-variant">Model</label>
+              <label className="font-label-sm text-label-sm text-on-surface-variant">{t('model')}</label>
               <select
                 value={draft.model}
                 onChange={(e) => updateModel(e.target.value)}
@@ -171,7 +173,7 @@ export function VehicleModal() {
               </select>
             </div>
             <div className="space-y-1">
-              <label className="font-label-sm text-label-sm text-on-surface-variant">Engine</label>
+              <label className="font-label-sm text-label-sm text-on-surface-variant">{t('engine')}</label>
               <select
                 value={draft.engine}
                 onChange={(e) => setDraft((d) => ({ ...d, engine: e.target.value }))}
@@ -192,7 +194,7 @@ export function VehicleModal() {
             className="px-4 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors"
             onClick={closeVehicleModal}
           >
-            Cancel
+            {t('cancel')}
           </button>
           <button
             type="button"
@@ -200,7 +202,7 @@ export function VehicleModal() {
             className="px-5 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md transition-colors shadow-sm flex items-center gap-1.5"
           >
             <span className="material-symbols-outlined text-[16px]">check</span>
-            Confirm & Calibrate
+            {t('confirmAndCalibrate')}
           </button>
         </div>
       </div>

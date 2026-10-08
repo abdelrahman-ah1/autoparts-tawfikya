@@ -3,11 +3,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useOrder } from '../context/OrderContext'
 import { useVehicle } from '../context/VehicleContext'
+import { useLanguage } from '../context/LanguageContext'
 
 export function CheckoutPage() {
   const { items, removeFromCart, updateQuantity, subtotal, taxTotal } = useCart()
   const { placeOrder } = useOrder()
   const { vehicle } = useVehicle()
+  const { t } = useLanguage()
   const navigate = useNavigate()
 
   const [shippingMethod, setShippingMethod] = useState('standard') // standard | priority | courier
@@ -42,16 +44,16 @@ export function CheckoutPage() {
           <div className="w-16 h-16 rounded-2xl bg-surface-container-high flex items-center justify-center mx-auto mb-4 text-outline">
             <span className="material-symbols-outlined text-4xl">shopping_cart</span>
           </div>
-          <h2 className="font-headline-md text-headline-md font-bold text-on-surface">Your Cart is Empty</h2>
+          <h2 className="font-headline-md text-headline-md font-bold text-on-surface">{t('cartEmptyTitle')}</h2>
           <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 mb-6">
-            You don't have any parts staged for checkout yet. Add parts from the catalog or reset demo cart.
+            {t('cartEmptyDesc')}
           </p>
           <Link
             to="/catalog"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary-container text-on-primary font-title-md text-title-md font-bold hover:bg-primary transition-all shadow-xs"
           >
             <span className="material-symbols-outlined text-[18px]">search</span>
-            <span>Browse Catalog</span>
+            <span>{t('browseCatalog')}</span>
           </Link>
         </div>
       </div>
@@ -65,10 +67,10 @@ export function CheckoutPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-outline-variant/20">
           <div>
             <h1 className="font-headline-lg text-headline-lg sm:text-headline-xl text-on-surface font-extrabold tracking-tight">
-              Checkout & Dispatch
+              {t('checkoutTitle')}
             </h1>
             <p className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
-              Verified multi-supplier dispatch with OEM tolerance fitment guarantee.
+              {t('checkoutSub')}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -319,27 +321,27 @@ export function CheckoutPage() {
           <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
             <div className="bg-surface-container-lowest rounded-2xl p-4 sm:p-6 shadow-xs border border-outline-variant/30 space-y-5">
               <h3 className="font-headline-sm text-headline-sm font-bold text-on-surface pb-3 border-b border-outline-variant/20">
-                Order Summary
+                {t('orderSummary')}
               </h3>
 
               <div className="space-y-3 font-body-sm text-body-sm">
                 <div className="flex items-center justify-between text-on-surface-variant">
-                  <span>Parts Subtotal</span>
+                  <span>{t('subtotal')}</span>
                   <span className="font-data-mono-sm text-on-surface font-semibold">${subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex items-center justify-between text-on-surface-variant">
-                  <span>Shipping & Handling</span>
+                  <span>{t('shippingFee')}</span>
                   <span className="font-data-mono-sm text-on-surface font-semibold">
-                    {shippingCost === 0 ? 'FREE' : `$${shippingCost.toFixed(2)}`}
+                    {shippingCost === 0 ? t('freeShipping') : `$${shippingCost.toFixed(2)}`}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-on-surface-variant">
-                  <span>Estimated Tax</span>
+                  <span>{t('estimatedTax')}</span>
                   <span className="font-data-mono-sm text-on-surface font-semibold">${taxTotal.toFixed(2)}</span>
                 </div>
 
                 <div className="pt-3 border-t border-outline-variant/20 flex items-baseline justify-between">
-                  <span className="font-title-md text-title-md font-bold text-on-surface">Grand Total</span>
+                  <span className="font-title-md text-title-md font-bold text-on-surface">{t('totalDue')}</span>
                   <span className="font-headline-lg text-headline-lg font-extrabold text-on-surface">
                     ${grandTotal.toFixed(2)}
                   </span>
@@ -354,19 +356,18 @@ export function CheckoutPage() {
                 {isSubmitting ? (
                   <>
                     <span className="inline-block w-4 h-4 border-2 border-on-primary border-t-transparent rounded-full animate-spin"></span>
-                    <span>Processing Order...</span>
+                    <span>{t('processing')}</span>
                   </>
                 ) : (
                   <>
                     <span className="material-symbols-outlined text-[20px]">check_circle</span>
-                    <span>Confirm & Authorize Dispatch</span>
+                    <span>{t('placeOrder')}</span>
                   </>
                 )}
               </button>
 
               <div className="p-3 bg-surface-container-low rounded-xl text-center font-label-sm text-label-sm text-on-surface-variant">
-                <span>By placing this order, you activate the </span>
-                <strong className="text-on-surface">DirectFit™ OEM Tolerance Warranty</strong>.
+                <span>{t('securityGuarantee')}</span>
               </div>
             </div>
           </div>

@@ -8,6 +8,9 @@ const spaFallback = {
   name: 'spa-404-fallback',
   closeBundle() {
     copyFileSync(resolve('dist/index.html'), resolve('dist/404.html'))
+    try {
+      copyFileSync(resolve('inventory-dashboard.html'), resolve('dist/inventory-dashboard.html'))
+    } catch {}
   },
 }
 

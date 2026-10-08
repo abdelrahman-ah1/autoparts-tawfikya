@@ -3,12 +3,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import { PRODUCTS, checkFitment } from '../data/products'
 import { useVehicle } from '../context/VehicleContext'
 import { useCart } from '../context/CartContext'
+import { useLanguage } from '../context/LanguageContext'
 import { ProductExplodedView } from '../components/ProductExplodedView'
 import { MechanicShareModal } from '../components/MechanicShareModal'
 
 export function ProductDetailPage() {
   const { vehicle, openVehicleModal } = useVehicle()
   const { addToCart } = useCart()
+  const { t } = useLanguage()
   const navigate = useNavigate()
 
   const product = PRODUCTS[0] // QuietCast Ceramic Front Brake Pads
@@ -65,7 +67,7 @@ export function ProductDetailPage() {
                       : 'text-on-surface-variant hover:bg-surface-container'
                   }`}
                 >
-                  Technical Specifications
+                  {t('techSpecs')}
                 </button>
                 <button
                   onClick={() => setActiveTab('compatibility')}
@@ -75,7 +77,7 @@ export function ProductDetailPage() {
                       : 'text-on-surface-variant hover:bg-surface-container'
                   }`}
                 >
-                  Verified Vehicles & Platforms
+                  {t('verifiedVehicles')}
                 </button>
               </div>
 
@@ -279,7 +281,7 @@ export function ProductDetailPage() {
                     className="flex-1 py-3 px-5 rounded-xl bg-primary-container hover:bg-primary text-on-primary font-title-md text-title-md font-bold transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 duration-150"
                   >
                     <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
-                    <span>Add to Cart</span>
+                    <span>{t('addToCart')}</span>
                   </button>
                 </div>
 
@@ -288,7 +290,7 @@ export function ProductDetailPage() {
                   className="w-full py-3 px-5 rounded-xl bg-primary text-on-primary hover:bg-primary-container font-title-md text-title-md font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm active:scale-95 duration-150"
                 >
                   <span className="material-symbols-outlined text-[20px]">bolt</span>
-                  <span>Instant Checkout (${(product.price * qty).toFixed(2)})</span>
+                  <span>{t('instantCheckout')} (${(product.price * qty).toFixed(2)})</span>
                 </button>
 
                 <button
@@ -296,7 +298,7 @@ export function ProductDetailPage() {
                   className="w-full py-2.5 px-4 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold transition-colors flex items-center justify-center gap-1.5 border border-outline-variant/30"
                 >
                   <span className="material-symbols-outlined text-[17px] text-tertiary">send</span>
-                  <span>Share Build Sheet with Mechanic</span>
+                  <span>{t('shareMechanic')}</span>
                 </button>
               </div>
             </div>

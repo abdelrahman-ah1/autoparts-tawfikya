@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useVehicle } from '../context/VehicleContext'
+import { useLanguage } from '../context/LanguageContext'
 import { VinScannerModal } from '../components/VinScannerModal'
 
 export function HomePage() {
   const { vehicle, setVehicle } = useVehicle()
+  const { t } = useLanguage()
   const navigate = useNavigate()
 
   const [selectedYear, setSelectedYear] = useState(vehicle.year || '2018')
@@ -28,31 +30,31 @@ export function HomePage() {
 
   const categories = [
     {
-      title: 'Brake Systems',
-      subtitle: 'Ceramic Pads, Slotted Rotors, Calipers & Master Cylinders',
+      title: t('catBrakesTitle'),
+      subtitle: t('catBrakesSub'),
       icon: 'disc_full',
-      count: '1,420+ Parts',
+      count: '1,420+ ' + t('partsAvailable'),
       category: 'Brakes',
     },
     {
-      title: 'Engine & Performance',
-      subtitle: 'Plugs, Timing Belts, Water Pumps, Gaskets & Filters',
+      title: t('catEngineTitle'),
+      subtitle: t('catEngineSub'),
       icon: 'valve',
-      count: '3,890+ Parts',
+      count: '3,890+ ' + t('partsAvailable'),
       category: 'Engine',
     },
     {
-      title: 'Suspension & Steering',
-      subtitle: 'Struts, Control Arms, Tie Rods, Sway Bars & Bushings',
+      title: t('catSuspensionTitle'),
+      subtitle: t('catSuspensionSub'),
       icon: 'minor_crash',
-      count: '940+ Parts',
+      count: '940+ ' + t('partsAvailable'),
       category: 'Suspension',
     },
     {
-      title: 'Electrical & Lighting',
-      subtitle: 'Alternators, Starters, Headlights, Sensors & Relays',
+      title: t('catElectricalTitle'),
+      subtitle: t('catElectricalSub'),
       icon: 'electric_bolt',
-      count: '2,110+ Parts',
+      count: '2,110+ ' + t('partsAvailable'),
       category: 'Electrical',
     },
   ]
@@ -67,25 +69,25 @@ export function HomePage() {
         </div>
 
         <h1 className="font-display-lg text-display-lg-mobile sm:text-display-lg text-on-surface max-w-4xl mx-auto tracking-tight font-extrabold">
-          Genuine OEM &amp; Precision Aftermarket Parts.
+          {t('heroTitlePrefix')} <span className="text-primary-container">{t('heroTitleHighlight')}</span>
         </h1>
         <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mt-3 mb-8">
-          Guaranteed vehicle compatibility with direct fulfillment from verified distributors and regional hubs.
+          {t('heroSubtitle')}
         </p>
 
         {/* Selector Card Container */}
-        <div className="max-w-3xl mx-auto bg-surface-container-lowest shadow-xs rounded-2xl p-4 sm:p-8 text-left border border-outline-variant/30">
+        <div className="max-w-3xl mx-auto bg-surface-container-lowest shadow-xs rounded-2xl p-4 sm:p-8 text-start border border-outline-variant/30">
           <div className="flex items-center justify-between pb-3 mb-5 border-b border-surface-container">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
-              <span className="font-title-md text-title-md text-on-surface font-semibold">Select Your Vehicle</span>
+              <span className="font-title-md text-title-md text-on-surface font-semibold">{t('activeVehicle')}</span>
             </div>
             <button
               onClick={() => setVinScannerOpen(true)}
               className="font-label-sm text-label-sm text-primary hover:text-primary-container font-semibold flex items-center gap-1 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[16px]">qr_code_scanner</span>
-              <span>Quick VIN Scan</span>
+              <span>{t('quickVinScan')}</span>
             </button>
           </div>
 
@@ -94,7 +96,7 @@ export function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
               {/* Year */}
               <div className="flex flex-col gap-1">
-                <label className="font-label-sm text-label-sm text-on-surface-variant font-medium">01. YEAR</label>
+                <label className="font-label-sm text-label-sm text-on-surface-variant font-medium">{t('step1')}</label>
                 <div className="relative">
                   <select
                     value={selectedYear}
@@ -108,7 +110,7 @@ export function HomePage() {
                     <option value="2018">2018</option>
                     <option value="2017">2017</option>
                   </select>
-                  <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">
+                  <span className="material-symbols-outlined absolute right-2.5 rtl:right-auto rtl:left-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">
                     expand_more
                   </span>
                 </div>
@@ -116,7 +118,7 @@ export function HomePage() {
 
               {/* Make */}
               <div className="flex flex-col gap-1">
-                <label className="font-label-sm text-label-sm text-on-surface-variant font-medium">02. MAKE</label>
+                <label className="font-label-sm text-label-sm text-on-surface-variant font-medium">{t('step2')}</label>
                 <div className="relative">
                   <select
                     value={selectedMake}
@@ -128,7 +130,7 @@ export function HomePage() {
                     <option value="Honda">Honda</option>
                     <option value="BMW">BMW</option>
                   </select>
-                  <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">
+                  <span className="material-symbols-outlined absolute right-2.5 rtl:right-auto rtl:left-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">
                     expand_more
                   </span>
                 </div>
@@ -136,7 +138,7 @@ export function HomePage() {
 
               {/* Model */}
               <div className="flex flex-col gap-1">
-                <label className="font-label-sm text-label-sm text-on-surface-variant font-medium">03. MODEL</label>
+                <label className="font-label-sm text-label-sm text-on-surface-variant font-medium">{t('step3')}</label>
                 <div className="relative">
                   <select
                     value={selectedModel}
@@ -163,7 +165,7 @@ export function HomePage() {
                       </>
                     )}
                   </select>
-                  <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">
+                  <span className="material-symbols-outlined absolute right-2.5 rtl:right-auto rtl:left-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">
                     expand_more
                   </span>
                 </div>
@@ -171,7 +173,7 @@ export function HomePage() {
 
               {/* Engine */}
               <div className="flex flex-col gap-1">
-                <label className="font-label-sm text-label-sm text-on-surface-variant font-medium">04. ENGINE</label>
+                <label className="font-label-sm text-label-sm text-on-surface-variant font-medium">{t('step4')}</label>
                 <div className="relative">
                   <select
                     value={selectedEngine}
@@ -182,7 +184,7 @@ export function HomePage() {
                     <option value="2.0L-L4">2.0L L4 Dual VVT</option>
                     <option value="1.8L-Hybrid">1.8L Hybrid</option>
                   </select>
-                  <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">
+                  <span className="material-symbols-outlined absolute right-2.5 rtl:right-auto rtl:left-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">
                     expand_more
                   </span>
                 </div>
@@ -196,9 +198,9 @@ export function HomePage() {
                 className="w-full h-12 bg-primary hover:bg-primary-container text-on-primary rounded-xl font-title-md text-title-md flex items-center justify-center gap-2 shadow-xs transition-all duration-200 cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[20px]">search_check</span>
-                <span>Find Guaranteed Fitting Parts</span>
+                <span>{t('findFittingParts')}</span>
                 <span className="font-data-mono-sm text-data-mono-sm bg-on-primary/20 px-2 py-0.5 rounded text-on-primary font-normal">
-                  1,420 Available
+                  1,420 {t('partsAvailable')}
                 </span>
               </button>
             </div>
@@ -210,17 +212,17 @@ export function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-10 w-full">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
-            <h2 className="font-headline-xl text-headline-xl text-on-surface font-bold">Shop By Category</h2>
+            <h2 className="font-headline-xl text-headline-xl text-on-surface font-bold">{t('shopByCategory')}</h2>
             <p className="font-body-md text-body-md text-on-surface-variant mt-1">
-              Precision-engineered components verified for fitment on your vehicle
+              {t('shopByCategorySub')}
             </p>
           </div>
           <Link
             to="/catalog"
             className="inline-flex items-center gap-1.5 font-title-md text-title-md text-primary hover:text-primary-container transition-colors font-semibold"
           >
-            <span>View all 24 sub-systems</span>
-            <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+            <span>{t('viewAllSystems')}</span>
+            <span className="material-symbols-outlined text-[18px] rtl:rotate-180">arrow_forward</span>
           </Link>
         </div>
 
@@ -242,9 +244,9 @@ export function HomePage() {
               </div>
               <div className="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
                 <span className="font-data-mono-sm text-data-mono-sm text-on-surface-variant">{cat.count}</span>
-                <span className="font-label-md text-label-md text-primary flex items-center gap-1 group-hover:translate-x-1 transition-transform font-semibold">
-                  <span>Browse</span>
-                  <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+                <span className="font-label-md text-label-md text-primary flex items-center gap-1 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform font-semibold">
+                  <span>{t('browse')}</span>
+                  <span className="material-symbols-outlined text-[14px] rtl:rotate-180">chevron_right</span>
                 </span>
               </div>
             </Link>
@@ -260,9 +262,9 @@ export function HomePage() {
               <span className="material-symbols-outlined text-[22px]">verified</span>
             </div>
             <div>
-              <h3 className="font-title-md text-title-md text-on-surface font-bold">Guaranteed Fitment</h3>
+              <h3 className="font-title-md text-title-md text-on-surface font-bold">{t('trustFitmentTitle')}</h3>
               <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                Catalog verified against VIN specifications. Free prepaid return freight if installation fails.
+                {t('trustFitmentDesc')}
               </p>
             </div>
           </div>
@@ -271,9 +273,9 @@ export function HomePage() {
               <span className="material-symbols-outlined text-[22px]">local_shipping</span>
             </div>
             <div>
-              <h3 className="font-title-md text-title-md text-on-surface font-bold">Fast Multi-Hub Dispatch</h3>
+              <h3 className="font-title-md text-title-md text-on-surface font-bold">{t('trustDispatchTitle')}</h3>
               <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                Direct shipment from 42 certified regional warehouses for optimized delivery times.
+                {t('trustDispatchDesc')}
               </p>
             </div>
           </div>
@@ -282,9 +284,9 @@ export function HomePage() {
               <span className="material-symbols-outlined text-[22px]">support_agent</span>
             </div>
             <div>
-              <h3 className="font-title-md text-title-md text-on-surface font-bold">Technical Support</h3>
+              <h3 className="font-title-md text-title-md text-on-surface font-bold">{t('trustSupportTitle')}</h3>
               <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                Live access to certified automotive specialists for torque specs and interchange guidance.
+                {t('trustSupportDesc')}
               </p>
             </div>
           </div>

@@ -8,6 +8,12 @@
     overscroll-behavior: none;
     transition: background-color 0.2s ease, color 0.2s ease;
   }
+  html[dir="rtl"],
+  html[dir="rtl"] body,
+  html[lang="ar"],
+  html[lang="ar"] body {
+    font-family: 'Cairo', 'Inter', system-ui, -apple-system, sans-serif;
+  }
   main > :first-child {
     margin-top: 0 !important;
   }
@@ -65,6 +71,10 @@ html.dark .bg-surface-container-highest {
 }
 
 /* Typography & Outlines */
+html[dir="rtl"] .material-symbols-outlined {
+  direction: ltr;
+}
+
 html.dark .text-on-surface {
   color: #e6edf8 !important;
 }

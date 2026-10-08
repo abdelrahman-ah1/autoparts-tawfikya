@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useVehicle } from '../context/VehicleContext'
 import { useCart } from '../context/CartContext'
 import { useTheme } from '../context/ThemeContext'
+import { useLanguage } from '../context/LanguageContext'
 import { VinScannerModal } from './VinScannerModal'
 
 export function ExecutiveToolbar() {
@@ -11,6 +12,7 @@ export function ExecutiveToolbar() {
   const { setVehicle, vehicle } = useVehicle()
   const { resetDefaultCart, itemCount } = useCart()
   const { isDark, toggleTheme } = useTheme()
+  const { lang, toggleLanguage, t } = useLanguage()
   const navigate = useNavigate()
 
   const setCorolla = () => {
@@ -43,28 +45,28 @@ export function ExecutiveToolbar() {
             <div className="flex items-center justify-between w-full">
               <span className="font-label-sm text-label-sm text-primary-fixed flex items-center gap-1.5 font-bold">
                 <span className="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
-                PROTOTYPE DEMO BAR
+                {t('prototypeDemoBar')}
               </span>
               <button
                 onClick={() => setCollapsed(false)}
                 className="px-2.5 py-1 rounded-lg bg-surface-container-high/20 hover:bg-surface-container-high/40 text-white font-label-sm text-label-sm flex items-center gap-1"
               >
-                <span>Expand</span>
+                <span>{t('expand')}</span>
                 <span className="material-symbols-outlined text-[14px]">expand_less</span>
               </button>
             </div>
           ) : (
             <>
-              <div className="hidden lg:flex items-center gap-2 border-r border-outline/30 pr-3">
+              <div className="hidden lg:flex items-center gap-2 border-r rtl:border-r-0 rtl:border-l border-outline/30 pr-3 rtl:pr-0 rtl:pl-3">
                 <div className="w-7 h-7 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-bold text-xs">
                   ⚡
                 </div>
                 <div>
                   <div className="font-label-sm text-label-sm font-bold uppercase tracking-wider text-primary-fixed">
-                    Client Demo Controller
+                    {t('prototypeDemoBar')}
                   </div>
                   <div className="text-[11px] text-outline-variant truncate max-w-[140px]">
-                    Active: {vehicle.year} {vehicle.make}
+                    {vehicle.year} {vehicle.make}
                   </div>
                 </div>
               </div>
@@ -81,7 +83,7 @@ export function ExecutiveToolbar() {
                   }`}
                 >
                   <span className="material-symbols-outlined text-[15px]">directions_car</span>
-                  <span className="sm:hidden">Sedan</span><span className="hidden sm:inline">Sedan Demo (Corolla)</span>
+                  <span className="sm:hidden">Sedan</span><span className="hidden sm:inline">{t('sedanDemo')}</span>
                 </button>
 
                 <button
@@ -94,7 +96,7 @@ export function ExecutiveToolbar() {
                   }`}
                 >
                   <span className="material-symbols-outlined text-[15px]">local_shipping</span>
-                  <span className="sm:hidden">Truck</span><span className="hidden sm:inline">Truck Demo (F-150)</span>
+                  <span className="sm:hidden">Truck</span><span className="hidden sm:inline">{t('truckDemo')}</span>
                 </button>
 
                 <button
@@ -102,7 +104,7 @@ export function ExecutiveToolbar() {
                   className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-bold flex items-center gap-1 whitespace-nowrap hover:opacity-90 transition-opacity"
                 >
                   <span className="material-symbols-outlined text-[15px]">qr_code_scanner</span>
-                  <span className="sm:hidden">VIN</span><span className="hidden sm:inline">Scan VIN</span>
+                  <span className="sm:hidden">VIN</span><span className="hidden sm:inline">{t('scanVin')}</span>
                 </button>
 
                 <button
@@ -110,8 +112,17 @@ export function ExecutiveToolbar() {
                   className="hidden sm:flex px-2.5 py-1.5 rounded-xl bg-surface-container-high/20 hover:bg-surface-container-high/40 text-white font-label-sm text-label-sm items-center gap-1 whitespace-nowrap"
                 >
                   <span className="material-symbols-outlined text-[15px]">warehouse</span>
-                  <span className="sm:hidden">Vendor</span><span className="hidden sm:inline">Vendor View</span>
+                  <span className="sm:hidden">Vendor</span><span className="hidden sm:inline">{t('vendorView')}</span>
                 </button>
+
+                <a
+                  href={`${import.meta.env.BASE_URL}inventory-dashboard.html`}
+                  title="Open Spares & Inventory Command Center"
+                  className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-primary-container text-on-primary font-label-sm text-label-sm font-bold flex items-center gap-1 whitespace-nowrap hover:opacity-95 shadow-sm"
+                >
+                  <span className="material-symbols-outlined text-[15px]">dashboard</span>
+                  <span className="sm:hidden">{t('navDashboard')}</span><span className="hidden sm:inline">{t('sparesDashboard')}</span>
+                </a>
 
                 <button
                   onClick={resetDefaultCart}
@@ -119,7 +130,17 @@ export function ExecutiveToolbar() {
                   className="px-2.5 py-1.5 rounded-xl bg-surface-container-high/20 hover:bg-surface-container-high/40 text-white font-label-sm text-label-sm flex items-center gap-1 whitespace-nowrap"
                 >
                   <span className="material-symbols-outlined text-[15px]">replay</span>
-                  <span className="sm:hidden">Reset</span><span className="hidden sm:inline">Reset Cart ({itemCount})</span>
+                  <span className="sm:hidden">Reset</span><span className="hidden sm:inline">{t('resetCart')} ({itemCount})</span>
+                </button>
+
+                {/* Language Switch */}
+                <button
+                  onClick={toggleLanguage}
+                  title={lang === 'ar' ? 'Switch to English' : 'التحويل للغة العربية'}
+                  className="px-2.5 py-1.5 rounded-xl bg-surface-container-high/20 hover:bg-surface-container-high/40 text-white font-label-sm text-label-sm flex items-center gap-1 whitespace-nowrap cursor-pointer font-bold"
+                >
+                  <span className="material-symbols-outlined text-[15px]">translate</span>
+                  <span>{lang === 'ar' ? 'EN' : 'عربي'}</span>
                 </button>
 
                 <button
@@ -131,7 +152,7 @@ export function ExecutiveToolbar() {
                     {isDark ? 'light_mode' : 'dark_mode'}
                   </span>
                   <span className="sm:hidden">{isDark ? 'Light' : 'Dark'}</span>
-                  <span className="hidden sm:inline">{isDark ? 'Light Mode' : 'Dark Mode'}</span>
+                  <span className="hidden sm:inline">{isDark ? t('lightMode') : t('darkMode')}</span>
                 </button>
               </div>
 

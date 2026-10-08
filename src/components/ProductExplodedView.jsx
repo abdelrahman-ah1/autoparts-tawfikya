@@ -1,9 +1,17 @@
 import { useState } from 'react'
+import { useLanguage } from '../context/LanguageContext'
+
+const AR_LAYERS = {
+  pads: { label: 'تيل الاحتكاك', sub: 'تركيبة سيراميك مضغوطة على البارد', spec: 'عمق التيل 17.2 مم • فتحات تبريد شعاعية • حواف مشطوفة مزدوجة' },
+  shim: { label: 'شيم مطاطي', sub: 'عازل صوتي مُفلكَن', spec: 'دعامة فولاذية متعددة الطبقات • بدون صرير فرامل عالي التردد' },
+  hardware: { label: 'طقم التركيب', sub: 'مشابك كليبر OE 301 ستانلس', spec: '4 مشابك ستانلس • شحم سيراميك سيليكون صناعي' },
+}
 
 export function ProductExplodedView({ product }) {
+  const { lang } = useLanguage()
   const [activeLayer, setActiveLayer] = useState('pads')
 
-  const layers = [
+  const baseLayers = [
     {
       id: 'pads',
       label: 'Friction Pads',
@@ -27,6 +35,7 @@ export function ProductExplodedView({ product }) {
     }
   ]
 
+  const layers = lang === 'ar' ? baseLayers.map((l) => ({ ...l, ...AR_LAYERS[l.id] })) : baseLayers
   const current = layers.find((l) => l.id === activeLayer) || layers[0]
 
   return (
@@ -35,12 +44,12 @@ export function ProductExplodedView({ product }) {
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-primary-container animate-ping"></span>
           <span className="font-label-md text-label-md font-bold uppercase tracking-wider text-on-surface">
-            Component Breakdown
+            {lang === 'ar' ? 'تفصيل المكونات' : 'Component Breakdown'}
           </span>
         </div>
         <span className="font-data-mono-sm text-data-mono-sm text-tertiary flex items-center gap-1 font-semibold">
           <span className="material-symbols-outlined text-[15px]">verified</span>
-          CAD Assembly Matched
+          {lang === 'ar' ? 'مطابق لنموذج CAD' : 'CAD Assembly Matched'}
         </span>
       </div>
 

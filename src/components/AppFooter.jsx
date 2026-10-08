@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 
 export function AppFooter() {
+  const { t } = useLanguage()
+
   return (
     <footer className="w-full bg-surface-container-low mt-space-2xl">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 py-space-xl">
@@ -10,9 +13,9 @@ export function AppFooter() {
               <span className="material-symbols-outlined text-[22px]">verified</span>
             </div>
             <div>
-              <div className="font-title-md text-title-md text-on-surface">Guaranteed Fitment</div>
+              <div className="font-title-md text-title-md text-on-surface">{t('trustFitmentTitle')}</div>
               <div className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                Precision compatibility verification engine backs every verified order.
+                {t('trustFitmentDesc')}
               </div>
             </div>
           </div>
@@ -21,9 +24,9 @@ export function AppFooter() {
               <span className="material-symbols-outlined text-[22px]">support_agent</span>
             </div>
             <div>
-              <div className="font-title-md text-title-md text-on-surface">24/7 Technical Support</div>
+              <div className="font-title-md text-title-md text-on-surface">{t('trustSupportTitle')}</div>
               <div className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                Certified automotive mechanics and parts specialists on standby.
+                {t('trustSupportDesc')}
               </div>
             </div>
           </div>
@@ -32,9 +35,9 @@ export function AppFooter() {
               <span className="material-symbols-outlined text-[22px]">hub</span>
             </div>
             <div>
-              <div className="font-title-md text-title-md text-on-surface">Verified Vendor Network</div>
+              <div className="font-title-md text-title-md text-on-surface">{t('catEngineTitle')}</div>
               <div className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                Authorized Tier-1 distributors and direct OEM manufacturers globally.
+                {t('trustDispatchDesc')}
               </div>
             </div>
           </div>
@@ -43,9 +46,9 @@ export function AppFooter() {
               <span className="material-symbols-outlined text-[22px]">workspace_premium</span>
             </div>
             <div>
-              <div className="font-title-md text-title-md text-on-surface">100% Satisfaction</div>
+              <div className="font-title-md text-title-md text-on-surface">{t('trustSatisfactionTitle')}</div>
               <div className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                30-day hassle-free return logistics and defect replacement guarantee.
+                {t('trustSatisfactionDesc')}
               </div>
             </div>
           </div>
@@ -55,20 +58,20 @@ export function AppFooter() {
             <span className="font-title-md text-title-md text-on-surface">
               Auto<span className="text-primary-container">Parts</span>
             </span>
-            <span>© 2024 AutoParts Marketplace Inc. Professional Tier Fulfillment.</span>
+            <span>{t('footerRights')}</span>
           </div>
           <div className="flex items-center gap-space-lg">
             <Link to="/" className="hover:text-on-surface transition-colors">
-              Fitment Policy
+              {t('fitmentPolicy')}
             </Link>
             <Link to="/" className="hover:text-on-surface transition-colors">
-              Privacy & Security
+              {t('privacySecurity')}
             </Link>
             <Link to="/" className="hover:text-on-surface transition-colors">
-              OEM Compliance
+              {t('oemCompliance')}
             </Link>
             <Link to="/" className="hover:text-on-surface transition-colors">
-              Fleet API
+              {t('fleetApi')}
             </Link>
           </div>
         </div>

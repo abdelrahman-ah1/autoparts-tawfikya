@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { useToast } from '../context/ToastContext'
 import { useVehicle } from '../context/VehicleContext'
+import { useLanguage } from '../context/LanguageContext'
 
 export function MechanicShareModal({ isOpen, onClose, product, cartItems }) {
   const { vehicle } = useVehicle()
+  const { lang } = useLanguage()
+  const ar = lang === 'ar'
   const { showToast } = useToast()
   const [copied, setCopied] = useState(false)
 
@@ -18,14 +21,17 @@ export function MechanicShareModal({ isOpen, onClose, product, cartItems }) {
         price: i.product.price
       })) || []
 
-  const quoteText = `🔧 AutoParts Marketplace Technical Quote\nVehicle: ${vehicle.year} ${vehicle.make} ${vehicle.model} (${vehicle.engine})\nVIN: ${vehicle.vin}\n\nComponents Verified:\n${items
-    .map((item, idx) => `${idx + 1}. ${item.title}\n   OEM: ${item.oem} | SKU: ${item.sku} | $${item.price.toFixed(2)}`)
-    .join('\n\n')}\n\nFitment: ISO-9001 Cross-Referenced (100% Return Guarantee)`
+  const itemsText = items
+    .map((item, idx) => `${idx + 1}. ${item.title}\n   OEM: ${item.oem} | ${ar ? 'الكود' : 'SKU'}: ${item.sku} | $${item.price.toFixed(2)}`)
+    .join('\n\n')
+  const quoteText = ar
+    ? `🔧 عرض فني - أوتوبارتس\nالمركبة: ${vehicle.year} ${vehicle.make} ${vehicle.model} (${vehicle.engine})\nرقم الشاسيه: ${vehicle.vin}\n\nالمكونات المعتمدة:\n${itemsText}\n\nالتوافق: مرجع متقاطع ISO-9001 (ضمان استرجاع 100%)`
+    : `🔧 AutoParts Marketplace Technical Quote\nVehicle: ${vehicle.year} ${vehicle.make} ${vehicle.model} (${vehicle.engine})\nVIN: ${vehicle.vin}\n\nComponents Verified:\n${itemsText}\n\nFitment: ISO-9001 Cross-Referenced (100% Return Guarantee)`
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(quoteText).then(() => {
       setCopied(true)
-      showToast('Build sheet copied to clipboard!')
+      showToast(ar ? 'تم نسخ ورقة المواصفات!' : 'Build sheet copied to clipboard!')
       setTimeout(() => setCopied(false), 2500)
     })
   }
@@ -45,8 +51,8 @@ export function MechanicShareModal({ isOpen, onClose, product, cartItems }) {
               <span className="material-symbols-outlined text-[20px]">build</span>
             </div>
             <div>
-              <h3 className="font-title-lg text-title-lg text-on-surface font-bold">Mechanic Verification Sheet</h3>
-              <p className="font-body-sm text-body-sm text-on-surface-variant">Export verified OEM codes & torque specs</p>
+              <h3 className="font-title-lg text-title-lg text-on-surface font-bold">{ar ? 'ورقة تحقق الميكانيكي' : 'Mechanic Verification Sheet'}</h3>
+              <p className="font-body-sm text-body-sm text-on-surface-variant">{ar ? 'تصدير أكواد OEM المعتمدة ومواصفات العزم' : 'Export verified OEM codes & torque specs'}</p>
             </div>
           </div>
           <button
@@ -71,14 +77,14 @@ export function MechanicShareModal({ isOpen, onClose, product, cartItems }) {
               <span className="material-symbols-outlined text-[18px]">
                 {copied ? 'done' : 'content_copy'}
               </span>
-              <span>{copied ? 'Copied!' : 'Copy Summary'}</span>
+              <span>{copied ? (ar ? 'تم النسخ!' : 'Copied!') : (ar ? 'نسخ الملخص' : 'Copy Summary')}</span>
             </button>
             <button
               onClick={shareWhatsApp}
               className="py-2.5 px-4 rounded-xl bg-[#25D366] hover:bg-[#1EBE5D] text-white font-label-md text-label-md font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm"
             >
               <span className="material-symbols-outlined text-[18px]">send</span>
-              <span>Share WhatsApp</span>
+              <span>{ar ? 'مشاركة عبر واتساب' : 'Share WhatsApp'}</span>
             </button>
           </div>
         </div>

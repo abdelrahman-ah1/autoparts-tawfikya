@@ -3,10 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { PRODUCTS, checkFitment } from '../data/products'
 import { useVehicle } from '../context/VehicleContext'
 import { useCart } from '../context/CartContext'
+import { useLanguage } from '../context/LanguageContext'
 
 export function PartsSearchPage() {
   const { vehicle, openVehicleModal } = useVehicle()
   const { addToCart } = useCart()
+  const { t } = useLanguage()
   const navigate = useNavigate()
 
   const [searchQuery, setSearchQuery] = useState('')
@@ -54,7 +56,7 @@ export function PartsSearchPage() {
           <div className="flex flex-wrap items-center gap-3 text-body-sm">
             <div className="flex items-center gap-1.5 font-label-sm text-label-sm bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full font-bold shadow-xs">
               <span className="material-symbols-outlined text-[15px]">verified</span>
-              <span>CALIBRATED FOR YOUR GARAGE</span>
+              <span>{t('calibratedForGarage')}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="font-title-md text-title-md text-on-surface font-semibold">
@@ -62,7 +64,7 @@ export function PartsSearchPage() {
               </span>
               <span className="text-outline hidden sm:inline">•</span>
               <span className="font-data-mono-sm text-data-mono-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">
-                VIN: {vehicle.vin}
+                {t('vinTarget')}: {vehicle.vin}
               </span>
             </div>
           </div>
@@ -72,7 +74,7 @@ export function PartsSearchPage() {
             className="inline-flex items-center gap-1.5 font-label-md text-label-md text-primary hover:text-on-primary-fixed-variant font-semibold transition-colors self-start md:self-auto"
           >
             <span className="material-symbols-outlined text-[16px]">sync</span>
-            <span>Switch Vehicle</span>
+            <span>{t('changeVehicle')}</span>
           </button>
         </div>
       </div>
@@ -224,15 +226,15 @@ export function PartsSearchPage() {
                         </span>
                         {fitment.status === 'exact' ? (
                           <span className="font-label-sm text-label-sm text-tertiary bg-tertiary-fixed/30 px-2 py-0.5 rounded-full flex items-center gap-1 font-bold">
-                            <span className="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span> EXACT FIT
+                            <span className="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span> {t('guaranteedFit')}
                           </span>
                         ) : fitment.status === 'warning' ? (
                           <span className="font-label-sm text-label-sm text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full flex items-center gap-1 font-bold">
-                            <span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span> TRIM DEPENDENT
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span> {t('warningFitment')}
                           </span>
                         ) : (
                           <span className="font-label-sm text-label-sm text-error bg-error-container/60 px-2 py-0.5 rounded-full flex items-center gap-1 font-bold">
-                            <span className="w-1.5 h-1.5 rounded-full bg-error"></span> DOES NOT FIT
+                            <span className="w-1.5 h-1.5 rounded-full bg-error"></span> {t('doesNotFit')}
                           </span>
                         )}
                       </div>
@@ -298,7 +300,7 @@ export function PartsSearchPage() {
                             ${p.msrp.toFixed(2)}
                           </span>
                         </div>
-                        <span className="font-label-sm text-label-sm text-tertiary font-bold">In Stock</span>
+                        <span className="font-label-sm text-label-sm text-tertiary font-bold">{t('inStock')}</span>
                       </div>
                       <button
                         type="button"
@@ -306,7 +308,7 @@ export function PartsSearchPage() {
                         className="w-full bg-primary-container text-on-primary font-label-md text-label-md py-2.5 px-4 rounded-xl hover:bg-primary transition-colors flex items-center justify-center gap-2 shadow-sm font-semibold cursor-pointer active:scale-95 duration-150"
                       >
                         <span className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
-                        <span>Add to Cart</span>
+                        <span>{t('addToCart')}</span>
                       </button>
                     </div>
                   </article>

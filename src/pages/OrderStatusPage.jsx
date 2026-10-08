@@ -2,17 +2,19 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useOrder } from '../context/OrderContext'
 import { useToast } from '../context/ToastContext'
-
-const STEPS = [
-  { step: 1, label: 'Confirmed', icon: 'check' },
-  { step: 2, label: 'In Transit', icon: 'local_shipping' },
-  { step: 3, label: 'Delivered', icon: 'home_pin' },
-]
+import { useLanguage } from '../context/LanguageContext'
 
 export function OrderStatusPage() {
   const { activeOrder, updateOrderStatus } = useOrder()
   const { showToast } = useToast()
+  const { t } = useLanguage()
   const [copied, setCopied] = useState(false)
+
+  const steps = [
+    { step: 1, label: t('orderConfirmed'), icon: 'check' },
+    { step: 2, label: t('orderInTransit'), icon: 'local_shipping' },
+    { step: 3, label: t('orderDelivered'), icon: 'home_pin' },
+  ]
 
   const currentStep = Math.min(activeOrder.statusStep || 1, 3)
   const items = activeOrder.items || []
@@ -21,7 +23,7 @@ export function OrderStatusPage() {
   const handleCopyTracking = () => {
     navigator.clipboard?.writeText(activeOrder.trackingNumber)
     setCopied(true)
-    showToast('Tracking number copied')
+    showToast(t('copied'))
     setTimeout(() => setCopied(false), 2000)
   }
 
@@ -53,7 +55,7 @@ export function OrderStatusPage() {
             className="w-full md:w-auto bg-primary text-on-primary font-label-md text-label-md px-4 py-2.5 rounded-xl flex items-center justify-center gap-1.5 shadow-sm hover:bg-primary-container transition-colors shrink-0"
           >
             <span className="material-symbols-outlined text-[18px]">print</span>
-            <span>Packing Slip</span>
+            <span>{t('packingSlip')}</span>
           </button>
         </div>
 
@@ -61,10 +63,10 @@ export function OrderStatusPage() {
         <div className="p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
           <span className="font-label-sm text-label-sm text-on-surface font-semibold flex items-center gap-1.5">
             <span className="material-symbols-outlined text-tertiary text-[18px]">motion_photos_on</span>
-            Simulate status progression
+            {t('simulateProgression')}
           </span>
           <div className="grid grid-cols-3 gap-1.5">
-            {STEPS.map(({ step, label }) => (
+            {steps.map(({ step, label }) => (
               <button
                 key={step}
                 onClick={() => updateOrderStatus(step)}
@@ -109,7 +111,7 @@ export function OrderStatusPage() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <span>Track</span>
+                <span>{t('track')}</span>
                 <span className="material-symbols-outlined text-[16px]">open_in_new</span>
               </a>
             </div>
@@ -119,10 +121,10 @@ export function OrderStatusPage() {
             {/* Milestones */}
             <div className="rounded-xl p-4 border border-outline-variant/30 space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-1 text-body-sm">
-                <span className="font-label-md text-label-md text-on-surface-variant">Delivery Status</span>
+                <span className="font-label-md text-label-md text-on-surface-variant">{t('deliveryStatus')}</span>
                 <span className="font-label-md text-label-md text-primary font-semibold flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                  {currentStep === 3 ? 'Delivered' : `Est. ${activeOrder.estimatedDelivery}`}
+                  {currentStep === 3 ? t('orderDelivered') : `${t('estimatedDelivery')}: ${activeOrder.estimatedDelivery}`}
                 </span>
               </div>
               <div className="grid grid-cols-3 gap-2 relative">
@@ -132,7 +134,7 @@ export function OrderStatusPage() {
                     style={{ width: `${((currentStep - 1) / 2) * 100}%` }}
                   ></div>
                 </div>
-                {STEPS.map(({ step, label, icon }) => (
+                {steps.map(({ step, label, icon }) => (
                   <div key={step} className="relative z-10 flex flex-col items-center text-center">
                     <div
                       className={`w-7 h-7 rounded-full flex items-center justify-center ${
@@ -158,7 +160,7 @@ export function OrderStatusPage() {
             {/* Items */}
             <div className="space-y-3">
               <span className="font-label-sm text-label-sm text-on-surface-variant font-semibold uppercase tracking-wider">
-                Package Contents ({items.length})
+                {t('packageContents')} ({items.length})
               </span>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {items.map((item) => (
@@ -192,9 +194,9 @@ export function OrderStatusPage() {
               <div className="flex items-start gap-2.5">
                 <span className="material-symbols-outlined text-tertiary text-[22px] shrink-0">verified_user</span>
                 <div>
-                  <h4 className="font-title-md text-title-md font-bold text-on-surface">DirectFit Guarantee</h4>
+                  <h4 className="font-title-md text-title-md font-bold text-on-surface">{t('guaranteeTitle')}</h4>
                   <p className="font-body-sm text-body-sm text-on-surface-variant">
-                    If a part doesn't match your build, return shipping is covered.
+                    {t('guaranteeDesc')}
                   </p>
                 </div>
               </div>
@@ -202,7 +204,7 @@ export function OrderStatusPage() {
                 to="/catalog"
                 className="px-4 py-2.5 rounded-xl bg-surface-container-highest hover:bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold transition-colors shrink-0 text-center"
               >
-                Order More Parts
+                {t('orderMoreParts')}
               </Link>
             </div>
           </div>

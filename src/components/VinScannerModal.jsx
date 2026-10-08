@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useVehicle } from '../context/VehicleContext'
 import { useToast } from '../context/ToastContext'
+import { useLanguage } from '../context/LanguageContext'
 
 export function VinScannerModal({ isOpen, onClose }) {
   const { setVehicle } = useVehicle()
   const { showToast } = useToast()
+  const { t } = useLanguage()
   const [vinInput, setVinInput] = useState('1FTFW1ED4NFC92014')
   const [scanning, setScanning] = useState(false)
   const [step, setStep] = useState(0)
@@ -55,8 +57,8 @@ export function VinScannerModal({ isOpen, onClose }) {
               <span className="material-symbols-outlined text-[20px]">qr_code_scanner</span>
             </div>
             <div>
-              <h3 className="font-title-lg text-title-lg text-on-surface font-bold">NHTSA VIN Real-Time Decoder</h3>
-              <p className="font-body-sm text-body-sm text-on-surface-variant">OEM assembly schematics & brake caliper sizing</p>
+              <h3 className="font-title-lg text-title-lg text-on-surface font-bold">{t('vinScannerModalTitle')}</h3>
+              <p className="font-body-sm text-body-sm text-on-surface-variant">{t('vinScannerModalSubtitle')}</p>
             </div>
           </div>
           <button
@@ -97,7 +99,7 @@ export function VinScannerModal({ isOpen, onClose }) {
             <>
               <div className="space-y-2">
                 <label className="font-label-sm text-label-sm text-on-surface-variant font-semibold">
-                  ENTER 17-DIGIT CHASSIS VIN
+                  {t('fastVinDecode')}
                 </label>
                 <div className="flex gap-2">
                   <input
@@ -112,14 +114,14 @@ export function VinScannerModal({ isOpen, onClose }) {
                     onClick={() => runScan(sampleVins.find(v => v.vin === vinInput) || { ...sampleVins[0], vin: vinInput })}
                     className="px-5 h-11 rounded-xl bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md font-semibold transition-all flex items-center gap-1.5 shadow-sm"
                   >
-                    <span>Scan</span>
+                    <span>{t('scan')}</span>
                     <span className="material-symbols-outlined text-[16px]">chevron_right</span>
                   </button>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <span className="font-label-sm text-label-sm text-outline uppercase font-semibold">Or Quick Demo Preset VINs:</span>
+                <span className="font-label-sm text-label-sm text-outline uppercase font-semibold">{t('orLoadDemoChassis')}</span>
                 <div className="grid grid-cols-1 gap-2">
                   {sampleVins.map((s) => (
                     <button
