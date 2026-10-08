@@ -400,6 +400,7 @@ dialog::backdrop{background:var(--dialog-backdrop);backdrop-filter:blur(3px)}
 
 <script>
 "use strict";
+let curLang = localStorage.getItem('autoparts_lang') || 'ar';
 /* ============================== DATA ============================== */
 const LINES = ['CNC Line','Press Line','Conveyor Line','Packaging Line'];
 const LINE_COLOR = {'CNC Line':'#3b82f6','Press Line':'#f59e0b','Conveyor Line':'#22c55e','Packaging Line':'#a78bfa'};
@@ -1061,7 +1062,6 @@ i18nObs.observe(document.body,{childList:true,subtree:true,characterData:true});
 function applyI18n(){ i18nWalk(document.body); document.title = curLang==='ar' ? 'SparesOps — مركز التحكم في المخزون' : 'SparesOps — Inventory Command Center'; }
 
 /* language toggle */
-let curLang = localStorage.getItem('autoparts_lang') || 'ar';
 function setDashboardLang(l){
   curLang = l;
   localStorage.setItem('autoparts_lang', l);
