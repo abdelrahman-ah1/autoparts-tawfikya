@@ -1,0 +1,156 @@
+# permissions.yaml
+# Machine-readable source of truth for RBAC. Underlying decisions D6 and D9 are ACCEPTED; this file itself is ready for review.
+# Used to (1) generate RBAC tests per endpoint, (2) cross-check @Roles/@Public decorators at CI time,
+# (3) generate docs/role_permission_matrix.md. Do not keep a second hand-written list.
+#
+# Conventions
+#   PUBLIC           : no authentication
+#   AUTHENTICATED    : any logged-in user
+#   own: <rule>      : object-level restriction enforced in the service (and tested)
+#   dashboard read   : VIEWER may call GET endpoints in dashboard scope
+
+roles:
+  - ADMIN
+  - INVENTORY_MANAGER
+  - WAREHOUSE_OPERATOR
+  - PROCUREMENT
+  - FINANCE
+  - VIEWER
+  - CUSTOMER
+  - VENDOR
+
+shorthand:
+  STAFF_ALL: [ADMIN, INVENTORY_MANAGER, WAREHOUSE_OPERATOR, PROCUREMENT, FINANCE, VIEWER]
+  READ_DASH: [ADMIN, INVENTORY_MANAGER, WAREHOUSE_OPERATOR, PROCUREMENT, FINANCE, VIEWER]
+
+endpoints:
+  # ---- health ----
+  - { method: GET,  path: /health/live,  roles: PUBLIC }
+  - { method: GET,  path: /health/ready, roles: PUBLIC, note: "no dependency details in response in production" }
+
+  # ---- auth ----
+  - { method: POST, path: /v1/auth/register,         roles: PUBLIC, body_forbids: [role, status, vendor_id] }
+  - { method: POST, path: /v1/auth/login,            roles: PUBLIC, throttle: strict }
+  - { method: POST, path: /v1/auth/refresh,          roles: PUBLIC, requires: [cookie, csrf, origin] }
+  - { method: POST, path: /v1/auth/logout,           roles: PUBLIC, requires: [cookie, csrf, origin] }
+  - { method: POST, path: /v1/auth/logout-all,       roles: AUTHENTICATED }
+  - { method: POST, path: /v1/auth/forgot-password,  roles: PUBLIC, throttle: strict, response: generic }
+  - { method: POST, path: /v1/auth/reset-password,   roles: PUBLIC, throttle: strict }
+  - { method: POST, path: /v1/auth/verify-email,     roles: PUBLIC, throttle: strict }
+  - { method: POST, path: /v1/auth/accept-invite,    roles: PUBLIC, throttle: strict }
+  - { method: GET,  path: /v1/auth/me,               roles: AUTHENTICATED }
+  - { method: POST, path: "/v1/auth/2fa/setup",      roles: [ADMIN, FINANCE] }
+  - { method: POST, path: "/v1/auth/2fa/enable",     roles: [ADMIN, FINANCE] }
+  - { method: POST, path: "/v1/auth/2fa/verify",     roles: PUBLIC, note: "completes login after password step" }
+  - { method: POST, path: "/v1/auth/2fa/disable",    roles: [ADMIN, FINANCE] }
+
+  # ---- users ----
+  - { method: GET,    path: /v1/users,                  roles: [ADMIN] }
+  - { method: POST,   path: /v1/users/invites,          roles: [ADMIN] }
+  - { method: PATCH,  path: "/v1/users/:id/role",       roles: [ADMIN], guards: [last_admin] }
+  - { method: POST,   path: "/v1/users/:id/suspend",    roles: [ADMIN], guards: [last_admin] }
+  - { method: POST,   path: "/v1/users/:id/reactivate", roles: [ADMIN] }
+  - { method: DELETE, path: "/v1/users/:id",            roles: [ADMIN], guards: [last_admin], note: "soft delete + anonymize" }
+
+  # ---- catalog (public storefront) ----
+  - { method: GET,  path: /v1/catalog/parts,                 roles: PUBLIC, hides: [cost_fields, stock_internal] }
+  - { method: GET,  path: "/v1/catalog/parts/:id",           roles: PUBLIC, hides: [cost_fields, stock_internal] }
+  - { method: GET,  path: /v1/catalog/search,                 roles: PUBLIC, throttle: standard }
+  - { method: GET,  path: /v1/catalog/categories,             roles: PUBLIC }
+  - { method: GET,  path: "/v1/catalog/vehicles/makes",       roles: PUBLIC }
+  - { method: GET,  path: "/v1/catalog/vehicles/models",      roles: PUBLIC }
+  - { method: GET,  path: "/v1/catalog/vehicles/engines",     roles: PUBLIC }
+  - { method: POST, path: /v1/catalog/fitment/check,          roles: PUBLIC, throttle: standard }
+
+  # ---- catalog (staff) ----
+  - { method: POST,  path: /v1/parts,                         roles: [ADMIN, INVENTORY_MANAGER], audit: true }
+  - { method: PATCH, path: "/v1/parts/:id",                   roles: [ADMIN, INVENTORY_MANAGER], audit: true, body_forbids: [on_hand, reserved, wac] }
+  - { method: POST,  path: "/v1/parts/:id/legacy-numbers",    roles: [ADMIN, INVENTORY_MANAGER], audit: true }
+  - { method: POST,  path: "/v1/parts/:id/compatibility",     roles: [ADMIN, INVENTORY_MANAGER], audit: true }
+  - { method: POST,  path: "/v1/parts/:id/fitments",          roles: [ADMIN, INVENTORY_MANAGER], audit: true }
+  - { method: GET,   path: "/v1/parts/:id/fitments",          roles: [ADMIN, INVENTORY_MANAGER, VENDOR], own: "VENDOR: read-only, parts on own shipments" }
+
+  # ---- suppliers ----
+  - { method: GET,   path: /v1/suppliers,                     roles: [ADMIN, PROCUREMENT, INVENTORY_MANAGER, VIEWER] }
+  - { method: POST,  path: /v1/suppliers,                     roles: [ADMIN, PROCUREMENT], audit: true }
+  - { method: PATCH, path: "/v1/suppliers/:id",               roles: [ADMIN, PROCUREMENT], audit: true }
+  - { method: POST,  path: "/v1/suppliers/:id/defects",       roles: [ADMIN, PROCUREMENT], audit: true }
+  - { method: GET,   path: "/v1/suppliers/:id/metrics",       roles: [ADMIN, PROCUREMENT, FINANCE, INVENTORY_MANAGER, VIEWER] }
+
+  # ---- inventory ----
+  - { method: GET,  path: /v1/inventory/parts,                roles: STAFF_ALL }
+  - { method: GET,  path: "/v1/inventory/parts/:id/movements",roles: STAFF_ALL }
+  - { method: POST, path: "/v1/inventory/parts/:id/receive",  roles: [ADMIN, INVENTORY_MANAGER, WAREHOUSE_OPERATOR], audit: true }
+  - { method: POST, path: "/v1/inventory/parts/:id/issue",    roles: [ADMIN, INVENTORY_MANAGER, WAREHOUSE_OPERATOR], audit: true }
+  - { method: POST, path: "/v1/inventory/parts/:id/reserve",  roles: [ADMIN, INVENTORY_MANAGER, WAREHOUSE_OPERATOR], audit: true }
+  - { method: POST, path: "/v1/inventory/parts/:id/release",  roles: [ADMIN, INVENTORY_MANAGER, WAREHOUSE_OPERATOR], audit: true }
+  - { method: POST, path: "/v1/inventory/parts/:id/adjust",   roles: [ADMIN, INVENTORY_MANAGER], audit: true }
+  - { method: GET,  path: /v1/inventory/aging,                roles: [ADMIN, INVENTORY_MANAGER, FINANCE, VIEWER] }
+
+  # ---- purchasing ----
+  - { method: GET,  path: /v1/purchase-orders,                roles: [ADMIN, PROCUREMENT, FINANCE, INVENTORY_MANAGER, VIEWER] }
+  - { method: POST, path: /v1/purchase-orders,                roles: [ADMIN, PROCUREMENT], audit: true }
+  - { method: POST, path: "/v1/purchase-orders/:id/submit",   roles: [ADMIN, PROCUREMENT], audit: true }
+  - { method: POST, path: "/v1/purchase-orders/:id/receive",  roles: [ADMIN, PROCUREMENT, INVENTORY_MANAGER], audit: true, requires: [idempotency_key] }
+  - { method: POST, path: /v1/purchase-orders/auto,           roles: [ADMIN, PROCUREMENT], audit: true }
+
+  # ---- invoices ----
+  - { method: GET,  path: /v1/invoices,                       roles: [ADMIN, FINANCE, VIEWER] }
+  - { method: POST, path: "/v1/invoices/:id/pay",             roles: [ADMIN, FINANCE], audit: true }
+
+  # ---- orders / checkout ----
+  - { method: POST, path: /v1/checkout/quote,                 roles: PUBLIC, throttle: standard }
+  - { method: POST, path: /v1/checkout,                       roles: PUBLIC, throttle: strict, requires: [idempotency_key], note: "guest needs email; server ignores client totals" }
+  - { method: GET,  path: /v1/orders/me,                      roles: [CUSTOMER] }
+  - { method: GET,  path: "/v1/orders/:id",                   roles: [CUSTOMER, ADMIN, INVENTORY_MANAGER, WAREHOUSE_OPERATOR, FINANCE, VIEWER], own: "CUSTOMER: own orders only" }
+  - { method: GET,  path: /v1/orders,                         roles: [ADMIN, INVENTORY_MANAGER, WAREHOUSE_OPERATOR, FINANCE, VIEWER] }
+  - { method: POST, path: "/v1/orders/:id/status",            roles: [CUSTOMER, ADMIN, INVENTORY_MANAGER, WAREHOUSE_OPERATOR], transitions: order_transitions, audit: true }
+  - { method: POST, path: "/v1/orders/:id/shipment",          roles: [ADMIN, INVENTORY_MANAGER, WAREHOUSE_OPERATOR, VENDOR], own: "VENDOR: only orders assigned to own vendor", audit: true }
+  - { method: POST, path: "/v1/orders/:id/tracking",          roles: PUBLIC, throttle: strict, note: "body: tracking_token (unguessable); no order-id+email lookup" }
+  - { method: GET,  path: /v1/shipments/queue,                roles: [VENDOR, ADMIN, WAREHOUSE_OPERATOR], own: "VENDOR: own vendor's shipments only" }
+
+  # ---- reports ----
+  - { method: GET,  path: /v1/reports/kpis,                   roles: [ADMIN, INVENTORY_MANAGER, FINANCE, VIEWER] }
+  - { method: GET,  path: /v1/reports/usage-by-line,          roles: [ADMIN, INVENTORY_MANAGER, FINANCE, VIEWER] }
+  - { method: GET,  path: /v1/reports/supplier-performance,   roles: [ADMIN, INVENTORY_MANAGER, PROCUREMENT, FINANCE, VIEWER] }
+  - { method: GET,  path: /v1/reports/orders-summary,         roles: [ADMIN, INVENTORY_MANAGER, FINANCE, VIEWER] }
+  - { method: GET,  path: "/v1/reports/:name.csv",            roles: [ADMIN, INVENTORY_MANAGER, FINANCE] }
+
+  # ---- admin ----
+  - { method: POST, path: /v1/admin/reseed,                   roles: [ADMIN], env_guard: "APP_ENV != production", audit: true }
+
+# Order status transitions (D9). `to` is the target status; roles may perform it.
+order_transitions:
+  - { to: CONFIRMED, from: [PENDING],             roles: [ADMIN, INVENTORY_MANAGER] }
+  - { to: PACKED,    from: [CONFIRMED],           roles: [ADMIN, INVENTORY_MANAGER, WAREHOUSE_OPERATOR] }
+  - { to: SHIPPED,   from: [PACKED],              roles: [ADMIN, INVENTORY_MANAGER, WAREHOUSE_OPERATOR], note: "via shipment creation" }
+  - { to: DELIVERED, from: [SHIPPED],             roles: [ADMIN, INVENTORY_MANAGER] }
+  - { to: CANCELLED, from: [PENDING, CONFIRMED],  roles: [CUSTOMER, ADMIN, INVENTORY_MANAGER], own: "CUSTOMER: own orders only" }
+  - { to: CANCELLED, from: [PACKED],              roles: [ADMIN, INVENTORY_MANAGER], note: "stock returned by ADJUST" }
+
+# Field-level visibility (D3, D7). `hidden` fields are removed from the response DTO for that role.
+field_visibility:
+  cost_fields: # standard_cost, wac, unit_cost, supplier unit_price, inventory valuation
+    visible_to: [ADMIN, INVENTORY_MANAGER, PROCUREMENT, FINANCE]
+    hidden_from: [WAREHOUSE_OPERATOR, VIEWER, VENDOR, CUSTOMER, PUBLIC]
+  stock_internal: # on_hand, reserved, available (exact counts)
+    visible_to: [ADMIN, INVENTORY_MANAGER, WAREHOUSE_OPERATOR, PROCUREMENT, FINANCE, VIEWER]
+    hidden_from: [VENDOR, CUSTOMER, PUBLIC]
+    public_exposes: "boolean in_stock only"
+  customer_pii: # name, email, phone, shipping address
+    visible_to: [ADMIN, INVENTORY_MANAGER, WAREHOUSE_OPERATOR]
+    masked_for: [FINANCE, VIEWER]   # email and name masked, no address
+    hidden_from: [PROCUREMENT, VENDOR, PUBLIC]
+    vendor_exception: "VENDOR sees delivery name, phone, and address only for orders assigned to own vendor"
+  order_prices:
+    hidden_from: [VENDOR, PROCUREMENT]
+
+# Rules the test generator must encode for every endpoint above
+test_matrix_rules:
+  - "Each role listed -> expect 2xx/4xx-valid (not 401/403) with valid input"
+  - "Each role not listed -> expect 403; unauthenticated -> 401 (except PUBLIC)"
+  - "Every `own:` rule -> a second principal of the same role gets 403/404 on the first principal's object"
+  - "Every `body_forbids` field -> sending it returns 400 (forbidNonWhitelisted)"
+  - "Every `audit: true` -> exactly one AuditLog row written in the same transaction; rolled back with the mutation on failure"
+  - "Every `requires: idempotency_key` -> missing header returns 400; replay returns stored response"
+  - "Every route in the Nest router must appear here; a route missing from this file fails CI"
