@@ -97,10 +97,23 @@ Evaluated in this order:
 3. `on_hand <= reorder_level` gives **Low Stock**
 4. otherwise **In Stock**
 
-Checked against `CONTEXT.md` §5 `statusOf` on 2026-10-10: CONTEXT evaluates `stock<=0` → Out of Stock, `reserved>0 && reserved>=stock` → Reserved, `stock<=reorder` → Low Stock, else In Stock. Under invariant I2 (`reserved <= on_hand`) step 2 above is identical (`available = 0` with `on_hand > 0` implies `reserved = on_hand > 0`). Order and semantics match.
-
-Note on manual issue: CONTEXT §5 issues against `stock` and then clamps `reserved` to the new stock. D5 (Accepted) replaces this with issuing against `available`, so a staff issue can never silently shrink a customer's reservation. This is an intentional deviation from CONTEXT, recorded in `docs/decisions.md` D5.
+Checked against `statusOf` in `CONTEXT.md` section 5: the dashboard rule "reserved > 0 and reserved >= stock" is the same as "available = 0 and on_hand > 0" once invariant I2 holds. Order and thresholds are identical.
 
 ## Aging buckets
 
 Based on `last_movement_at`: `<= 90 days`, `91-180 days`, `> 180 days`. Capital share per bucket is `sum(on_hand * wac)` for the bucket divided by total valuation, rounded to 2 dp.
+
+## Rules carried over from CONTEXT.md section 5, and how they map
+
+| Dashboard rule | Server implementation |
+|---|---|
+| Age resets on receive and on issue with `fill > 0` | `last_movement_at` is set on `RECEIVE` and on `ISSUE` (manual or order). `ADJUST`, reserve, release, and `UNFULFILLED` do not change it. |
+| COGS += fill x WAC | Each `ISSUE` movement stores `unit_cost = current wac`. COGS = sum of `quantity x unit_cost` over `ISSUE` rows. |
+| Demand and unfulfilled counters | Demand = sum of `ISSUE` + `UNFULFILLED` quantities. Stockout rate = sum(`UNFULFILLED`) / demand x 100. Example: `ISSUE 6` and `UNFULFILLED 4` on one part gives 40%. |
+| Pick counters (`total++`, `correct++` unless flagged) | One counted pick per `ISSUE` movement. Correct unless `is_pick_error = true`. Pick accuracy = correct / total x 100. Order packing counts one pick per line. |
+| "Reserve toggle": reserve all current stock, or release | Staff `reserve` creates a `Reservation` with `source = MANUAL`, no `order_id`, no expiry, `created_by` set. "Reserve all" reserves the part's current **available** quantity. "Release" releases that part's MANUAL reservations. Order reservations are never touched by it. |
+| Issue clamps reserved to new stock | **Replaced by D5.** The server never lets `reserved` exceed `on_hand`, so no clamp is needed. |
+| Defect rate = defects / received x 100 | Supplier counters `defect_qty` and `received_qty`; thresholds good <= 0.5, warn <= 1.5, else bad. Open RMAs = `SupplierDefect` rows with status `OPEN`. |
+| Invoice: due +30 days, `INV-n` | `Invoice.number` is a human-readable sequence; `issued_at` = receipt time. Status Paid, else Overdue if `due_at < now`, else Unpaid. |
+| Auto-PO: qty = max(reorder x 2 - stock, 1), cost = WAC, ETA +8 days | Same formulas; one PO per supplier; skip parts with a DRAFT or SUBMITTED PO. |
+| Add part validation | OEM unique and non-empty, name required (both languages), cost >= 0; `sku` auto-generated as `SP-n`. |

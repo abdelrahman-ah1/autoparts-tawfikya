@@ -12,7 +12,8 @@ Read this file first in every session. It is short on purpose; the detail lives 
 1. `docs/decisions.md`: a decision with status **Accepted** is binding. **Proposed** or **Needs input** means ask the human before building on it.
 2. `docs/permissions.yaml` and `docs/openapi.json`: who can call what, and the request/response contract.
 3. `docs/erd.md`: the schema. Do not add, rename, or remove tables or columns that are not in the approved ERD.
-4. `docs/inventory_invariants.md`, `docs/state_machines.md`, `docs/sequences.md`, `docs/architecture.md`, `docs/threat_model.md`.
+4. `CONTEXT.md` (current repo state and the dashboard business rules in its section 5, which stay authoritative except where `docs/decisions.md` replaces them, e.g. D5, D7) and `phase_3_technical_specification.md`.
+5. `docs/inventory_invariants.md`, `docs/state_machines.md`, `docs/sequences.md`, `docs/architecture.md`, `docs/threat_model.md`.
 
 If code and docs disagree, or a doc is silent on something you need, **stop and ask**. Do not guess and do not silently pick a behavior.
 

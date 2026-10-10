@@ -99,7 +99,7 @@ sequenceDiagram
     A->>I: issueReserved(part_id, qty, order_ref)
     I->>D: SELECT stock_level FOR UPDATE
     I->>D: on_hand -= qty, reserved -= qty, last_movement_at = now
-    I->>D: INSERT StockMovement ISSUE, Reservation CONSUMED
+    I->>D: INSERT StockMovement ISSUE (unit_cost = current wac), Reservation CONSUMED
   end
   A->>D: UPDATE order status = PACKED
   A->>U: record(tx, actor, before, after)
@@ -157,7 +157,7 @@ sequenceDiagram
     A->>I: receive(part_id, qty, unit_cost, po_ref)
     I->>D: SELECT stock_level FOR UPDATE
     I->>I: new_wac = (on_hand*wac + qty*unit_cost) / (on_hand + qty), 4 dp half-up
-    I->>D: UPDATE on_hand, wac, INSERT StockMovement RECEIVE (previous_wac, new_wac)
+    I->>D: UPDATE on_hand, wac, last_movement_at, INSERT StockMovement RECEIVE (previous_wac, new_wac)
   end
   A->>V: create(po, amount = sum(qty*unit_cost), due = +30d, UNPAID)
   A->>S: add received_qty

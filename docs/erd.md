@@ -18,7 +18,6 @@ erDiagram
   Part ||--|| StockLevel : "has"
   Part ||--o{ StockMovement : "ledger"
   Part ||--o{ PartLegacyNumber : "known as"
-  Part ||--o{ PartCompatibility : "compatible with"
   Part ||--o{ Fitment : "fits"
   Part ||--o{ SupplierPart : "supplied via"
   Part ||--o{ SupplierDefect : "defects"
@@ -38,14 +37,14 @@ erDiagram
   PurchaseOrder ||--o| Invoice : "billed by"
 
   Order ||--|{ OrderItem : "contains"
-  Order ||--o{ Reservation : "holds"
+  Order |o--o{ Reservation : "holds"
   Order ||--o{ Shipment : "shipped as"
   Vendor ||--o{ Shipment : "dispatches"
 
   User {
     uuid id PK
+    string name
     string email UK
-    string full_name
     string password_hash
     string role
     string status
@@ -55,7 +54,6 @@ erDiagram
     int failed_logins
     timestamp locked_until
     boolean email_verified
-    timestamp last_active_at
     timestamp deleted_at
   }
   Vendor {
@@ -83,8 +81,8 @@ erDiagram
   }
   Invite {
     uuid id PK
+    string name
     string email
-    string full_name
     string role
     uuid invited_by FK
     string token_hash UK
@@ -100,28 +98,25 @@ erDiagram
   }
   Part {
     uuid id PK
+    string sku UK "auto SP-n"
     string oem_number UK
     string slug UK
+    string brand
     string name_en
     string name_ar
     string description_en
     string description_ar
     uuid category_id FK
-    string brand
-    string image_url
-    json attributes
     decimal selling_price
     decimal msrp
     decimal standard_cost
     int reorder_level
-    string machine_line
+    string image_url
+    json specs
+    string tags
+    string machine_line "pending D15"
     string search_text_norm
     boolean is_active
-  }
-  PartCompatibility {
-    uuid id PK
-    uuid part_id FK
-    string machine_model
   }
   StockLevel {
     uuid part_id PK
@@ -201,6 +196,7 @@ erDiagram
   }
   PurchaseOrder {
     uuid id PK
+    string number UK "PO-n"
     uuid supplier_id FK
     string status
     boolean is_auto
@@ -219,14 +215,17 @@ erDiagram
   }
   Invoice {
     uuid id PK
+    string number UK "INV-n"
     uuid po_id FK
     decimal amount
+    timestamp issued_at
     string status
     timestamp due_at
     timestamp paid_at
   }
   Order {
     uuid id PK
+    string number UK
     uuid user_id FK
     string guest_email
     string status
@@ -239,8 +238,8 @@ erDiagram
     decimal total
     string shipping_method
     json shipping_address
-    json vehicle_snapshot
     string tracking_token_hash
+    string vehicle_name "snapshot of active vehicle"
     timestamp placed_at
   }
   OrderItem {
@@ -255,11 +254,13 @@ erDiagram
   }
   Reservation {
     uuid id PK
-    uuid order_id FK
+    uuid order_id FK "null when source is MANUAL"
     uuid part_id FK
     int qty
+    string source "ORDER or MANUAL"
     string status
-    timestamp expires_at
+    uuid created_by FK "set for MANUAL"
+    timestamp expires_at "null for MANUAL"
   }
   Shipment {
     uuid id PK
@@ -309,10 +310,10 @@ erDiagram
 | `POStatus` | `DRAFT SUBMITTED RECEIVED CANCELLED` |
 | `InvoiceStatus` | `UNPAID PAID` (`OVERDUE` computed: UNPAID and `due_at < now`) |
 | `OrderStatus` | `PENDING CONFIRMED PACKED SHIPPED DELIVERED CANCELLED` |
-| `PaymentMethod` | `COD CARD_PENDING` |
+| `PaymentMethod` | `COD` (`CARD_PENDING` removed if D19 accepted) |
 | `PaymentStatus` | `UNPAID PAID REFUNDED` |
 | `ReservationStatus` | `ACTIVE CONSUMED RELEASED EXPIRED` |
-| `DefectStatus` | `OPEN CLOSED` (spec §3.2; CONTEXT.md "+ Defect" opens an RMA, so new rows are `OPEN`) |
+| `DefectStatus` | `OPEN CLOSED` (CONTEXT.md only mentions "open RMAs"; defect rate counts all defects, open RMAs counts `OPEN`) |
 | `OneTimeTokenType` | `VERIFY_EMAIL RESET_PASSWORD` |
 
 ## Constraints and indexes the migration must include
@@ -325,12 +326,3 @@ erDiagram
 - Btree: `Order(user_id, placed_at)`, `Order(status)`, `Reservation(status, expires_at)`, `StockMovement(part_id, created_at)`, `Invoice(status, due_at)`, `RefreshToken(family_id)`, `AuditLog(entity, entity_id)`.
 - Runtime DB role: no `UPDATE` or `DELETE` on `StockMovement` and `AuditLog`.
 - Open question handled in schema: a PO item can be partially received (`qty_received`), but Phase 3 `receive` endpoint may still receive in full; the column keeps the door open.
-
-## Reconciliation notes (against `CONTEXT.md`, 2026-10-10)
-
-- `Part.machine_line` is nullable; it is the optional department/line used by `reports/usage-by-line` (CONTEXT §5). Car parts leave it null.
-- `Part.brand`, `image_url` (D13: URL only), `msrp`, `attributes` (json, replaces `specs{label:value}`) added so the storefront product shape in CONTEXT §4 can be served without mock data. `rating`/`reviews`/`vendorRating` are dropped: no review feature exists in Phase 3.
-- `PartCompatibility` added (spec §3.2, and `/v1/parts/:id/compatibility` already exists in `permissions.yaml`); it is the dashboard's "compatible models" cross-reference list. Vehicle fitment stays in `Fitment`.
-- `User.full_name`, `User.last_active_at`, `Invite.full_name` added: CONTEXT §5 requires invites to carry a name and the Users tab shows last activity.
-- `Order.vehicle_snapshot` added: the order-status page shows the vehicle the order was placed for (CONTEXT §4 `vehicleName`).
-- `MovementType` deliberately has no `RESERVE`/`RELEASE` rows (spec §3.2 lists them): reservations are tracked in `Reservation`, and the ledger reconciles to `on_hand` only (invariant I4). Recorded as a spec deviation in the build plan.

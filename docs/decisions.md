@@ -19,16 +19,13 @@ The agent must not build on anything that is not **Accepted**. Project scope: de
 | D12 | Environments | Accepted | none |
 | D13 | Product images: static URLs, no uploads | Accepted | none |
 | D14 | Money precision and rounding | Accepted | none |
-| D15 | Email provider | Accepted (Resend; see D1 for the domain limitation) | none |
-| D16 | Payments stub | Accepted | none |
+| D15 | What "machine line" means for car parts | Needs input | Step 2 |
+| D16 | What the dashboard "Orders" tab shows | Needs input | Step 2 |
+| D17 | Vendor attribution on products | Needs input | Step 2 |
+| D18 | Ratings, reviews, and stock counts on the storefront | Needs input | Step 2 |
+| D19 | Payments scope | Needs input | Step 2 |
 
-All decisions are Accepted or Deferred (D1, interim design in force). Nothing blocks step 1 except the D1 proxy spike that step 1 must run.
-
-Settled 2026-10-10 by the owner: D1 (interim proxy design), D2, D6, D7, D10, D13 confirmed; D5 explicitly **Accepted** over the earlier build-plan wording (plan step 7 "clamps `stock_reserved`" is withdrawn). `docs/phase_3_backend_plan.md` rev 3 is aligned with this register; where the two differ, this file wins.
-
-Not yet decided (record here when answered):
-- D15 Email provider beyond Resend: none needed for the demo; Resend stays, blocked on a domain (D1).
-- D16 Payments: stub only (`COD`, `CARD_PENDING`; `payment_status`), no provider integration in Phase 3. **Accepted.**
+D1 to D14 are Accepted or Deferred (D1, interim design in force). D15 to D19 came from reading `CONTEXT.md` and need an answer before step 2. Step 1 is only blocked by the D1 proxy spike it must run.
 
 ---
 
@@ -52,7 +49,7 @@ Not yet decided (record here when answered):
 ## D4. `Reservation` entity: Accepted
 Each order line creates a `Reservation` (`order_id`, `part_id`, `qty`, `status`, `expires_at`). `StockLevel.reserved` equals the sum of ACTIVE reservations and is updated in the same transaction. Default TTL for PENDING orders: `RESERVATION_TTL_HOURS=24` (env). A BullMQ job cancels expired PENDING orders and releases their reservations.
 
-## D5. No partial fills for orders: Accepted (confirmed 2026-10-10; supersedes CONTEXT.md §5 "reserved clamped to new stock")
+## D5. No partial fills for orders: Accepted
 Invariant: `0 <= reserved <= on_hand` always. `adjust()` may not reduce `on_hand` below `reserved`. Issuing an order's reserved stock at PACKED can therefore never be short. Short fills (`UNFULFILLED` ledger rows) occur only on the staff manual `issue` endpoint, which operates on **available** stock (`on_hand - reserved`). This replaces plan step 7's "clamps `stock_reserved`" wording.
 
 ## D6. Vendor model: Accepted
@@ -94,3 +91,25 @@ Tax-inclusive order math (server-side, `decimal.js`):
 5. `total = subtotal + shipping`
 
 Examples at 14%: subtotal 114.00 gives tax 14.00; subtotal 100.00 gives tax 12.28 (12.2807, rounded). Purchase-order and invoice amounts use supplier unit cost and are not taxed in Phase 3.
+
+---
+
+## D15. "Machine line" for car parts: Needs input
+The dashboard tracks usage per production line (CNC, Press, Conveyor, Packaging) because its seed data is industrial spare parts. The storefront sells car parts, so that grouping has no meaning.
+**Recommendation.** Drop `Part.machine_line`. Rename the report "usage by line" to "usage by category" and group by `Part.category`. Seed the unified catalog with car parts (22 or more, 6 suppliers, matching the dashboard's size).
+
+## D16. Dashboard "Orders" tab: Needs input
+In the dashboard, "Orders" lists fulfilment records created by the manual issue action (Shipped or Backorder). In the storefront, orders are customer purchases.
+**Recommendation.** The dashboard Orders tab shows customer orders. Manual issue stays an inventory action: the response reports `SHIPPED` or `BACKORDER`, and the result is visible in the part's movement history. No separate fulfilment-record table.
+
+## D17. Vendor attribution on products: Needs input
+`CONTEXT.md` section 4 shows storefront products with `vendor`, `vendorRating`, and `vendorOrders`. D6 says vendors do not own listings.
+**Recommendation.** Add a nullable `Part.vendor_id` used only for a "sold by" label. Drop `vendorRating` and `vendorOrders` in Phase 3 (they would need a computed or seeded source).
+
+## D18. Ratings, reviews, and stock counts: Needs input
+Products show `rating`, `reviews`, and `stockCount`; there is no review entity, and D3 hides exact stock from the public.
+**Recommendation.** Keep `rating` and `review_count` as seeded, read-only columns on `Part` (no review submission). Public stock shows `in_stock` plus `stock_hint = min(available, 10)` so the "only N left" style message keeps working without exposing exact counts.
+
+## D19. Payments scope: Needs input
+`CONTEXT.md` section 9 asks whether payments need a design stub now. The ERD currently lists `CARD_PENDING` as a placeholder.
+**Recommendation.** Cash on delivery only. Remove `CARD_PENDING` from the enum; no payment provider and no stub. Add card payments as a later phase. Email provider stays Resend (with the D1 interim email rule).
